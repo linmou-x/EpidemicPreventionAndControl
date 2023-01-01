@@ -1,9 +1,9 @@
-package UserServices;
+package com.pojo;
 
 /**
  * 用户类
  */
-public class userServices {
+public class UserDo {
     /**
      * 唯一ID，自动生成唯一ID
      */
