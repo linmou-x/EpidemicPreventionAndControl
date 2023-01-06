@@ -1,8 +1,7 @@
 package com.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.core.mapper.Mapper;
-import com.pojo.UserDo;
+import com.entity.User;
 
 /**
  * @Author：Charles
@@ -12,6 +11,6 @@ import com.pojo.UserDo;
  * @Date：2023/1/6 15:27
  * @Filename：UserMapper
  */
-public interface UserMapper extends BaseMapper<UserDo> {
+public interface UserMapper extends BaseMapper<User> {
 
 }

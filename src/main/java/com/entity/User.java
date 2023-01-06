@@ -1,4 +1,4 @@
-package com.pojo;
+package com.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -17,7 +17,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName(value = "user")
-public class UserDo implements Serializable {
+public class User implements Serializable {
     private static final long serialVersionUID = -40356785423868312L;
     /**
      * 唯一ID，自动生成唯一ID
