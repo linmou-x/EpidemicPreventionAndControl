@@ -1,10 +1,8 @@
 package com.utils;
 
-import com.sun.istack.internal.NotNull;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,7 +33,7 @@ public class Result {
     private Result(){}
 
     //成功静态方法
-    @NotNull
+//    @NotNull
     public static Result succeed(){
         Result resultReturn = new Result();
         resultReturn
@@ -46,7 +44,7 @@ public class Result {
     }
 
     //失败静态方法
-    @NotNull
+//    @NotNull
     public static Result error(){
         Result resultReturn = new Result();
         resultReturn.setSuccess(false);
@@ -68,12 +66,12 @@ public class Result {
         return this;
     }
 
-    public Result Data(String key, Object value){
+    public Result data(String key, Object value){
         this.data.put(key,value);
         return this;
     }
 
-    public Result Data(Map<String,Object> map){
+    public Result data(Map<String,Object> map){
         this.setData(map);
         return this;
     }
