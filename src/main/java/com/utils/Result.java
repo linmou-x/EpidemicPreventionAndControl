@@ -3,6 +3,8 @@ package com.utils;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;
+
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,74 +17,21 @@ import java.util.Map;
  * @Filename：Result
  */
 @Data
-/**
- * 链式编程注解
- */
-@Accessors(chain = true)
-public class Result {
-    /**
-     *     swagger注解
-     */
-    @ApiModelProperty(value = "是否成功")
-    private Boolean success;
+public class Result<Object> implements Serializable {
 
-    @ApiModelProperty(value = "返回状态码")
-    private Integer code;
+    private ResultEnum code;
 
-    @ApiModelProperty(value = "返回消息")
     private String message;
 
-    @ApiModelProperty(value = "返回数据")
-    private Map<String,Object> data = new HashMap<>();
+    private Object data;
 
-    /**
-     *     构造方法私有化,使其他类不能new 只能使用类中固定的方法
-     */
-    private Result(){}
-
-    //成功静态方法
-//    @NotNull
-    public static Result succeed(){
-        Result resultReturn = new Result();
-        resultReturn
-                .setSuccess(true)
-                //直接引用状态码接口
-                .setCode(ResultCode.SUCCESS)
-                .setMessage("执行成功");
-        return resultReturn;
+    public Result(ResultEnum code,Object data) {
+        this.code=code;
+        this.data=data;
     }
-
-    //失败静态方法
-//    @NotNull
-    public static Result error(){
-        Result resultReturn = new Result();
-        resultReturn.setSuccess(false);
-        //直接引用状态码接口
-        resultReturn.setCode(ResultCode.ERROR);
-        resultReturn.setMessage("执行失败");
-        return resultReturn;
-    }
-
-    public Result success(Boolean success){
-        this.setSuccess(success);
-        return this;
-    }
-    public Result message(String message){
-        this.setMessage(message);
-        return this;
-    }
-    public Result code(Integer code){
-        this.setCode(code);
-        return this;
-    }
-
-    public Result data(String key, Object value){
-        this.data.put(key,value);
-        return this;
-    }
-
-    public Result data(Map<String,Object> map){
-        this.setData(map);
-        return this;
+    public Result(ResultEnum code,String message,Object data) {
+        this.code=code;
+        this.message=message;
+        this.data=data;
     }
 }

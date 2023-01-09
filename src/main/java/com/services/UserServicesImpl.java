@@ -4,6 +4,7 @@ import com.entity.User;
 import com.mapper.UserMapper;
 import com.services.Impl.UserService;
 import com.utils.Result;
+import com.utils.ResultEnum;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +26,7 @@ public class UserServicesImpl implements UserService {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("username",username);
         map.put("password",password);
-        return Result.succeed().message(String.valueOf(userMapper.selectByMap(map)));
+        return new Result(ResultEnum.SUCCESS,userMapper.selectByMap(map));
     }
 
     @Override
