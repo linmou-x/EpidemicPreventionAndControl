@@ -15,9 +15,15 @@ import java.util.Map;
  * @Filename：Result
  */
 @Data
-@Accessors(chain = true)  //链式编程注解
+/**
+ * 链式编程注解
+ */
+@Accessors(chain = true)
 public class Result {
-    @ApiModelProperty(value = "是否成功") //swagger注解
+    /**
+     *     swagger注解
+     */
+    @ApiModelProperty(value = "是否成功")
     private Boolean success;
 
     @ApiModelProperty(value = "返回状态码")
@@ -29,7 +35,9 @@ public class Result {
     @ApiModelProperty(value = "返回数据")
     private Map<String,Object> data = new HashMap<>();
 
-    //构造方法私有化,使其他类不能new 只能使用类中固定的方法
+    /**
+     *     构造方法私有化,使其他类不能new 只能使用类中固定的方法
+     */
     private Result(){}
 
     //成功静态方法
@@ -38,7 +46,8 @@ public class Result {
         Result resultReturn = new Result();
         resultReturn
                 .setSuccess(true)
-                .setCode(ResultCode.SUCCESS) //直接引用状态码接口
+                //直接引用状态码接口
+                .setCode(ResultCode.SUCCESS)
                 .setMessage("执行成功");
         return resultReturn;
     }
@@ -48,7 +57,8 @@ public class Result {
     public static Result error(){
         Result resultReturn = new Result();
         resultReturn.setSuccess(false);
-        resultReturn.setCode(ResultCode.ERROR); //直接引用状态码接口
+        //直接引用状态码接口
+        resultReturn.setCode(ResultCode.ERROR);
         resultReturn.setMessage("执行失败");
         return resultReturn;
     }
