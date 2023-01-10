@@ -1,5 +1,6 @@
 package com.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
@@ -23,7 +24,7 @@ public class User implements Serializable {
      * 唯一ID，自动生成唯一ID
      */
     @TableId
-    Long userID;
+    Long id;
     /**
      * 姓名，暂时用作账户名
      */
@@ -43,6 +44,7 @@ public class User implements Serializable {
     /**
      * 户主
      */
+    @TableField("householder")
     Long houseHolder;
     /**
      * 电话
@@ -55,25 +57,36 @@ public class User implements Serializable {
     /**
      * 创建时间
      */
+    @TableField("createTime")
     Date createTime;
     /**
      * 更新人
      */
+    @TableField("updateby")
     Long updateBy;
     /**
      * 更新时间
      */
+    @TableField("updatetime")
     Date updateTime;
     /**
      * 删除标志（0代表未删除，1代表已删除）
      */
+    @TableField("delflag")
     Integer delFlag;
     /**
      * 用户类型（0管理员，1普通用户）
      */
+    @TableField("usertype")
     String userType;
     /**
      * 头像
      */
     String avatar;
+
+    /**
+     * 上一次登陆
+     */
+    @TableField("lastlogin")
+    Date lastLogin;
 }

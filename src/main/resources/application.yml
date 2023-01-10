@@ -44,3 +44,8 @@ spring:
         login-username: admin
         login-password: admin
 
+mybatis-plus:
+#  mapper-locations: ../mapper/*.xml
+  configuration:
+#    打印SQL语句
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

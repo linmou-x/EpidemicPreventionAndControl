@@ -1,5 +1,6 @@
 package com.utils;
 
+import com.sun.net.httpserver.Authenticator;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.experimental.Accessors;

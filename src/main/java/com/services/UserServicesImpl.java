@@ -5,7 +5,10 @@ import com.mapper.UserMapper;
 import com.services.Impl.UserService;
 import com.utils.Result;
 import com.utils.ResultEnum;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,15 +21,20 @@ import java.util.Map;
  * @Date：2023/1/2 20:48
  * @Filename：UserServices
  */
+
+@Service
 public class UserServicesImpl implements UserService {
 
-    private UserMapper userMapper;
+    @Resource
+    public UserMapper userMapper;
+
     @Override
-    public Result login(String username, String password) {
+    public Result login(String name, String password) {
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("username",username);
+        map.put("name",name);
         map.put("password",password);
-        return new Result(ResultEnum.SUCCESS,userMapper.selectByMap(map));
+//        return new Result(ResultEnum.SUCCESS,userMapper.selectByMap(map));
+        return new Result(ResultEnum.SUCCESS,userMapper.selectById(1));
     }
 
     @Override

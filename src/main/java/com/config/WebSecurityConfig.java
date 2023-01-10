@@ -72,7 +72,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) {
         // 添加访问白名单，白名单内的请求无需认证
         web.ignoring().antMatchers(AUTH_WHITELIST);
-
     }
 
     /**

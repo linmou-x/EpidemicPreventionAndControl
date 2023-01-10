@@ -25,6 +25,7 @@ public enum ResultEnum {
      * 服务器内部错误
      */
     INTERNAL_SERVER_ERROR(500);
+
     public int code;
 
     ResultEnum(int code) {

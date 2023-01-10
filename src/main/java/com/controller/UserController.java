@@ -1,7 +1,16 @@
 package com.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.entity.User;
+import com.services.UserServicesImpl;
+import com.utils.Result;
+import com.utils.ResultEnum;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
 
 /**
  * @Author：Charles
@@ -12,14 +21,23 @@ import org.springframework.web.bind.annotation.RestController;
  * @Filename：UserController
  */
 @RestController
+@ResponseBody
 public class UserController {
-    public String userLogin(String username,String password){
-        return "aa";
+
+    @Autowired
+    public UserServicesImpl userServices;
+
+
+    @RequestMapping("/getuser")
+    public Result userLogin(String name, String password){
+
+
+        return userServices.login(name,password);
     }
 
 
     @RequestMapping("/hello")
-    public String HelloContoller(){
-        return "Hello Springboot";
+    public Result HelloContoller(){
+        return new Result(ResultEnum.SUCCESS,"Hello Springboot");
     }
 }
