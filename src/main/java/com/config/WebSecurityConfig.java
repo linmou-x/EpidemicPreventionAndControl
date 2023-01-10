@@ -68,11 +68,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      *
      * @param web Web安全管理类
      */
-    @Override
-    public void configure(WebSecurity web) {
-        // 添加访问白名单，白名单内的请求无需认证
-        web.ignoring().antMatchers(AUTH_WHITELIST);
-    }
 
     /**
      * 基于Web安全的http请求配置，如登入、登出、异常处理、会话管理、OAuth2.0、记住我、cors、csrf、请求访问过滤等等
@@ -115,10 +110,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 允许登出页匿名访问
                 .logout()
                 .permitAll()
-                /**
-                 * druid过滤
-                 */
-                .and().csrf().ignoringAntMatchers("/druid/*")
+                .and().csrf().ignoringAntMatchers(AUTH_WHITELIST)
         ;
     }
 
