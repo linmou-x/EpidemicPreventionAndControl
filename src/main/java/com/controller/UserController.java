@@ -22,13 +22,14 @@ import javax.annotation.Resource;
  */
 @RestController
 @ResponseBody
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
     public UserServicesImpl userServices;
 
 
-    @RequestMapping("/getuser")
+    @RequestMapping("/userLogin")
     public Result userLogin(String name, String password){
 
 

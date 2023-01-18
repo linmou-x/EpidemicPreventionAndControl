@@ -44,7 +44,7 @@ public class User implements Serializable {
     /**
      * 户主
      */
-    @TableField("householder")
+    @TableField("house_holder")
     Long houseHolder;
     /**
      * 电话
@@ -57,27 +57,27 @@ public class User implements Serializable {
     /**
      * 创建时间
      */
-    @TableField("createTime")
+    @TableField("create_time")
     Date createTime;
     /**
      * 更新人
      */
-    @TableField("updateby")
+    @TableField("update_by")
     Long updateBy;
     /**
      * 更新时间
      */
-    @TableField("updatetime")
+    @TableField("update_time")
     Date updateTime;
     /**
      * 删除标志（0代表未删除，1代表已删除）
      */
-    @TableField("delflag")
+    @TableField("del_flag")
     Integer delFlag;
     /**
      * 用户类型（0管理员，1普通用户）
      */
-    @TableField("usertype")
+    @TableField("user_type")
     String userType;
     /**
      * 头像
@@ -87,6 +87,6 @@ public class User implements Serializable {
     /**
      * 上一次登陆
      */
-    @TableField("lastlogin")
+    @TableField("last_login")
     Date lastLogin;
 }
