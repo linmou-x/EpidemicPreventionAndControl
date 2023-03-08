@@ -5,7 +5,7 @@ import com.utils.Result;
 
 import java.util.List;
 
-public interface UserService {
+public interface UserServiceImpl {
     /**
      * 登陆
      * @param username
@@ -41,4 +41,8 @@ public interface UserService {
      * @return
      */
     Result batchSearch(List<User> userList);
+
+    Result getUserByPhone(String phone);
+
+    void login(User user);
 }

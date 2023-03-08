@@ -1,8 +1,6 @@
 package com.controller;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.entity.User;
-import com.services.UserServicesImpl;
+import com.services.UserServices;
 import com.utils.Result;
 import com.utils.ResultEnum;
 import lombok.extern.slf4j.Slf4j;
@@ -10,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.Resource;
 
 /**
  * @Author：Charles
@@ -31,7 +27,7 @@ import javax.annotation.Resource;
 public class UserController {
 
     @Autowired
-    public UserServicesImpl userServices;
+    public UserServices userServices;
 
 
     @RequestMapping("/userLogin")

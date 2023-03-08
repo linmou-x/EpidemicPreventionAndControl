@@ -8,5 +8,5 @@ package com.services.Impl;
  * @Date：2023/3/8 14:50
  * @Filename：GoodsService
  */
-public interface GoodsService  {
+public interface GoodsServiceImpl {
 }

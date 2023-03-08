@@ -1,8 +1,11 @@
 package com.mapper;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.entity.User;
 import org.springframework.stereotype.Repository;
+
+import javax.management.Query;
 
 /**
  * @Author：Charles
@@ -15,5 +18,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserMapper extends BaseMapper<User> {
-
 }

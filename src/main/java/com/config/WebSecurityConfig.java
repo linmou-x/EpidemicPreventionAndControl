@@ -91,7 +91,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                  * 屏蔽websecurityConfig的.anyRequest().authenticated()，允许访问不经过认证
                  */
                 // 所有请求认证过才允许访问
-//                .anyRequest().authenticated()
+                .anyRequest()
+//                .permitAll()
+                .authenticated()
                 .and()
                 // 允许登录页匿名访问
                 .formLogin()
