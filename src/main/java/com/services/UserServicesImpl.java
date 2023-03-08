@@ -3,14 +3,14 @@ package com.services;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.entity.User;
 import com.mapper.UserMapper;
-import com.services.Impl.UserServiceImpl;
+import com.services.Impl.UserService;
 import com.utils.Result;
 import com.utils.ResultEnum;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author：Charles
@@ -22,7 +22,7 @@ import java.util.*;
  */
 
 @Service
-public class UserServices implements UserServiceImpl {
+public class UserServicesImpl implements UserService {
 
     @Resource
     public UserMapper userMapper;

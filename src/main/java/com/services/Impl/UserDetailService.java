@@ -11,6 +11,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
  * @Date：2023/3/8 18:39
  * @Filename：UserDetailService
  */
-public interface UserDetailServiceImpl {
+public interface UserDetailService {
     public UserDetails loadUserByUsername(String phone) throws UsernameNotFoundException;
 }

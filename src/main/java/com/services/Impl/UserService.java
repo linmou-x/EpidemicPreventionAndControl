@@ -5,7 +5,7 @@ import com.utils.Result;
 
 import java.util.List;
 
-public interface UserServiceImpl {
+public interface UserService {
     /**
      * 登陆
      * @param username

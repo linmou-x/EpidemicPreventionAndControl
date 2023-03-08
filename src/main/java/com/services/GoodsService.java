@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  * @Filename：GoodsServiceImpl
  */
 @Service
-public class GoodsService implements GoodsServiceImpl {
+public class GoodsServiceImpl implements GoodsService {
     @Resource
     private GoodsMapper goodsMapper;
 }

@@ -1,10 +1,9 @@
 package com.services;
 
 import com.mapper.UserMapper;
-import com.services.Impl.UserDetailServiceImpl;
+import com.services.Impl.UserDetailService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
 import javax.annotation.Resource;
 
 /**
@@ -16,7 +15,7 @@ import javax.annotation.Resource;
  * @Filename：UserDetailServiceImpl
  */
 @Resource
-public class UserDetailService implements UserDetailServiceImpl {
+public class UserDetailServiceImpl implements UserDetailService {
     @Resource
     private UserMapper userMapper;
 
