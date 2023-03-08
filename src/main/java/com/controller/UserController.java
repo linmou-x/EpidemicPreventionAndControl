@@ -30,13 +30,15 @@ public class UserController {
 
 
     @RequestMapping("/userLogin")
-    public Result userLogin(String name, String password){
+    public Result userLogin(String phone, String password){
 
 
-        return userServices.login(name,password);
+        return userServices.login(phone,password);
     }
-
-
+    /**
+     * test controller
+     * @return
+     */
     @RequestMapping("/hello")
     public Result HelloContoller(){
         return new Result(ResultEnum.SUCCESS,"Hello Springboot");

@@ -20,6 +20,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     private static final String[] AUTH_WHITELIST = {
             // -- swagger ui
+            /*
+            正常过滤
+            */
             "/swagger-ui.html",
             "/swagger-ui/*",
             "/swagger-resources/**",
@@ -81,22 +84,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors()
                 .and()
                 // 禁用CSRF（Cross-site request forgery）：跨站请求伪造，
-                // 也被称为：one click attack/session riding，缩写为：CSRF/XSRF。
-                // CSRF攻击是攻击者盗用了你的身份，以你的名义发送恶意请求。
-                // CSRF能够做的事情包括：以你名义发送邮件，发消息，盗取你的账号，甚至于购买商品，虚拟货币转账......
-                // 造成的问题包括：个人隐私泄露以及财产安全。
-                // 从Spring Security 4.0开始，默认情况下会启用CSRF保护，以防止CSRF攻击应用程序，
-                // Spring Security CSRF会针对PATCH，POST，PUT和DELETE方法进行防护。
-                // 在项目开发过程中，由于前后端分离，需要使用postman之类软件模拟前端请求，此时需要禁用csrf，
-                // 在不禁用CSRF的情况下，postman发起请求会一直失败
-                // 但是在正式上线时应开启csrf防护
                 .csrf().disable()
                 // 认证请求
                 .authorizeRequests()
-                // 所有请求
-                .anyRequest()
-                // 认证过才允许访问
-                .authenticated()
+                /**
+                 * 屏蔽websecurityConfig的.anyRequest().authenticated()，允许访问不经过认证
+                 */
+                // 所有请求认证过才允许访问
+//                .anyRequest().authenticated()
                 .and()
                 // 允许登录页匿名访问
                 .formLogin()
