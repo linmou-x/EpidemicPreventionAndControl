@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author Charles
  */
 @SpringBootApplication
-@MapperScan("com.mapper")
+@MapperScan("com.mapper.**")
 public class EpidemicPreventionAndControlApplication {
 
     public static void main(String[] args) {

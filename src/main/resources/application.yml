@@ -2,6 +2,12 @@ server:
   port: 8090
 
 spring:
+  mybatis-plus:
+    #  mapper-locations: ../mapper/*.xml
+    configuration:
+      #    打印SQL语句
+      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
   #druid
   # 数据源配置
   datasource:
@@ -43,9 +49,12 @@ spring:
         reset-enable: false
         login-username: admin
         login-password: admin
-
-mybatis-plus:
-#  mapper-locations: ../mapper/*.xml
-  configuration:
-#    打印SQL语句
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        boot:
+#          autoconfigure:DEBUG
+logging:
+  level:
+    root: debug

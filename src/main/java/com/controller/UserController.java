@@ -5,6 +5,7 @@ import com.entity.User;
 import com.services.UserServicesImpl;
 import com.utils.Result;
 import com.utils.ResultEnum;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,6 +23,10 @@ import javax.annotation.Resource;
  */
 @RestController
 @ResponseBody
+/**
+ 日志注解
+ */
+@Slf4j
 @RequestMapping("/user")
 public class UserController {
 
@@ -31,8 +36,6 @@ public class UserController {
 
     @RequestMapping("/userLogin")
     public Result userLogin(String phone, String password){
-
-
         return userServices.login(phone,password);
     }
     /**

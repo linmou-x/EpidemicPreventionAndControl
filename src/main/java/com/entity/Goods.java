@@ -1,5 +1,10 @@
 package com.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 
 /**
@@ -10,6 +15,10 @@ import java.io.Serializable;
  * @Date：2023/3/8 14:47
  * @Filename：Goods
  */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@TableName(value = "goods")
 public class Goods implements Serializable {
     private static final long serialVersionUID = -40356785423868312L;
     /**

@@ -2,6 +2,7 @@ package com.services;
 
 import com.mapper.GoodsMapper;
 import com.services.Impl.GoodsService;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
@@ -13,6 +14,7 @@ import javax.annotation.Resource;
  * @Date：2023/3/8 14:51
  * @Filename：GoodsServiceImpl
  */
+@Service
 public class GoodsServiceImpl implements GoodsService {
     @Resource
     private GoodsMapper goodsMapper;
