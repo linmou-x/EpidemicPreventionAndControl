@@ -33,7 +33,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     /**
      * 设置加密方式（强hash方式加密）
      * spring security官方推荐使用更加安全的bcrypt加密方式
-     *
      * @return BCryptPasswordEncoder 加密方式
      */
     @Bean
@@ -65,14 +64,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * Web安全配置，如白名单、防火墙、调试模式、自定义Web过滤内容等
-     *
      * @param web Web安全管理类
      */
-
     /**
      * 基于Web安全的http请求配置，如登入、登出、异常处理、会话管理、OAuth2.0、记住我、cors、csrf、请求访问过滤等等
      * 默认情况下配置应用于所有请求，可以通过requestMatcher(RequestMatcher)或其他方法进行限制
-     *
      * @param http 请求管理类
      * @throws Exception 异常
      */
@@ -94,8 +90,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 在项目开发过程中，由于前后端分离，需要使用postman之类软件模拟前端请求，此时需要禁用csrf，
                 // 在不禁用CSRF的情况下，postman发起请求会一直失败
                 // 但是在正式上线时应开启csrf防护
-                .csrf()
-                .disable()
+                .csrf().disable()
                 // 认证请求
                 .authorizeRequests()
                 // 所有请求

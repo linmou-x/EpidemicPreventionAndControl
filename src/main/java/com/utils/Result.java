@@ -26,13 +26,20 @@ public class Result<Object> implements Serializable {
 
     private Object data;
 
+    public Result(ResultEnum code){
+        this.code=code;
+    }
+
     public Result(ResultEnum code,Object data) {
         this.code=code;
         this.data=data;
     }
+
     public Result(ResultEnum code,String message,Object data) {
         this.code=code;
         this.message=message;
         this.data=data;
     }
+
+
 }

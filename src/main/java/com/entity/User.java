@@ -75,7 +75,7 @@ public class User implements Serializable {
     @TableField("del_flag")
     Integer delFlag;
     /**
-     * 用户类型（0管理员，1普通用户）
+     * 用户类型（管理员，普通住户，租户）
      */
     @TableField("user_type")
     String userType;
@@ -83,7 +83,6 @@ public class User implements Serializable {
      * 头像
      */
     String avatar;
-
     /**
      * 上一次登陆
      */

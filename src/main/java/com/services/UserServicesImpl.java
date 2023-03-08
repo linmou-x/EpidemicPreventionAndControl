@@ -39,7 +39,7 @@ public class UserServicesImpl implements UserService {
 
     @Override
     public Result batchImport(List<User> userList) {
-        return null;
+        return new Result(ResultEnum.SUCCESS,"批量导入结果");
     }
 
     @Override
