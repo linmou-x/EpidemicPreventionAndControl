@@ -1,15 +1,23 @@
 package com.controller;
 
 
+import ch.qos.logback.classic.Logger;
+import com.alibaba.fastjson2.JSON;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.entity.User;
+import com.mapper.UserMapper;
 import com.services.UserServicesImpl;
-import com.sun.media.jfxmedia.logging.Logger;
 import com.utils.Result;
 import com.utils.ResultEnum;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * @Author：Charles
@@ -28,9 +36,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/user")
 public class UserController {
 
-    @Autowired
+    Logger logger = (Logger) LoggerFactory.getLogger(Logger.class);
+    @Resource
     public UserServicesImpl userServicesImpl;
 
+    @Resource
+    public UserMapper userMapper;
 
     @RequestMapping("/userLogin")
     public Result userLogin(String phone, String password){
@@ -40,8 +51,22 @@ public class UserController {
      * test controller
      * @return
      */
-    @RequestMapping("/hello")
-    public Result HelloContoller(){
-        return new Result(ResultEnum.SUCCESS,"Hello Springboot");
+
+    @RequestMapping("/page")
+    public Result selectByPage(@RequestParam(defaultValue = "1",required = false) Integer currentPage,
+                               @RequestParam(defaultValue = "10",required = false) Integer pageSize,
+                               @RequestParam(defaultValue = "charles") String name){
+        QueryWrapper<User> queryWrapper=new QueryWrapper<>();
+            queryWrapper.eq("id",1L);
+        Page<User> page=new Page<>(currentPage,pageSize);
+        Page<User> userPage=userMapper.selectPage(page,queryWrapper);
+        logger.debug(userMapper.selectById(1L).toString());
+        return new Result(ResultEnum.SUCCESS,"this is Paging query result",userPage);
+    }
+
+    @GetMapping("/batchInsert")
+    public Result batchInsert(@RequestBody User user){
+        logger.debug(user.toString());
+        return new Result(ResultEnum.SUCCESS);
     }
 }
