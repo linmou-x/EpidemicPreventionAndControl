@@ -1,5 +1,9 @@
 package com.config;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.entity.User;
+import com.mapper.UserMapper;
+import lombok.NoArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -7,7 +11,19 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
+
+import javax.annotation.Resource;
+import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * @author charles
@@ -15,6 +31,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Resource
+    private UserMapper userMapper;
+
     /**
      * 匿名访问白名单
      */
@@ -39,8 +59,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      * @return BCryptPasswordEncoder 加密方式
      */
     @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+        return NoOpPasswordEncoder.getInstance();
     }
 
     /**
@@ -49,21 +70,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      * @param auth 认证管理类
      * @throws Exception 异常
      */
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        // 使用配置文件时
-        // super.configure(auth);
-
-        // 创建一个密码加密处理对象
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         // 配置内存身份
-        auth.inMemoryAuthentication()
-                // 添加用户admin,密码123456,角色admin
-                .withUser("admin").password(bCryptPasswordEncoder.encode("123456")).roles("admin")
-                .and()
-                // 添加用户user,密码123456,角色user
-                .withUser("user").password(bCryptPasswordEncoder.encode("123456")).roles("user");
-    }
+//        auth.inMemoryAuthentication()
+//                // 添加用户admin,密码123456,角色admin
+//                .withUser("admin").password(bCryptPasswordEncoder.encode("123456")).roles("admin")
+//                .and()
+//                // 添加用户user,密码123456,角色user
+//                .withUser("user").password(bCryptPasswordEncoder.encode("123456")).roles("user");
+//    }
 
     /**
      * Web安全配置，如白名单、防火墙、调试模式、自定义Web过滤内容等
@@ -76,34 +93,34 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      * @throws Exception 异常
      */
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        // super.configure(http);
-        http
-                // 启用cors,CORS是一个W3C标准，全称是"跨域资源共享"（Cross-origin resource sharing）。
-                // 它允许浏览器向跨源服务器，发出XMLHttpRequest请求，从而克服了AJAX只能同源使用的限制。
-                .cors()
-                .and()
-                // 禁用CSRF（Cross-site request forgery）：跨站请求伪造，
-                .csrf().disable()
-                // 认证请求
-                .authorizeRequests()
-                /**
-                 * 屏蔽websecurityConfig的.anyRequest().authenticated()，允许访问不经过认证
-                 */
-                // 所有请求认证过才允许访问
-                .anyRequest()
-//                .permitAll()
-                .authenticated()
-                .and()
-                // 允许登录页匿名访问
-                .formLogin()
-                .permitAll()
-                .and()
-                // 允许登出页匿名访问
-                .logout()
-                .permitAll()
-                .and().csrf().ignoringAntMatchers(AUTH_WHITELIST)
-        ;
+    protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+        authenticationManagerBuilder.userDetailsService(userDetailsService())
+                .passwordEncoder(NoOpPasswordEncoder.getInstance());
     }
 
+    @Override
+    protected  void  configure(HttpSecurity http) throws Exception{
+        http.csrf().disable()
+                .authorizeRequests()
+                .anyRequest().permitAll();//允许表单登录 登录成功后调转到该路径
+    }
+//    @Override
+//    public UserDetails loadUserByUsername(String phone) throws UsernameNotFoundException {
+//        QueryWrapper<User> queryWrapper=new QueryWrapper<User>();
+//        queryWrapper.eq("phone",phone);
+//        User user=userMapper.selectOne(queryWrapper);
+//        List<String> authority=new ArrayList<>();
+//        if (user.getName()!=null) {
+//            String auth = null;
+//            auth = authority.toString();
+//            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+//            UserDetails userDetails = org.springframework.security.core.userdetails.User
+//                    .withUsername(user.getPhone())
+//                    .password(user.getPassword())
+//                    .authorities(auth.toUpperCase())
+//                    .build();
+//            return userDetails;
+//        }
+//        return null;
+//    }
 }

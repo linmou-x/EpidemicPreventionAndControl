@@ -1,7 +1,7 @@
 package com.services;
 
 import com.mapper.GoodsMapper;
-import com.services.Impl.GoodsServiceImpl;
+import com.services.Impl.GoodsService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

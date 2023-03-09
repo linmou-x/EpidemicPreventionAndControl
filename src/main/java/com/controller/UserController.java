@@ -1,6 +1,8 @@
 package com.controller;
 
-import com.services.UserServices;
+
+import com.services.UserServicesImpl;
+import com.sun.media.jfxmedia.logging.Logger;
 import com.utils.Result;
 import com.utils.ResultEnum;
 import lombok.extern.slf4j.Slf4j;
@@ -27,12 +29,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     @Autowired
-    public UserServices userServices;
+    public UserServicesImpl userServicesImpl;
 
 
     @RequestMapping("/userLogin")
     public Result userLogin(String phone, String password){
-        return userServices.login(phone,password);
+        return userServicesImpl.login(phone,password);
     }
     /**
      * test controller
