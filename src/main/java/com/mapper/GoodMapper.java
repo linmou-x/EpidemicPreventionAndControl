@@ -1,7 +1,7 @@
 package com.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.entity.Goods;
+import com.entity.Good;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -13,6 +13,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @Filename：GoodsMapper
  */
 @Mapper
-public interface GoodsMapper extends BaseMapper<Goods> {
+public interface GoodMapper extends BaseMapper<Good> {
     
 }

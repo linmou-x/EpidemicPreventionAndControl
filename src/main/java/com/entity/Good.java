@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 
 /**
  * @Author：Charles
@@ -18,11 +19,24 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName(value = "goods")
-public class Goods implements Serializable {
+@TableName(value = "good")
+public class Good implements Serializable {
     private static final long serialVersionUID = -40356785423868312L;
     /**
      * 唯一id
      */
     private Integer id;
+
+    /**
+     * 物品名称
+     */
+    private String name;
+    /**
+     * 描述
+     */
+    private String description;
+    /**
+     * 商品价格
+     */
+    private DecimalFormat price;
 }
