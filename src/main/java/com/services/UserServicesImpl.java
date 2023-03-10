@@ -1,6 +1,5 @@
 package com.services;
 
-import ch.qos.logback.classic.Logger;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.entity.User;
@@ -8,8 +7,8 @@ import com.mapper.UserMapper;
 import com.services.Impl.UserService;
 import com.utils.Result;
 import com.utils.ResultEnum;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 import java.util.List;
 
@@ -54,7 +53,10 @@ public class UserServicesImpl implements UserService {
 
     @Override
     public Result batchModify(List<User> userList) {
-        return null;
+        userList.forEach(user -> {
+            userMapper.updateById(user);
+        });
+        return new Result(ResultEnum.SUCCESS,"更新成功");
     }
 
     @Override

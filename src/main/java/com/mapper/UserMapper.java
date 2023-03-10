@@ -20,7 +20,6 @@ import java.util.List;
  */
 
 @Repository
-@Primary
 public interface UserMapper extends BaseMapper<User> {
 
 }

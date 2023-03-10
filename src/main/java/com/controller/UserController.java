@@ -2,7 +2,6 @@ package com.controller;
 
 
 import ch.qos.logback.classic.Logger;
-import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.entity.User;
@@ -13,19 +12,11 @@ import com.utils.ResultEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
-
 /**
- * @Author：Charles
- * @Package：com.controller
- * @Project：EpidemicPreventionAndControl
- * @name：UserController
- * @Date：2023/1/2 20:47
- * @Filename：UserController
+ * @author Charles
  */
 @RestController
 @ResponseBody
@@ -46,17 +37,12 @@ public class UserController {
     public Result userLogin(String phone, String password){
         return userServicesImpl.login(phone,password);
     }
-    /**
-     * test controller
-     * @return
-     */
 
     @RequestMapping("/page")
     public Result selectByPage(@RequestParam(defaultValue = "1",required = false) Integer currentPage,
                                @RequestParam(defaultValue = "10",required = false) Integer pageSize,
                                @RequestParam(defaultValue = "charles") String name){
         QueryWrapper<User> queryWrapper=new QueryWrapper<>();
-//        queryWrapper.eq("id",null);
         /**
          * del_flag 为禁用标识 1为可用，0为禁用
          */
@@ -78,8 +64,8 @@ public class UserController {
         return userServicesImpl.batchDelete(userList);
     }
 
-    @GetMapping("/test")
-    public Result test(){
-        return new Result(ResultEnum.SUCCESS,"this is test result",userMapper.selectById(1L));
+    @GetMapping("/batchModify")
+    public Result batchModify(@RequestBody List<User> userList){
+        return userServicesImpl.batchModify(userList);
     }
 }
