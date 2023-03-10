@@ -35,14 +35,8 @@ public interface UserService {
      */
     Result batchModify(List<User> userList);
 
-    /**
-     * 分页查询
-     * @param userList
-     * @return
-     */
-    Result batchSearch(List<User> userList);
-
     Result getUserByPhone(String phone);
 
     void login(User user);
+
 }

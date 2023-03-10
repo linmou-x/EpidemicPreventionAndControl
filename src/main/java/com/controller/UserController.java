@@ -35,7 +35,6 @@ import java.util.List;
 @Slf4j
 @RequestMapping("/user")
 public class UserController {
-
     Logger logger = (Logger) LoggerFactory.getLogger(Logger.class);
     @Resource
     public UserServicesImpl userServicesImpl;
@@ -57,7 +56,11 @@ public class UserController {
                                @RequestParam(defaultValue = "10",required = false) Integer pageSize,
                                @RequestParam(defaultValue = "charles") String name){
         QueryWrapper<User> queryWrapper=new QueryWrapper<>();
-            queryWrapper.eq("id",1L);
+//        queryWrapper.eq("id",null);
+        /**
+         * del_flag 为禁用标识 1为可用，0为禁用
+         */
+        queryWrapper.eq("del_flag",1);
         Page<User> page=new Page<>(currentPage,pageSize);
         Page<User> userPage=userMapper.selectPage(page,queryWrapper);
         logger.debug(userMapper.selectById(1L).toString());
@@ -65,8 +68,18 @@ public class UserController {
     }
 
     @GetMapping("/batchInsert")
-    public Result batchInsert(@RequestBody User user){
-        logger.debug(user.toString());
+    public Result batchInsert(@RequestBody List<User> userList){
+        userServicesImpl.batchImport(userList);
         return new Result(ResultEnum.SUCCESS);
+    }
+
+    @GetMapping("/batchDelete")
+    public Result batchDelete(@RequestBody List<User> userList){
+        return userServicesImpl.batchDelete(userList);
+    }
+
+    @GetMapping("/test")
+    public Result test(){
+        return new Result(ResultEnum.SUCCESS,"this is test result",userMapper.selectById(1L));
     }
 }
