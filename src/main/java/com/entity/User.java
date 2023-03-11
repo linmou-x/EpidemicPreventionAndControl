@@ -1,11 +1,11 @@
 package com.entity;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.alibaba.excel.annotation.ExcelProperty;
+import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.ser.std.StdKeySerializers;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -26,7 +26,7 @@ public class User implements Serializable{
     /**
      * 唯一ID，自动生成唯一ID
      */
-    @TableId
+    @TableId(value ="id",type = IdType.ASSIGN_ID )
     Long id;
     /**
      * 姓名，暂时用作账户名
@@ -39,15 +39,17 @@ public class User implements Serializable{
     /**
      * 性别
      */
+
     String gender;
     /**
      * 家庭住址
      */
+
     String address;
     /**
      * 户主
      */
-    @TableField("house_holder")
+    @TableField(value = "house_holder",fill = FieldFill.INSERT)
     Long houseHolder;
     /**
      * 电话
@@ -56,11 +58,11 @@ public class User implements Serializable{
     /**
      * 密码
      */
+
     String password;
     /**
      * 创建时间
      */
-
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField(value = "create_time", fill = FieldFill.INSERT)
@@ -68,7 +70,7 @@ public class User implements Serializable{
     /**
      * 更新人
      */
-    @TableField("update_by")
+    @TableField(value = "update_by",fill = FieldFill.INSERT)
     Long updateBy;
     /**
      * 更新时间
@@ -85,7 +87,7 @@ public class User implements Serializable{
     /**
      * 用户类型（管理员，普通住户，租户）
      */
-    @TableField("user_type")
+    @TableField(value = "user_type",fill = FieldFill.INSERT)
     String userType;
     /**
      * 头像

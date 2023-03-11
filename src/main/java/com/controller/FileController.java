@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 
 /**
  * @Author：Charles
@@ -25,7 +26,7 @@ public class FileController {
     private FileService fileService;
 
     @PostMapping("/uploadExcel")
-    public Result uploadExcel(@RequestParam(value = "file")MultipartFile excel){
+    public Result uploadExcel(@RequestParam(value = "file")MultipartFile excel) throws IOException {
         return fileService.uploadExcel(excel);
     }
 }

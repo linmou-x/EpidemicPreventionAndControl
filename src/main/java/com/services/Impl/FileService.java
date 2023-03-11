@@ -3,6 +3,8 @@ package com.services.Impl;
 import com.utils.Result;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 /**
  * @Author：Charles
  * @Package：com.services.Impl
@@ -17,5 +19,5 @@ public interface FileService {
      * @param multipartFile
      * @return
      */
-    public Result uploadExcel(MultipartFile multipartFile);
+    public Result uploadExcel(MultipartFile multipartFile) throws IOException;
 }
