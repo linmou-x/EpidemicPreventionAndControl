@@ -59,16 +59,4 @@ public class UserServicesImpl implements UserService {
         return new Result(ResultEnum.SUCCESS,"更新成功");
     }
 
-    @Override
-    public Result getUserByPhone(String phone) {
-        QueryWrapper<User> queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("Phone",phone);
-        return new Result(ResultEnum.SUCCESS,userMapper.selectOne(queryWrapper));
-    }
-
-    @Override
-    public void login(User user) {
-
-    }
-
 }

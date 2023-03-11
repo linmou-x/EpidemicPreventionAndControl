@@ -35,8 +35,4 @@ public interface UserService {
      */
     Result batchModify(List<User> userList);
 
-    Result getUserByPhone(String phone);
-
-    void login(User user);
-
 }
