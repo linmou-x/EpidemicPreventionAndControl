@@ -36,6 +36,10 @@ public class Good implements Serializable {
      */
     String name;
     /**
+     *  类别
+     */
+    String type;
+    /**
      * 描述
      */
     String description;
