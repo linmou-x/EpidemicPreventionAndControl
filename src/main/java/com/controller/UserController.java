@@ -6,12 +6,13 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.entity.User;
 import com.mapper.UserMapper;
-import com.services.UserServicesImpl;
+import com.services.Impl.UserService;
 import com.utils.Result;
 import com.utils.ResultEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import java.util.List;
 
@@ -28,14 +29,14 @@ import java.util.List;
 public class UserController {
     Logger logger = (Logger) LoggerFactory.getLogger(Logger.class);
     @Resource
-    public UserServicesImpl userServicesImpl;
+    public UserService userService;
 
     @Resource
     public UserMapper userMapper;
 
     @RequestMapping("/userLogin")
     public Result userLogin(String phone, String password){
-        return userServicesImpl.login(phone,password);
+        return userService.login(phone,password);
     }
 
     @RequestMapping("/page")
@@ -55,17 +56,17 @@ public class UserController {
 
     @GetMapping("/batchInsert")
     public Result batchInsert(@RequestBody List<User> userList){
-        userServicesImpl.batchImport(userList);
+        userService.batchImport(userList);
         return new Result(ResultEnum.SUCCESS);
     }
 
     @GetMapping("/batchDelete")
     public Result batchDelete(@RequestBody List<User> userList){
-        return userServicesImpl.batchDelete(userList);
+        return userService.batchDelete(userList);
     }
 
     @GetMapping("/batchModify")
     public Result batchModify(@RequestBody List<User> userList){
-        return userServicesImpl.batchModify(userList);
+        return userService.batchModify(userList);
     }
 }
