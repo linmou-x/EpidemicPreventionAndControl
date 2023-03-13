@@ -2,6 +2,7 @@ package com.controller;
 
 
 import ch.qos.logback.classic.Logger;
+import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.entity.User;
@@ -16,7 +17,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Charles
@@ -45,10 +48,10 @@ public class UserController {
 
     @GetMapping(value = "/page")
     @Operation(summary = "用户按需查询分页",description = "分页查询")
-    public Result selectByPage(
-//            @RequestParam(defaultValue = "1",required = false) Integer currentPage,
-//                               @RequestParam(defaultValue = "10",required = false) Integer pageSize,
-                               @RequestBody  User user){
+    public Result selectByPage(@RequestBody Map<String,String> map){
+        Integer currentPage=Integer.valueOf(map.get("currentPage"));
+        Integer pageSize=Integer.valueOf(map.get("pageSize"));
+        User user= JSON.parseObject(map.get("user"),User.class);
         QueryWrapper<User> queryWrapper=new QueryWrapper<>();
         /**
          * del_flag 为禁用标识 1为可用，0为禁用
@@ -86,7 +89,7 @@ public class UserController {
          * 条件判定非空时添加手机查询条件
          */
         queryWrapper.eq(!StringUtils.isEmpty(String.valueOf(user.getPhone())), "phone", user.getPhone());
-        Page<User> page=new Page<>(1,10);
+        Page<User> page=new Page<>(currentPage,pageSize);
         Page<User> userPage=userMapper.selectPage(page,queryWrapper);
         return new Result(ResultEnum.SUCCESS,"this is Paging query result",userPage);
     }

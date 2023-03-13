@@ -1,12 +1,9 @@
 package com.entity;
 
-import com.alibaba.excel.annotation.ExcelProperty;
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ser.std.StdKeySerializers;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -55,7 +52,6 @@ public class User implements Serializable{
      */
     @TableField(value = "house_holder",fill = FieldFill.INSERT)
     @JsonProperty(value = "houseHolder")
-
     Long houseHolder;
     /**
      * 电话

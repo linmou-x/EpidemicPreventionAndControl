@@ -49,6 +49,9 @@ spring:
         reset-enable: false
         login-username: admin
         login-password: admin
+  jackson:
+    serialization:
+      write-null-map-values: true
 #logging:
 #  level:
 #    org:
