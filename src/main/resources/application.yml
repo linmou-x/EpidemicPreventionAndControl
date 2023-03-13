@@ -52,12 +52,7 @@ spring:
   jackson:
     serialization:
       write-null-map-values: true
-#logging:
-#  level:
-#    org:
-#      springframework:
-#        boot:
-#          autoconfigure:DEBUG
+
 logging:
   level:
-    root: debug
+    org.springframework.boot.autoconfigure: ERROR

@@ -1,7 +1,6 @@
 package com.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.entity.Good;
 import com.entity.Service;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -12,12 +11,13 @@ import java.util.List;
  * @Author：Charles
  * @Package：com.mapper
  * @Project：EpidemicPreventionAndControl
- * @name：GoodsMapper
- * @Date：2023/3/8 14:48
- * @Filename：GoodsMapper
+ * @name：ServiceMapper
+ * @Date：3/13/2023 6:04 PM
+ * @Filename：ServiceMapper
  */
 @Mapper
-public interface GoodMapper extends BaseMapper<Good> {
+public interface ServiceMapper extends BaseMapper<Service> {
+
     @Select("SELECT  * FROM service ")
-    List<Service> getGoodList();
+    List<Service> getServiceList();
 }
