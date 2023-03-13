@@ -20,10 +20,7 @@ public class MybatisPlusHandler  implements MetaObjectHandler {
     @Override
     public void insertFill(MetaObject metaObject) {
         this.setFieldValByName("password","12345678",metaObject);
-        this.setFieldValByName("updateTime", new Date(), metaObject);
-        this.setFieldValByName("houseHolder", 1L, metaObject);
-        this.setFieldValByName("updateBy",1L,metaObject);
-        this.setFieldValByName("userType","user",metaObject);
+        this.setFieldValByName("createTime", new Date(), metaObject);
     }
 
     @Override
