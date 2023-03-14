@@ -22,8 +22,15 @@ import java.util.List;
 
 @Service
 public class UserServicesImpl implements UserService {
+
     @Resource
     public UserMapper userMapper;
+
+    @Override
+    public String getPasswordByPhone(String phone) {
+        return userMapper.getPasswordByPhone(phone);
+    }
+
     @Override
     public Result login(String name, String password) {
         return new Result(ResultEnum.SUCCESS,userMapper.selectById(1));

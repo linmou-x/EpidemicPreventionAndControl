@@ -2,9 +2,8 @@ package com.services;
 
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.entity.Good;
-import com.entity.User;
 import com.mapper.GoodMapper;
-import com.services.Impl.GoodsService;
+import com.services.Impl.GoodService;
 import com.utils.Result;
 import com.utils.ResultEnum;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,7 @@ import java.util.List;
  * @Filename：GoodsServiceImpl
  */
 @Service
-public class GoodsServiceImpl implements GoodsService {
+public class GoodServiceImpl implements GoodService {
     @Resource
     private GoodMapper goodMapper;
 

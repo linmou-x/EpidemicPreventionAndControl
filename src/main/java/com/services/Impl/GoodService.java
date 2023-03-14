@@ -12,7 +12,7 @@ import java.util.List;
  * @Date：2023/3/8 14:50
  * @Filename：GoodsService
  */
-public interface GoodsService {
+public interface GoodService {
     /**
      * 批量导入
      * @param goodList

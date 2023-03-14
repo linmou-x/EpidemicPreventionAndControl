@@ -6,6 +6,7 @@ import com.utils.Result;
 import java.util.List;
 
 public interface UserService {
+    String getPasswordByPhone(String  phone);
     /**
      * 登陆
      * @param username

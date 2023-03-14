@@ -18,6 +18,7 @@ import java.util.List;
  */
 @Mapper
 public interface GoodMapper extends BaseMapper<Good> {
-    @Select("SELECT  * FROM service ")
-    List<Service> getGoodList();
+    @Select("SELECT  * FROM good ")
+    List<Good> getGoodList();
+
 }
