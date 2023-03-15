@@ -57,10 +57,10 @@ public class UserController {
          * 用户类型为管理员实可以查询全部账户
          * 否则只可以查询当前可用账户
          */
-        if (user.getUserType().equals("admin")){
+        if ("admin".equals(user.getUserType())){
             queryWrapper.eq("del_flag",1)
                     .eq("del_flag",0);
-        }else if (user.getUserType().equals("user")){
+        }else if ("user".equals(user.getUserType())){
             queryWrapper.eq("del_flag",1);
         }
         logger.debug(user.toString());
