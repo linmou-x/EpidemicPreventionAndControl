@@ -24,6 +24,11 @@ public class GoodServiceImpl implements GoodService {
     @Resource
     private GoodMapper goodMapper;
 
+    @Override
+    public Result getGoodList(){
+        return new Result(ResultEnum.SUCCESS,goodMapper.getGoodList());
+    }
+
     /**
      * 批量导入
      *

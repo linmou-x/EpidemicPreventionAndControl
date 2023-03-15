@@ -13,6 +13,7 @@ import java.util.List;
  * @Filename：GoodsService
  */
 public interface GoodService {
+    Result getGoodList();
     /**
      * 批量导入
      * @param goodList

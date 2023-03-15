@@ -41,7 +41,7 @@ public class GoodController {
     @GetMapping(value = "/getGoodList")
     @Operation(summary = "商品查询",description = "商品查询")
     public Result selectByPage(){
-        return new Result(ResultEnum.SUCCESS,"this is Paging query result",goodMapper.getGoodList());
+        return new Result(ResultEnum.SUCCESS,"this is Paging query result",goodService.getGoodList());
     }
 
     @GetMapping("/batchInsert")
