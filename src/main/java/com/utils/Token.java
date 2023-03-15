@@ -6,7 +6,6 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTPayload;
 import cn.hutool.jwt.JWTUtil;
-import com.entity.User;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -20,7 +19,7 @@ public class Token {
     String key="ASDFGHJKL";
 
     public String getToken(String phone,String password,Long id) {
-        String token="";
+        String token=null;
         DateTime now =DateTime.now();
         DateTime newTime= now.offsetNew(DateField.MINUTE,100);
         Map<String,Object> payload = new HashMap<String,Object>();
@@ -42,8 +41,6 @@ public class Token {
 
         String key="ASDFGHJKL";
         token= JWTUtil.createToken(payload,key.getBytes());
-//        token= JWT.create().withAudience(this.getPhone())
-//                .sign(Algorithm.HMAC256(this.getPassword()));
         return token;
     }
 
