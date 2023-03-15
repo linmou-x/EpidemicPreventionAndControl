@@ -6,14 +6,17 @@ import com.utils.Result;
 import java.util.List;
 
 public interface UserService {
+    User getUserByPhone(String phone);
+
+
     String getPasswordByPhone(String  phone);
     /**
      * 登陆
-     * @param username
+     * @param phone
      * @param password
      * @return
      */
-    Result login(String username,String password);
+    Result login(String phone,String password);
 
     /**
      * 批量导入

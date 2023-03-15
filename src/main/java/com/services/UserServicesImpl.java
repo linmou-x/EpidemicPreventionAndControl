@@ -1,5 +1,6 @@
 package com.services;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.entity.User;
 import com.mapper.UserMapper;
@@ -7,7 +8,6 @@ import com.services.Impl.UserService;
 import com.utils.Result;
 import com.utils.ResultEnum;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import java.util.List;
 
@@ -26,14 +26,35 @@ public class UserServicesImpl implements UserService {
     @Resource
     public UserMapper userMapper;
 
+
+    @Override
+    public User getUserByPhone(String phone) {
+        return userMapper.getUserByPhone(phone);
+    }
+
     @Override
     public String getPasswordByPhone(String phone) {
         return userMapper.getPasswordByPhone(phone);
     }
 
     @Override
-    public Result login(String name, String password) {
-        return new Result(ResultEnum.SUCCESS,userMapper.selectById(1));
+    public Result login(String phone, String password) {
+        JSONObject jsonObject=new JSONObject();
+        User user=userMapper.getUserByPhone(phone);
+        if(user==null){
+            jsonObject.put("message","登录失败,用户不存在");
+            return new Result(ResultEnum.FAIL,jsonObject);
+        }else {
+            if (!user.getPassword().equals(password)){
+                jsonObject.put("message","登录失败,密码错误");
+                return new Result(ResultEnum.FAIL,jsonObject);
+            }else {
+                String token = user.getToken();
+                jsonObject.put("token", token);
+                jsonObject.put("user", user);
+                return new Result(ResultEnum.SUCCESS,jsonObject);
+            }
+        }
     }
 
     @Override

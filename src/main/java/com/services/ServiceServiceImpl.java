@@ -5,7 +5,6 @@ import com.mapper.ServiceMapper;
 import com.services.Impl.ServiceService;
 import com.utils.Result;
 import com.utils.ResultEnum;
-
 import javax.annotation.Resource;
 import java.util.List;
 
@@ -17,6 +16,7 @@ import java.util.List;
  * @Date：3/13/2023 6:05 PM
  * @Filename：ServiceServiceImpl
  */
+@org.springframework.stereotype.Service
 public class ServiceServiceImpl implements ServiceService {
 
     @Resource

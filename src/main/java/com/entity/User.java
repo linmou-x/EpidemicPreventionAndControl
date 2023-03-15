@@ -1,5 +1,7 @@
 package com.entity;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -109,4 +111,11 @@ public class User implements Serializable{
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     Date lastLogin;
+
+    public String getToken() {
+        String token="";
+        token= JWT.create().withAudience(this.getPhone())
+                .sign(Algorithm.HMAC256(this.getPassword()));
+        return token;
+    }
 }

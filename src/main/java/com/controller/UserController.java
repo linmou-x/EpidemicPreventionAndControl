@@ -1,6 +1,5 @@
 package com.controller;
 
-
 import ch.qos.logback.classic.Logger;
 import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -10,6 +9,7 @@ import com.mapper.UserMapper;
 import com.services.Impl.UserService;
 import com.utils.Result;
 import com.utils.ResultEnum;
+import com.utils.UserLoginToken;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * @author Charles
  * @author Charles
  */
 @RestController
@@ -35,7 +36,6 @@ public class UserController {
     Logger logger = (Logger) LoggerFactory.getLogger(Logger.class);
     @Resource
     public UserService userService;
-
     @Resource
     public UserMapper userMapper;
 
@@ -110,5 +110,12 @@ public class UserController {
     @Operation(summary = "批量修改",description = "批量修改")
     public Result batchModify(@RequestBody List<User> userList){
         return userService.batchModify(userList);
+    }
+
+    @GetMapping("/message")
+    @UserLoginToken
+    @Operation(summary = "测试",description = "测试")
+    public Result message(){
+        return new Result(ResultEnum.SUCCESS,"Hello");
     }
 }
