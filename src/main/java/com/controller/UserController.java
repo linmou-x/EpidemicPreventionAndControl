@@ -15,8 +15,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -114,8 +116,9 @@ public class UserController {
 
     @GetMapping("/message")
     @UserLoginToken
-    @Operation(summary = "测试",description = "测试")
-    public Result message(){
-        return new Result(ResultEnum.SUCCESS,"Hello");
+    @Operation(summary = "测试,从HttpServletRequest中获取token，使用token工具解析到User信息",description = "测试")
+    public Result message(HttpServletRequest httpServletRequest){
+        String token = httpServletRequest.getHeader("token");
+        return new Result(ResultEnum.SUCCESS,token);
     }
 }

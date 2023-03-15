@@ -21,11 +21,13 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     Logger logger = (Logger) LoggerFactory.getLogger(Logger.class);
     @Resource
     UserService userService;
+
+    @Resource
+    Token JWTtoken;
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object object) throws Exception {
         String token = httpServletRequest.getHeader("token");
         logger.debug("获取token:",token);
-
         if(!(object instanceof HandlerMethod)){
             logger.debug("直接跳过");
             return true;
@@ -52,23 +54,14 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                     logger.debug("无Token,跳过验证:");
                     throw new RuntimeException("无token，请重新登录");
                 }
+                if (!JWTtoken.verifyToken(token)){
+                    throw new RuntimeException("Token过期失效");
+                }
                 // 获取 token 中的 user id
-                String phone=null;
                 try {
                     logger.debug(String.valueOf(JWT.decode(token)));
-                    phone = JWT.decode(token).getAudience().get(0);
+                    JWTtoken.getId(token);
                 } catch (JWTDecodeException j) {
-                    throw new RuntimeException("401");
-                }
-                User user = userService.getUserByPhone(phone);
-                if (user == null) {
-                    throw new RuntimeException("用户不存在，请重新登录");
-                }
-                // 验证 token
-                JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(user.getPassword())).build();
-                try {
-                    jwtVerifier.verify(token);
-                } catch (JWTVerificationException e) {
                     throw new RuntimeException("401");
                 }
                 return true;

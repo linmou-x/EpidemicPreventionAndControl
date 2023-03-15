@@ -26,6 +26,6 @@ public interface UserMapper extends BaseMapper<User> {
     @Select("select password from  user where phone = ${phone}")
     String getPasswordByPhone(String phone);
 
-    @Select("SELECT  * from  user where phone =${phone}")
+    @Select("select  * from  user where phone = ${phone}")
     User getUserByPhone(String phone);
 }
