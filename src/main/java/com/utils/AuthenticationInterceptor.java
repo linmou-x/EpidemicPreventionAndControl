@@ -1,12 +1,6 @@
 package com.utils;
 
 import ch.qos.logback.classic.Logger;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTDecodeException;
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.entity.User;
 import com.services.Impl.UserService;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.method.HandlerMethod;
@@ -58,12 +52,12 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                     throw new RuntimeException("Token过期失效");
                 }
                 // 获取 token 中的 user id
-                try {
-                    logger.debug(String.valueOf(JWT.decode(token)));
-                    JWTtoken.getId(token);
-                } catch (JWTDecodeException j) {
-                    throw new RuntimeException("401");
-                }
+//                try {
+//
+//                    JWTtoken.getId(token);
+//                } catch (JWTDecodeException j) {
+//                    throw new RuntimeException("401");
+//                }
                 return true;
             }
         }
