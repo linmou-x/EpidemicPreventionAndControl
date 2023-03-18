@@ -2,6 +2,7 @@ package com.controller;
 
 import ch.qos.logback.classic.Logger;
 import com.entity.Good;
+import com.entity.GoodDTO;
 import com.mapper.GoodMapper;
 import com.services.Impl.GoodService;
 import com.utils.Result;
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -43,19 +45,19 @@ public class GoodController {
 
     @GetMapping("/batchInsert")
     @Operation(summary = "批量插入",description = "批量插入")
-    public Result batchInsert(@RequestBody List<Good> goodList){
-        return goodService.batchImport(goodList);
+    public Result batchInsert(@RequestBody List<GoodDTO> goodDTOList,HttpServletRequest httpServletRequest){
+        return goodService.batchImport(goodDTOList, httpServletRequest);
     }
 
     @GetMapping("/batchDelete")
     @Operation(summary = "批量删除",description = "批量删除")
-    public Result batchDelete(@RequestBody List<Good> goodList){
-        return goodService.batchDelete(goodList);
+    public Result batchDelete(@RequestBody List<GoodDTO> goodDTOList,HttpServletRequest httpServletRequest){
+        return goodService.batchDelete(goodDTOList,  httpServletRequest);
     }
 
     @GetMapping("/batchModify")
     @Operation(summary = "批量修改",description = "批量修改")
-    public Result batchModify(@RequestBody List<Good> goodList){
-        return goodService.batchModify(goodList);
+    public Result batchModify(@RequestBody List<GoodDTO> goodDTOList,HttpServletRequest httpServletRequest){
+        return goodService.batchModify(goodDTOList, httpServletRequest);
     }
 }

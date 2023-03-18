@@ -103,16 +103,20 @@ public class UserServicesImpl implements UserService {
     }
 
     @Override
-    public Result batchDelete(List<UserDTO> userList,HttpServletRequest httpServletRequest) {
+    public Result batchDelete(List<UserDTO> userDTOList,HttpServletRequest httpServletRequest) {
         final User[] user = {null};
-        userList.forEach(userDTO -> {
+        if (userDTOList.isEmpty()){
+            return new Result(ResultEnum.FAIL,"禁止空数组");
+        }
+        userDTOList.forEach(userDTO -> {
             /**
              * updawrapper 在循环外创建时语句为UPDATE user SET del_flag=？, del_flag=？WHERE (id =?AND id=?)
              * 只能更新最开始的一条
              */
             user[0] = BeanUtil.copyProperties(userDTO,User.class);
             UpdateWrapper<User> updateWrapper=new UpdateWrapper<>();
-            updateWrapper.set("del_flag",1);
+            updateWrapper.set("del_flag",0);
+            updateWrapper.set("update_by",JWTtoken.getId(httpServletRequest.getHeader("token")));
             updateWrapper.eq("id",user[0].getId());
             userMapper.update(null,updateWrapper);
         });
@@ -120,10 +124,11 @@ public class UserServicesImpl implements UserService {
     }
 
     @Override
-    public Result batchModify(List<UserDTO> userList,HttpServletRequest httpServletRequest) {
+    public Result batchModify(List<UserDTO> userDTOList,HttpServletRequest httpServletRequest) {
         final User[] user = {null};
-        userList.forEach(userDTO -> {
+        userDTOList.forEach(userDTO -> {
             user[0] = BeanUtil.copyProperties(userDTO,User.class);
+            user[0].setUpdateBy(JWTtoken.getId(httpServletRequest.getHeader("token")));
             userMapper.updateById(user[0]);
         });
         return new Result(ResultEnum.SUCCESS,"更新成功");

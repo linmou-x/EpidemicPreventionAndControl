@@ -6,22 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * @Author：Charles
- * @Package：com.entity
- * @Project：EpidemicPreventionAndControl
- * @name：Goods
- * @Date：2023/3/8 14:47
- * @Filename：Goods
- */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName(value = "good")
-public class Good implements Serializable {
+public class GoodDTO implements Serializable {
     private static final long serialVersionUID = -40356785423868312L;
     /**
      * 唯一id
@@ -54,27 +46,8 @@ public class Good implements Serializable {
      */
     Integer price;
     /**
-     * create time
-     */
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @TableField(value = "create_time",fill = FieldFill.INSERT)
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
-    Date createTime;
-    /**
-     * update time
-     */
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @TableField(value = "update_time",fill = FieldFill.INSERT_UPDATE)
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
-    Date updateTime;
-    /**
-     * update by
-     */
-    @TableField(value = "update_by")
-    Long updateBy;
-    /**
      * status
      */
-    @TableField(value = "status",fill = FieldFill.INSERT)
+    @TableField(value = "status")
     Integer status;
 }

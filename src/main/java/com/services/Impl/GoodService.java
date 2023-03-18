@@ -1,7 +1,10 @@
 package com.services.Impl;
 
 import com.entity.Good;
+import com.entity.GoodDTO;
 import com.utils.Result;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -16,23 +19,23 @@ public interface GoodService {
     Result getGoodList();
     /**
      * 批量导入
-     * @param goodList
+     * @param  goodDTOList
      * @return
      */
-    Result batchImport(List<Good> goodList);
+    Result batchImport(List<GoodDTO> goodDTOList,HttpServletRequest httpServletRequest);
 
     /**
      * 批量删除
-     * @param goodList
+     * @param  goodDTOList
      * @return
      */
-    Result batchDelete(List<Good> goodList);
+    Result batchDelete(List<GoodDTO> goodDTOList, HttpServletRequest httpServletRequest);
 
     /**
      * 批量修改
-     * @param goodList
+     * @param  goodDTOList
      * @return
      */
-    Result batchModify(List<Good> goodList);
+    Result batchModify(List<GoodDTO> goodDTOList,HttpServletRequest httpServletRequest);
 
 }
