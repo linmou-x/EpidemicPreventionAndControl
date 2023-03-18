@@ -70,6 +70,6 @@ public class Good implements Serializable {
     /**
      * update time
      */
-    @TableField(value = "update_person")
-    Long updatePerson;
+    @TableField(value = "update_by")
+    Long updateBy;
 }

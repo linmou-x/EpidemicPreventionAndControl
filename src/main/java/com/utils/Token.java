@@ -56,9 +56,9 @@ public class Token {
         }
     }
 
-    public Object getId(String token){
+    public Long getId(String token){
         JWT jwt = JWTUtil.parseToken(token);
         JSONObject payloads = jwt.getPayloads();
-        return  payloads.get("id");
+        return  Long.valueOf(payloads.get("id").toString());
     }
 }

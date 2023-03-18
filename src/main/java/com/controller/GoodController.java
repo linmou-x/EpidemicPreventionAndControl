@@ -2,11 +2,8 @@ package com.controller;
 
 import ch.qos.logback.classic.Logger;
 import com.entity.Good;
-import com.entity.Service;
 import com.mapper.GoodMapper;
-import com.mapper.ServiceMapper;
 import com.services.Impl.GoodService;
-import com.services.Impl.ServiceService;
 import com.utils.Result;
 import com.utils.ResultEnum;
 import io.swagger.v3.oas.annotations.Operation;

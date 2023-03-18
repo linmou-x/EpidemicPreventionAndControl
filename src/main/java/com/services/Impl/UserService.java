@@ -1,8 +1,10 @@
 package com.services.Impl;
 
 import com.entity.User;
+import com.entity.UserDTO;
 import com.utils.Result;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface UserService {
@@ -23,20 +25,20 @@ public interface UserService {
      * @param userList
      * @return
      */
-    Result batchImport(List<User> userList);
+    Result batchImport(List<UserDTO> userList, HttpServletRequest httpServletRequest);
 
     /**
      * 批量删除
      * @param userList
      * @return
      */
-    Result batchDelete(List<User> userList);
+    Result batchDelete(List<UserDTO> userList,HttpServletRequest httpServletRequest);
 
     /**
      * 批量修改
      * @param userList
      * @return
      */
-    Result batchModify(List<User> userList);
+    Result batchModify(List<UserDTO> userList,HttpServletRequest httpServletRequest);
 
 }

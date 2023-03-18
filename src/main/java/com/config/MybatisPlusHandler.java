@@ -17,10 +17,14 @@ import java.util.Date;
  */
 @Component
 public class MybatisPlusHandler  implements MetaObjectHandler {
+
     @Override
     public void insertFill(MetaObject metaObject) {
-        this.setFieldValByName("password","12345678",metaObject);
         this.setFieldValByName("createTime", new Date(), metaObject);
+        this.setFieldValByName("updateTime",new Date(), metaObject);
+        this.setFieldValByName("userType","user", metaObject);
+        this.setFieldValByName("delFlag",1, metaObject);
+
     }
 
     @Override

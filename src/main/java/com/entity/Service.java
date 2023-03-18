@@ -58,6 +58,6 @@ public class Service implements Serializable {
     /**
      * 更新人
      */
-    @TableField(value = "update_person")
-    Long updatePerson;
+    @TableField(value = "update_by")
+    Long updateBy;
 }

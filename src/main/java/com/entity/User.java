@@ -34,7 +34,7 @@ public class User implements Serializable{
     @JsonProperty(value = "id")
     Long id;
     /**
-     * 姓名，暂时用作账户名
+     * 姓名
      */
     @JsonProperty(value = "name")
     String name;
@@ -94,13 +94,14 @@ public class User implements Serializable{
     /**
      * 删除标志（0代表未删除，1代表已删除）
      */
-    @TableField("del_flag")
     @JsonProperty(value = "delFlag")
+    @TableField(value = "del_flag",fill = FieldFill.INSERT)
     Integer delFlag;
     /**
      * 用户类型（管理员，普通住户，租户）
      */
     @JsonProperty(value = "userType")
+    @TableField(fill = FieldFill.INSERT)
     String userType;
     /**
      * 头像

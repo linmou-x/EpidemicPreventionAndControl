@@ -5,6 +5,7 @@ import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.entity.User;
+import com.entity.UserDTO;
 import com.mapper.UserMapper;
 import com.services.Impl.UserService;
 import com.utils.Result;
@@ -97,21 +98,20 @@ public class UserController {
 
     @GetMapping("/batchInsert")
     @Operation(summary = "批量插入",description = "批量插入")
-    public Result batchInsert(@RequestBody List<User> userList){
-        userService.batchImport(userList);
-        return new Result(ResultEnum.SUCCESS);
+    public Result batchInsert(@RequestBody List<UserDTO> userList,HttpServletRequest httpServletRequest){
+        return userService.batchImport(userList, httpServletRequest);
     }
 
     @GetMapping("/batchDelete")
     @Operation(summary = "批量删除",description = "批量删除")
-    public Result batchDelete(@RequestBody List<User> userList){
-        return userService.batchDelete(userList);
+    public Result batchDelete(@RequestBody List<UserDTO> userList,HttpServletRequest httpServletRequest){
+        return userService.batchDelete(userList, httpServletRequest);
     }
 
     @GetMapping("/batchModify")
     @Operation(summary = "批量修改",description = "批量修改")
-    public Result batchModify(@RequestBody List<User> userList){
-        return userService.batchModify(userList);
+    public Result batchModify(@RequestBody List<UserDTO> userList,HttpServletRequest httpServletRequest){
+        return userService.batchModify(userList, httpServletRequest);
     }
 
     @GetMapping("/message")
