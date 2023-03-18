@@ -64,13 +64,16 @@ public class GoodServiceImpl implements GoodService {
      */
     @Override
     public Result batchDelete(List<GoodDTO> goodDTOList, HttpServletRequest httpServletRequest) {
+        if (goodDTOList.isEmpty()){
+            return new Result(ResultEnum.FAIL,"禁止空数组");
+        }
         final Good[] goods={null};
         goodDTOList.forEach(goodDTO -> {
             goods[0]=BeanUtil.copyProperties(goodDTO,Good.class);
             UpdateWrapper<Good> updateWrapper=new UpdateWrapper<>();
             updateWrapper.set("status",0);
             updateWrapper.eq("id",goods[0].getId());
-            goodMapper.update(goods[0],updateWrapper);
+            goodMapper.update(null,updateWrapper);
         });
         return new Result(ResultEnum.SUCCESS,"批量删除成功");
     }
@@ -82,6 +85,9 @@ public class GoodServiceImpl implements GoodService {
      */
     @Override
     public Result batchModify(List<GoodDTO> goodDTOList,HttpServletRequest httpServletRequest) {
+        if (goodDTOList.isEmpty()){
+            return new Result(ResultEnum.FAIL,"禁止空数组");
+        }
         final Good[] goods={null};
         goodDTOList.forEach(goodDTO -> {
             goods[0]=BeanUtil.copyProperties(goodDTO,Good.class);

@@ -1,9 +1,11 @@
 package com.services.Impl;
 
 import com.entity.Service;
+import com.entity.ServiceDTO;
 import com.entity.User;
 import com.utils.Result;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -24,20 +26,20 @@ public interface ServiceService {
      * @param serviceList
      * @return
      */
-    Result batchImport(List<Service> serviceList);
+    Result batchImport(List<ServiceDTO> serviceDTOList, HttpServletRequest httpServletRequest);
 
     /**
      * 批量删除
      * @param serviceList
      * @return
      */
-    Result batchDelete(List<Service> serviceList);
+    Result batchDelete(List<ServiceDTO> serviceDTOList, HttpServletRequest httpServletRequest);
 
     /**
      * 批量修改
      * @param serviceList
      * @return
      */
-    Result batchModify(List<Service> serviceList);
+    Result batchModify(List<ServiceDTO> serviceDTOList, HttpServletRequest httpServletRequest);
 
 }

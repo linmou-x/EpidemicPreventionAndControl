@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.io.Serializable;
 import java.util.Date;
@@ -60,4 +61,7 @@ public class Service implements Serializable {
      */
     @TableField(value = "update_by")
     Long updateBy;
+
+    @TableField(value = "status",fill = FieldFill.INSERT)
+    Integer status;
 }

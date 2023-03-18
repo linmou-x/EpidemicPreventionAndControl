@@ -2,6 +2,7 @@ package com.controller;
 
 import ch.qos.logback.classic.Logger;
 import com.entity.Service;
+import com.entity.ServiceDTO;
 import com.mapper.ServiceMapper;
 import com.services.Impl.ServiceService;
 import com.utils.Result;
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -35,19 +37,19 @@ public class ServiceController {
 
     @GetMapping("/batchInsert")
     @Operation(summary = "批量插入",description = "批量插入")
-    public Result batchInsert(@RequestBody List<Service> serviceList){
-        return serviceService.batchImport(serviceList);
+    public Result batchInsert(@RequestBody List<ServiceDTO> serviceDTOList, HttpServletRequest httpServletRequest){
+        return serviceService.batchImport(serviceDTOList,httpServletRequest);
     }
 
     @GetMapping("/batchDelete")
     @Operation(summary = "批量删除",description = "批量删除")
-    public Result batchDelete(@RequestBody List<Service> serviceList){
-        return serviceService.batchDelete(serviceList);
+    public Result batchDelete(@RequestBody List<ServiceDTO> serviceDTOList, HttpServletRequest httpServletRequest){
+        return serviceService.batchDelete(serviceDTOList,httpServletRequest);
     }
 
     @GetMapping("/batchModify")
     @Operation(summary = "批量修改",description = "批量修改")
-    public Result batchModify(@RequestBody List<Service> serviceList){
-        return serviceService.batchModify(serviceList);
+    public Result batchModify(@RequestBody List<ServiceDTO> serviceDTOList, HttpServletRequest httpServletRequest){
+        return serviceService.batchModify(serviceDTOList,httpServletRequest);
     }
 }

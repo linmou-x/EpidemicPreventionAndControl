@@ -1,11 +1,17 @@
 package com.services;
 
+import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.entity.Service;
+import com.entity.ServiceDTO;
 import com.mapper.ServiceMapper;
 import com.services.Impl.ServiceService;
 import com.utils.Result;
 import com.utils.ResultEnum;
+import com.utils.Token;
+
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -22,6 +28,9 @@ public class ServiceServiceImpl implements ServiceService {
     @Resource
     private ServiceMapper serviceMapper;
 
+    @Resource
+    Token JwtToken;
+
     /**
      * 获取服务列表
      */
@@ -33,13 +42,19 @@ public class ServiceServiceImpl implements ServiceService {
     /**
      * 批量导入
      *
-     * @param serviceList
+     * @param serviceDTOList
      * @return
      */
     @Override
-    public Result batchImport(List<Service> serviceList) {
-        serviceList.forEach(service -> {
-            serviceMapper.insert(service);
+    public Result batchImport(List<ServiceDTO> serviceDTOList, HttpServletRequest httpServletRequest){
+        final Service[] service={null};
+        if (serviceDTOList.isEmpty()){
+            return new Result(ResultEnum.FAIL,"禁止空数组");
+        }
+        serviceDTOList.forEach(serviceDTO -> {
+            service[0]=BeanUtil.copyProperties(serviceDTO,Service.class);
+            service[0].setUpdateBy(JwtToken.getId(httpServletRequest.getHeader("token")));
+            serviceMapper.insert(service[0]);
         });
         return new Result(ResultEnum.SUCCESS,"导入成功");
     }
@@ -47,27 +62,41 @@ public class ServiceServiceImpl implements ServiceService {
     /**
      * 批量删除
      *
-     * @param serviceList
+     * @param serviceDTOList
      * @return
      */
     @Override
-    public Result batchDelete(List<Service> serviceList) {
-        serviceList.forEach(service -> {
-            serviceMapper.deleteById(service);
+    public Result batchDelete(List<ServiceDTO> serviceDTOList, HttpServletRequest httpServletRequest) {
+        final Service[] service={null};
+        if (serviceDTOList.isEmpty()){
+            return new Result(ResultEnum.FAIL,"禁止空数组");
+        }
+        serviceDTOList.forEach(serviceDTO -> {
+            UpdateWrapper<Service> updateWrapper=new UpdateWrapper();
+            service[0]=BeanUtil.copyProperties(serviceDTO,Service.class);
+            updateWrapper.set("status",0);
+            updateWrapper.eq("id",service[0].getId());
+            serviceMapper.update(null,updateWrapper);
         });
-        return new Result(ResultEnum.SUCCESS,"删除成功");
+        return new Result(ResultEnum.SUCCESS,"批量删除成功");
     }
 
     /**
      * 批量修改
-     * @param serviceList
+     * @param serviceDTOList
      * @return
      */
     @Override
-    public Result batchModify(List<Service> serviceList) {
-        serviceList.forEach(service -> {
-            serviceMapper.updateById(service);
+    public Result batchModify(List<ServiceDTO> serviceDTOList, HttpServletRequest httpServletRequest) {
+        final Service[] service={null};
+        if (serviceDTOList.isEmpty()){
+            return new Result(ResultEnum.FAIL,"禁止空数组");
+        }
+        serviceDTOList.forEach(serviceDTO -> {
+            service[0]= BeanUtil.copyProperties(serviceDTO,Service.class);
+            service[0].setUpdateBy(JwtToken.getId(httpServletRequest.getHeader("token")));
+            serviceMapper.updateById(service[0]);
         });
-        return new Result(ResultEnum.SUCCESS);
+        return new Result(ResultEnum.SUCCESS,"批量更新成功");
     }
 }
