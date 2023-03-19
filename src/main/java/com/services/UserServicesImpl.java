@@ -4,6 +4,7 @@ import ch.qos.logback.classic.Logger;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.entity.PageUserDTO;
 import com.entity.User;
 import com.entity.UserDTO;
 import com.entity.UserVO;
@@ -132,6 +133,17 @@ public class UserServicesImpl implements UserService {
             userMapper.updateById(user[0]);
         });
         return new Result(ResultEnum.SUCCESS,"更新成功");
+    }
+
+    /**
+     * 分页查询
+     *
+     * @param pageUserDTO@return
+     */
+    @Override
+    public Result selectByPage(PageUserDTO pageUserDTO) {
+
+        return null;
     }
 
 }

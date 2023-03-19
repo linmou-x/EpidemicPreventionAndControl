@@ -109,7 +109,7 @@ public class OrderServiceImpl implements OrderService {
                 goods[0].setAmount((goods[0].getAmount()+order[0].getAmount()));
             }
             order[0].setUpdateBy(id);
-            orderMapper.insert(order[0]);
+            orderMapper.updateById(order[0]);
         });
         return new Result(ResultEnum.SUCCESS,"插入成功");
     }
@@ -126,11 +126,17 @@ public class OrderServiceImpl implements OrderService {
         }
         Long id=token.getId(httpServletRequest.getHeader("token"));
         final Order[] order={null};
-        for (OrderDTO orderDTO:orderDTOList){
+        final Good[] goods={null};
+        orderDTOList.forEach(orderDTO -> {
             order[0]= BeanUtil.copyProperties(orderDTO,Order.class);
+            if (!order[0].getGood().equals(null)||order[0].getStatus().equals(-1)){
+                goods[0].setId(order[0].getGood());
+                goods[0]= (Good) goodService.getGoodDetail(order[0].getGood()).getData();
+                goods[0].setAmount((goods[0].getAmount()+order[0].getAmount()));
+            }
             order[0].setUpdateBy(id);
             orderMapper.updateById(order[0]);
-        }
+        });
         return new Result(ResultEnum.SUCCESS,"删除成功");
     }
 }
