@@ -87,7 +87,7 @@ public class ServiceServiceImpl implements ServiceService {
      * @return
      */
     @Override
-    public Result batchModify(List<ServiceDTO> serviceDTOList, HttpServletRequest httpServletRequest) {
+    public Result batchUpdate(List<ServiceDTO> serviceDTOList, HttpServletRequest httpServletRequest) {
         final Service[] service={null};
         if (serviceDTOList.isEmpty()){
             return new Result(ResultEnum.FAIL,"禁止空数组");
@@ -98,5 +98,16 @@ public class ServiceServiceImpl implements ServiceService {
             serviceMapper.updateById(service[0]);
         });
         return new Result(ResultEnum.SUCCESS,"批量更新成功");
+    }
+
+    /**
+     * 查看某一物品信息
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public Result getServiceDetail(Long id) {
+        return new Result(ResultEnum.SUCCESS,serviceMapper.selectById(id).toString());
     }
 }

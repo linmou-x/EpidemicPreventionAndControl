@@ -50,6 +50,6 @@ public class ServiceController {
     @GetMapping("/batchModify")
     @Operation(summary = "批量修改",description = "批量修改")
     public Result batchModify(@RequestBody List<ServiceDTO> serviceDTOList, HttpServletRequest httpServletRequest){
-        return serviceService.batchModify(serviceDTOList,httpServletRequest);
+        return serviceService.batchUpdate(serviceDTOList,httpServletRequest);
     }
 }

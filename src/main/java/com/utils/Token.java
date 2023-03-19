@@ -18,7 +18,7 @@ import java.util.Map;
 public class Token {
     String key="ASDFGHJKL";
 
-    public String getToken(String phone,String password,Long id) {
+    public String getToken(String phone,String password,Long id,String role) {
         String token=null;
         DateTime now =DateTime.now();
         DateTime newTime= now.offsetNew(DateField.MINUTE,100);
@@ -38,7 +38,7 @@ public class Token {
         payload.put("phone",phone);
         payload.put("password",password);
         payload.put("id",id);
-
+        payload.put("role",role);
         String key="ASDFGHJKL";
         token= JWTUtil.createToken(payload,key.getBytes());
         return token;
@@ -60,5 +60,11 @@ public class Token {
         JWT jwt = JWTUtil.parseToken(token);
         JSONObject payloads = jwt.getPayloads();
         return  Long.valueOf(payloads.get("id").toString());
+    }
+
+    public String getRole(String token){
+        JWT jwt = JWTUtil.parseToken(token);
+        JSONObject payloads = jwt.getPayloads();
+        return  payloads.get("role").toString();
     }
 }

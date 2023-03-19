@@ -23,23 +23,28 @@ public interface ServiceService {
     Result batchGetService();
     /**
      * 批量导入
-     * @param serviceList
+     * @param serviceDTOList
      * @return
      */
     Result batchImport(List<ServiceDTO> serviceDTOList, HttpServletRequest httpServletRequest);
 
     /**
      * 批量删除
-     * @param serviceList
+     * @param serviceDTOList
      * @return
      */
     Result batchDelete(List<ServiceDTO> serviceDTOList, HttpServletRequest httpServletRequest);
 
     /**
      * 批量修改
-     * @param serviceList
+     * @param serviceDTOList
      * @return
      */
-    Result batchModify(List<ServiceDTO> serviceDTOList, HttpServletRequest httpServletRequest);
-
+    Result batchUpdate(List<ServiceDTO> serviceDTOList, HttpServletRequest httpServletRequest);
+    /**
+     * 查看某一物品信息
+     * @param id
+     * @return
+     */
+    Result getServiceDetail(Long id);
 }

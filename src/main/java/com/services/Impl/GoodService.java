@@ -36,6 +36,12 @@ public interface GoodService {
      * @param  goodDTOList
      * @return
      */
-    Result batchModify(List<GoodDTO> goodDTOList,HttpServletRequest httpServletRequest);
+    Result batchUpdate(List<GoodDTO> goodDTOList,HttpServletRequest httpServletRequest);
 
+    /**
+     * 查看某一物品信息
+     * @param id
+     * @return
+     */
+    Result getGoodDetail(Long id);
 }

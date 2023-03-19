@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -16,7 +15,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@TableName(value = "order")
+@TableName(value = "order_record")
 public class Order implements Serializable {
     private static final long serialVersionUID = -40356785423868312L;
     /**
@@ -27,7 +26,13 @@ public class Order implements Serializable {
     /**
      * 物品名称
      */
-    Long  goodId;
+    @TableField("good")
+    Long  good;
+    /**
+     * 服务ID
+     */
+    @TableField("service")
+    Long service;
     /**
      * 数量
      */
@@ -41,13 +46,10 @@ public class Order implements Serializable {
      */
     Integer price;
     /**
-     * 服务ID
-     */
-    Long serviceId;
-    /**
      * 下单人
      */
-    Long orderBy;
+    @TableField("record_by")
+    Long recordBy;
     /**
      * create time
      */

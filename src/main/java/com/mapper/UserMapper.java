@@ -13,7 +13,6 @@ import org.apache.ibatis.annotations.Select;
  * @Date：2023/1/6 15:27
  * @Filename：UserMapper
  */
-
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
     @Select("select password from  user where phone = ${phone}")

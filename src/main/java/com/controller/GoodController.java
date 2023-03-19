@@ -58,6 +58,6 @@ public class GoodController {
     @GetMapping("/batchModify")
     @Operation(summary = "批量修改",description = "批量修改")
     public Result batchModify(@RequestBody List<GoodDTO> goodDTOList,HttpServletRequest httpServletRequest){
-        return goodService.batchModify(goodDTOList, httpServletRequest);
+        return goodService.batchUpdate(goodDTOList, httpServletRequest);
     }
 }

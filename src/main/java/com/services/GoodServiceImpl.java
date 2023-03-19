@@ -1,5 +1,6 @@
 package com.services;
 
+import ch.qos.logback.classic.Logger;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.entity.Good;
@@ -9,6 +10,7 @@ import com.services.Impl.GoodService;
 import com.utils.Result;
 import com.utils.ResultEnum;
 import com.utils.Token;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +29,7 @@ public class GoodServiceImpl implements GoodService {
     @Resource
     private GoodMapper goodMapper;
 
+    Logger logger = (Logger) LoggerFactory.getLogger(Logger.class);
     @Resource
     Token JwtToken;
 
@@ -84,7 +87,7 @@ public class GoodServiceImpl implements GoodService {
      * @return
      */
     @Override
-    public Result batchModify(List<GoodDTO> goodDTOList,HttpServletRequest httpServletRequest) {
+    public Result batchUpdate(List<GoodDTO> goodDTOList,HttpServletRequest httpServletRequest) {
         if (goodDTOList.isEmpty()){
             return new Result(ResultEnum.FAIL,"禁止空数组");
         }
@@ -94,7 +97,21 @@ public class GoodServiceImpl implements GoodService {
             UpdateWrapper<Good> updateWrapper=new UpdateWrapper<>();
             updateWrapper.eq("id",goods[0].getId());
             goodMapper.update(goods[0],updateWrapper);
+            logger.debug("更新后的商品信息为"+getGoodDetail(goods[0].getId()).getData().toString());
         });
         return new Result(ResultEnum.SUCCESS,"批量更新成功");
     }
+
+    /**
+     * 查看某一物品信息
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public Result getGoodDetail(Long id) {
+        return new Result(ResultEnum.SUCCESS,goodMapper.selectById(id));
+    }
+
+
 }
