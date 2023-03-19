@@ -23,14 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @Author：Charles
- * @Package：com.services
- * @Project：EpidemicPreventionAndControl
- * @name：UserServices
- * @Date：2023/1/2 20:48
- * @Filename：UserServices
+ * @author charles
  */
-
 @Service
 public class UserServicesImpl implements UserService {
 
@@ -38,7 +32,7 @@ public class UserServicesImpl implements UserService {
     public UserMapper userMapper;
 
     @Resource
-    Token JWTtoken;
+    Token token;
 
     Logger logger = (Logger) LoggerFactory.getLogger(Logger.class);
     @Override
@@ -60,8 +54,7 @@ public class UserServicesImpl implements UserService {
             if (!user.getPassword().equals(password)){
                 return new Result(ResultEnum.FAIL,"登录失败,密码错误");
             }else {
-                String token = JWTtoken.getToken(user.getPhone(), user.getPassword(), user.getId(),user.getUserType());
-                return new Result(ResultEnum.SUCCESS, token);
+                return new Result(ResultEnum.SUCCESS, token.getToken(user.getPhone(), user.getPassword(), user.getId(),user.getUserType()));
             }
         }
     }
@@ -84,7 +77,7 @@ public class UserServicesImpl implements UserService {
             logger.debug(String.valueOf(userMapper.selectList(queryWrapper).isEmpty()));
             if (userMapper.selectList(queryWrapper).isEmpty()){
                 user[0].setPassword(user[0].getPhone());
-                user[0].setUpdateBy(JWTtoken.getId(httpServletRequest.getHeader("token")));
+                user[0].setUpdateBy(token.getId(httpServletRequest.getHeader("token")));
                 userMapper.insert(user[0]);
             }else {
                 userList.add(user[0]);
@@ -118,7 +111,7 @@ public class UserServicesImpl implements UserService {
             user[0] = BeanUtil.copyProperties(userDTO,User.class);
             UpdateWrapper<User> updateWrapper=new UpdateWrapper<>();
             updateWrapper.set("del_flag",0);
-            updateWrapper.set("update_by",JWTtoken.getId(httpServletRequest.getHeader("token")));
+            updateWrapper.set("update_by",token.getId(httpServletRequest.getHeader("token")));
             updateWrapper.eq("id",user[0].getId());
             userMapper.update(null,updateWrapper);
         });
@@ -130,7 +123,7 @@ public class UserServicesImpl implements UserService {
         final User[] user = {null};
         userDTOList.forEach(userDTO -> {
             user[0] = BeanUtil.copyProperties(userDTO,User.class);
-            user[0].setUpdateBy(JWTtoken.getId(httpServletRequest.getHeader("token")));
+            user[0].setUpdateBy(token.getId(httpServletRequest.getHeader("token")));
             userMapper.updateById(user[0]);
         });
         return new Result(ResultEnum.SUCCESS,"更新成功");
