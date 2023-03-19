@@ -4,6 +4,7 @@ import ch.qos.logback.classic.Logger;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.entity.PageUserDTO;
 import com.entity.User;
 import com.entity.UserDTO;
@@ -13,9 +14,9 @@ import com.services.Impl.UserService;
 import com.utils.Result;
 import com.utils.ResultEnum;
 import com.utils.Token;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -141,9 +142,50 @@ public class UserServicesImpl implements UserService {
      * @param pageUserDTO@return
      */
     @Override
-    public Result selectByPage(PageUserDTO pageUserDTO) {
-
-        return null;
+    public Result selectByPage(PageUserDTO pageUserDTO,HttpServletRequest httpServletRequest) {
+        Integer currentPage=pageUserDTO.getCurrentPage();
+        Integer pageSize=pageUserDTO.getPageSize();
+        User user= BeanUtil.copyProperties(pageUserDTO.getUserDTO(),User.class);
+        QueryWrapper<User> queryWrapper=new QueryWrapper<>();
+        /**
+         * del_flag 为禁用标识 1为可用，0为禁用
+         * 用户类型为管理员实可以查询全部账户
+         * 否则只可以查询当前可用账户
+         */
+        if ("admin".equals(user.getUserType())){
+            queryWrapper.eq("del_flag",1)
+                    .eq("del_flag",0);
+        }else if ("user".equals(user.getUserType())){
+            queryWrapper.eq("del_flag",1);
+        }
+        logger.debug(user.toString());
+        /**
+         * 用户姓名非空时拼接条件到SQL语句，
+         */
+        queryWrapper.like(!StringUtils.isNotBlank(user.getName()), "name", user.getName());
+        /**
+         * 条件判定非空时添加年龄查询条件
+         */
+        queryWrapper.eq(!StringUtils.isEmpty(String.valueOf(user.getAge())), "age", user.getAge());
+        /**
+         * 条件判定非空时添加性别查询条件
+         */
+        queryWrapper.eq(!StringUtils.isEmpty(String.valueOf(user.getGender())), "gender", user.getGender());
+        /**
+         * 条件判定非空时添加地址查询条件
+         */
+        queryWrapper.eq(!StringUtils.isEmpty(String.valueOf(user.getAddress())), "address", user.getAddress());
+        /**
+         * 条件判定非空时添加户主查询条件
+         */
+        queryWrapper.eq(!StringUtils.isEmpty(String.valueOf(user.getHouseHolder())), "house_holder", user.getHouseHolder());
+        /**
+         * 条件判定非空时添加手机查询条件
+         */
+        queryWrapper.eq(!StringUtils.isEmpty(String.valueOf(user.getPhone())), "phone", user.getPhone());
+        Page<User> page=new Page<>(currentPage,pageSize);
+        Page<User> userPage=userMapper.selectPage(page,queryWrapper);
+        return new Result(ResultEnum.SUCCESS,"this is Paging query result",userPage);
     }
 
 }

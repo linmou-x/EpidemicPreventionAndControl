@@ -49,5 +49,5 @@ public interface UserService {
      * @param
      * @return
      */
-    Result selectByPage(@RequestBody PageUserDTO pageUserDTO);
+    Result selectByPage(@RequestBody PageUserDTO pageUserDTO,HttpServletRequest httpServletRequest);
 }

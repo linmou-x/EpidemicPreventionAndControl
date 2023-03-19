@@ -4,6 +4,7 @@ import ch.qos.logback.classic.Logger;
 import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.entity.PageUserDTO;
 import com.entity.User;
 import com.entity.UserDTO;
 import com.mapper.UserMapper;
@@ -50,50 +51,8 @@ public class UserController {
 
     @GetMapping(value = "/page")
     @Operation(summary = "用户按需查询分页",description = "分页查询")
-    public Result selectByPage(@RequestBody Map<String,String> map){
-        Integer currentPage=Integer.valueOf(map.get("currentPage"));
-        Integer pageSize=Integer.valueOf(map.get("pageSize"));
-        User user= JSON.parseObject(map.get("user"),User.class);
-        QueryWrapper<User> queryWrapper=new QueryWrapper<>();
-        /**
-         * del_flag 为禁用标识 1为可用，0为禁用
-         * 用户类型为管理员实可以查询全部账户
-         * 否则只可以查询当前可用账户
-         */
-        if ("admin".equals(user.getUserType())){
-            queryWrapper.eq("del_flag",1)
-                    .eq("del_flag",0);
-        }else if ("user".equals(user.getUserType())){
-            queryWrapper.eq("del_flag",1);
-        }
-        logger.debug(user.toString());
-        /**
-         * 用户姓名非空时拼接条件到SQL语句，
-         */
-        queryWrapper.like(!StringUtils.isNotBlank(user.getName()), "name", user.getName());
-        /**
-         * 条件判定非空时添加年龄查询条件
-         */
-        queryWrapper.eq(!StringUtils.isEmpty(String.valueOf(user.getAge())), "age", user.getAge());
-        /**
-         * 条件判定非空时添加性别查询条件
-         */
-        queryWrapper.eq(!StringUtils.isEmpty(String.valueOf(user.getGender())), "gender", user.getGender());
-        /**
-         * 条件判定非空时添加地址查询条件
-         */
-        queryWrapper.eq(!StringUtils.isEmpty(String.valueOf(user.getAddress())), "address", user.getAddress());
-        /**
-         * 条件判定非空时添加户主查询条件
-         */
-        queryWrapper.eq(!StringUtils.isEmpty(String.valueOf(user.getHouseHolder())), "house_holder", user.getHouseHolder());
-        /**
-         * 条件判定非空时添加手机查询条件
-         */
-        queryWrapper.eq(!StringUtils.isEmpty(String.valueOf(user.getPhone())), "phone", user.getPhone());
-        Page<User> page=new Page<>(currentPage,pageSize);
-        Page<User> userPage=userMapper.selectPage(page,queryWrapper);
-        return new Result(ResultEnum.SUCCESS,"this is Paging query result",userPage);
+    public Result selectByPage(@RequestBody PageUserDTO pageUserDTO,HttpServletRequest httpServletRequest){
+        return userService.selectByPage(pageUserDTO, httpServletRequest);
     }
 
     @GetMapping("/batchInsert")
