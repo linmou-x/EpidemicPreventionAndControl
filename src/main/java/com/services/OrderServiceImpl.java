@@ -10,18 +10,15 @@ import com.entity.OrderDTO;
 import com.mapper.OrderMapper;
 import com.services.Impl.GoodService;
 import com.services.Impl.OrderService;
-import com.services.Impl.ServiceService;
 import com.utils.Result;
 import com.utils.ResultEnum;
 import com.utils.Token;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author charles
@@ -103,11 +100,17 @@ public class OrderServiceImpl implements OrderService {
         }
         Long id=token.getId(httpServletRequest.getHeader("token"));
         final Order[] order={null};
-        for (OrderDTO orderDTO:orderDTOList){
+        final Good[] goods={null};
+        orderDTOList.forEach(orderDTO -> {
             order[0]= BeanUtil.copyProperties(orderDTO,Order.class);
+            if (!order[0].getGood().equals(null)||order[0].getStatus().equals(-1)){
+                goods[0].setId(order[0].getGood());
+                goods[0]= (Good) goodService.getGoodDetail(order[0].getGood()).getData();
+                goods[0].setAmount((goods[0].getAmount()+order[0].getAmount()));
+            }
             order[0].setUpdateBy(id);
             orderMapper.insert(order[0]);
-        }
+        });
         return new Result(ResultEnum.SUCCESS,"插入成功");
     }
 
