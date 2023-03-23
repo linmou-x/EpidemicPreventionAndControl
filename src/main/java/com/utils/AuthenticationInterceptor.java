@@ -13,8 +13,6 @@ import java.lang.reflect.Method;
 
 public class AuthenticationInterceptor implements HandlerInterceptor {
     Logger logger = (Logger) LoggerFactory.getLogger(Logger.class);
-    @Resource
-    UserService userService;
 
     @Resource
     Token JwtToken;
@@ -37,7 +35,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
          */
         HandlerMethod handlerMethod=(HandlerMethod)object;
         Method method=handlerMethod.getMethod();
-        logger.debug("方法名:",String.valueOf(method));
+        logger.debug("方法名:"+ method);
         /**
          *  检查是否有@passtoken注释，有则跳过认证
          */

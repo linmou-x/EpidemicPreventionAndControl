@@ -35,6 +35,7 @@ import java.util.Map;
  */
 @Slf4j
 @Tag(name = "UserController",description = "用户管理")
+@CrossOrigin(origins = "*")
 @RequestMapping("/user")
 public class UserController {
     Logger logger = (Logger) LoggerFactory.getLogger(Logger.class);
@@ -43,7 +44,8 @@ public class UserController {
     @Resource
     public UserMapper userMapper;
 
-    @RequestMapping("/userLogin")
+
+    @PostMapping("/userLogin")
     @Operation(summary = "用户登录",description = "用户需要先行登录")
     public Result userLogin(String phone, String password){
         return userService.login(phone,password);
