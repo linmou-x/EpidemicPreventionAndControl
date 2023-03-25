@@ -13,6 +13,8 @@ import java.lang.reflect.Method;
 
 public class AuthenticationInterceptor implements HandlerInterceptor {
     Logger logger = (Logger) LoggerFactory.getLogger(Logger.class);
+    @Resource
+    UserService userService;
 
     @Resource
     Token JwtToken;
@@ -35,7 +37,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
          */
         HandlerMethod handlerMethod=(HandlerMethod)object;
         Method method=handlerMethod.getMethod();
-        logger.debug("方法名:"+ method);
+        logger.debug("方法名:",String.valueOf(method));
         /**
          *  检查是否有@passtoken注释，有则跳过认证
          */
@@ -57,7 +59,6 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
              * required 方法默认为true，即需要
              */
             if (userLoginToken.required()) {
-
                 if (token==null) {
                     logger.debug("无Token,跳过验证:");
                     throw new RuntimeException("无token，请重新登录");

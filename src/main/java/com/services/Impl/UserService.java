@@ -42,7 +42,7 @@ public interface UserService {
      * @param userList
      * @return
      */
-    Result batchModify(List<UserDTO> userList,HttpServletRequest httpServletRequest);
+    Result batchUpdate(List<UserDTO> userList,HttpServletRequest httpServletRequest);
 
     /**
      * 分页查询

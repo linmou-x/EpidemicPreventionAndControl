@@ -69,10 +69,10 @@ public class UserController {
         return userService.batchDelete(userList, httpServletRequest);
     }
 
-    @GetMapping("/batchModify")
+    @GetMapping("/batchUpdate")
     @Operation(summary = "批量修改",description = "批量修改")
-    public Result batchModify(@RequestBody List<UserDTO> userList,HttpServletRequest httpServletRequest){
-        return userService.batchModify(userList, httpServletRequest);
+    public Result batchUpdate(@RequestBody List<UserDTO> userList,HttpServletRequest httpServletRequest){
+        return userService.batchUpdate(userList, httpServletRequest);
     }
 
     @GetMapping("/message")

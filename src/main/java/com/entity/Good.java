@@ -21,7 +21,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName(value = "good")
-public class Good implements Serializable {
+public class Good implements Serializable{
     private static final long serialVersionUID = -40356785423868312L;
     /**
      * 唯一id

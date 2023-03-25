@@ -3,9 +3,12 @@ package com.services.Impl;
 import com.entity.Good;
 import com.entity.GoodDTO;
 import com.utils.Result;
+import lombok.Synchronized;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.Callable;
 
 /**
  * @Author：Charles
@@ -15,7 +18,7 @@ import java.util.List;
  * @Date：2023/3/8 14:50
  * @Filename：GoodsService
  */
-public interface GoodService {
+public interface GoodService extends Callable<Objects> {
     Result getGoodList();
     /**
      * 批量导入
@@ -44,4 +47,6 @@ public interface GoodService {
      * @return
      */
     Result getGoodDetail(Long id);
+
+    boolean updateGoodAmount(Long id, Integer amount);
 }

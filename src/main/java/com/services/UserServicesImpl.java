@@ -122,7 +122,7 @@ public class UserServicesImpl implements UserService {
     }
 
     @Override
-    public Result batchModify(List<UserDTO> userDTOList,HttpServletRequest httpServletRequest) {
+    public Result batchUpdate(List<UserDTO> userDTOList,HttpServletRequest httpServletRequest) {
         final User[] user = {null};
         userDTOList.forEach(userDTO -> {
             user[0] = BeanUtil.copyProperties(userDTO,User.class);

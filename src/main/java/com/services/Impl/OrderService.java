@@ -6,8 +6,10 @@ import com.utils.Result;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.Callable;
 
-public interface OrderService {
+public interface OrderService extends Callable<Objects> {
     /**
      * 获取订单列表
      */
@@ -15,7 +17,7 @@ public interface OrderService {
     /**
      * 订单增加
      */
-    Result batchInsert(List<OrderDTO>orderDTOList,HttpServletRequest httpServletRequest );
+    Result batchInsert(OrderDTO orderDTO,HttpServletRequest httpServletRequest );
     /**
      * 订单更新
      */

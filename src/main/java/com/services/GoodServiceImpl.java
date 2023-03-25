@@ -10,11 +10,14 @@ import com.services.Impl.GoodService;
 import com.utils.Result;
 import com.utils.ResultEnum;
 import com.utils.Token;
+import lombok.Synchronized;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.SynchronousQueue;
 
 /**
  * @Author：Charles
@@ -113,5 +116,32 @@ public class GoodServiceImpl implements GoodService {
         return new Result(ResultEnum.SUCCESS,goodMapper.selectById(id));
     }
 
+    @Override
+    public boolean updateGoodAmount(Long id, Integer amount) {
+        logger.debug("商品修改线程启动");
+        synchronized(this){
+            Good good=goodMapper.selectById(id);
+            logger.debug(good.toString());
+            if (good.getAmount()<amount){
+                logger.debug("商品数量不足");
+                return false;
+            }else{
+                good.setAmount(good.getAmount()-amount);
+                goodMapper.updateById(good);
+                logger.debug("商品购买成功");
+            }
+        }
+        return true;
+    }
 
+    /**
+     * Computes a result, or throws an exception if unable to do so.
+     *
+     * @return computed result
+     * @throws Exception if unable to compute a result
+     */
+    @Override
+    public Objects call() throws Exception {
+        return null;
+    }
 }

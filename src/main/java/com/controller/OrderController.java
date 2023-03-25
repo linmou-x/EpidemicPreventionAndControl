@@ -36,8 +36,8 @@ public class OrderController {
     }
 
     @GetMapping("/batchInsert")
-    public Result batchInsert(HttpServletRequest httpServletRequest, @RequestBody List<OrderDTO> orderDTOList){
-        return orderService.batchInsert(orderDTOList, httpServletRequest);
+    public Result batchInsert(HttpServletRequest httpServletRequest, @RequestBody OrderDTO orderDTO){
+        return orderService.batchInsert(orderDTO, httpServletRequest);
     }
 
     @GetMapping("/batchUpdate")
