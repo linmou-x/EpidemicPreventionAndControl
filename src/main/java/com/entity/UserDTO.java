@@ -60,9 +60,4 @@ public class UserDTO implements Serializable {
      */
     @JsonProperty(value = "password")
     String password;
-    /**
-     * 用户类型（管理员，普通住户，租户）
-     */
-    @JsonProperty(value = "userType")
-    String userType;
 }

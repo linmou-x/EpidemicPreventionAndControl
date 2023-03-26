@@ -13,6 +13,7 @@ import com.utils.Result;
 import com.utils.ResultEnum;
 import com.utils.UserLoginToken;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -46,31 +47,35 @@ public class UserController {
 
 
     @PostMapping("/userLogin")
-    @Operation(summary = "用户登录",description = "用户需要先行登录")
-    public Result userLogin(String phone, String password){
+    @Operation(summary = "userLogin",description = "用户登录",
+                parameters = {@Parameter(name = "phone",description = "用户手机号"),
+                                @Parameter(name = "password",description = "用户密码")})
+    public Result userLogin(String phone,String password){
+        logger.debug("login");
         return userService.login(phone,password);
     }
 
-    @GetMapping(value = "/page")
-    @Operation(summary = "用户按需查询分页",description = "分页查询")
+    @GetMapping(value = "/userPage")
+    @Operation(summary = "userPage",description = "分页查询")
     public Result selectByPage(@RequestBody PageUserDTO pageUserDTO,HttpServletRequest httpServletRequest){
         return userService.selectByPage(pageUserDTO, httpServletRequest);
     }
 
     @GetMapping("/batchInsert")
-    @Operation(summary = "批量插入",description = "批量插入")
+    @Operation(summary = "batchInsert",description = "批量插入")
     public Result batchInsert(@RequestBody List<UserDTO> userList,HttpServletRequest httpServletRequest){
         return userService.batchImport(userList, httpServletRequest);
     }
 
+
     @GetMapping("/batchDelete")
-    @Operation(summary = "批量删除",description = "批量删除")
+    @Operation(summary="batchInsert",description = "用户删除")
     public Result batchDelete(@RequestBody List<UserDTO> userList,HttpServletRequest httpServletRequest){
         return userService.batchDelete(userList, httpServletRequest);
     }
 
     @GetMapping("/batchUpdate")
-    @Operation(summary = "批量修改",description = "批量修改")
+    @Operation(summary = "batchUpdate",description = "批量修改")
     public Result batchUpdate(@RequestBody List<UserDTO> userList,HttpServletRequest httpServletRequest){
         return userService.batchUpdate(userList, httpServletRequest);
     }

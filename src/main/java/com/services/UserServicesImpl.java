@@ -139,22 +139,24 @@ public class UserServicesImpl implements UserService {
      */
     @Override
     public Result selectByPage(PageUserDTO pageUserDTO,HttpServletRequest httpServletRequest) {
+        logger.debug(pageUserDTO.toString());
         Integer currentPage=pageUserDTO.getCurrentPage();
         Integer pageSize=pageUserDTO.getPageSize();
+        String token_role=token.getRole(httpServletRequest.getHeader("token"));
         User user= BeanUtil.copyProperties(pageUserDTO.getUserDTO(),User.class);
         QueryWrapper<User> queryWrapper=new QueryWrapper<>();
         /**
          * del_flag 为禁用标识 1为可用，0为禁用
          * 用户类型为管理员实可以查询全部账户
-         * 否则只可以查询当前可用账户
+         * 否则只可以查询当前家庭可用账户
          */
-        if ("admin".equals(user.getUserType())){
-            queryWrapper.eq("del_flag",1)
-                    .eq("del_flag",0);
-        }else if ("user".equals(user.getUserType())){
-            queryWrapper.eq("del_flag",1);
+        logger.debug("user_role"+token_role);
+        queryWrapper.eq("del_flag",1);
+        if ("admin".equals(token_role)){
+            queryWrapper.or().eq("del_flag",0);
+        }else if ("user".equals(token_role)){
+            queryWrapper.eq("house_holder",user.getHouseHolder());
         }
-        logger.debug(user.toString());
         /**
          * 用户姓名非空时拼接条件到SQL语句，
          */
@@ -170,7 +172,7 @@ public class UserServicesImpl implements UserService {
         /**
          * 条件判定非空时添加地址查询条件
          */
-        queryWrapper.eq(!StringUtils.isEmpty(String.valueOf(user.getAddress())), "address", user.getAddress());
+        queryWrapper.like(!StringUtils.isEmpty(String.valueOf(user.getAddress())), "address", user.getAddress());
         /**
          * 条件判定非空时添加户主查询条件
          */
@@ -179,6 +181,7 @@ public class UserServicesImpl implements UserService {
          * 条件判定非空时添加手机查询条件
          */
         queryWrapper.eq(!StringUtils.isEmpty(String.valueOf(user.getPhone())), "phone", user.getPhone());
+        logger.debug(userMapper.selectList(queryWrapper).toString());
         Page<User> page=new Page<>(currentPage,pageSize);
         Page<User> userPage=userMapper.selectPage(page,queryWrapper);
         return new Result(ResultEnum.SUCCESS,"this is Paging query result",userPage);
