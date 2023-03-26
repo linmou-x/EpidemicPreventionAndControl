@@ -1,11 +1,14 @@
 package com.services;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.entity.PageServiceDTO;
 import com.entity.Service;
 import com.entity.ServiceDTO;
 import com.mapper.ServiceMapper;
 import com.services.Impl.ServiceService;
+import com.services.Impl.UserService;
 import com.utils.Result;
 import com.utils.ResultEnum;
 import com.utils.Token;
@@ -29,14 +32,20 @@ public class ServiceServiceImpl implements ServiceService {
     private ServiceMapper serviceMapper;
 
     @Resource
+    UserService userService;
+
+    @Resource
     Token JwtToken;
 
     /**
      * 获取服务列表
      */
     @Override
-    public Result batchGetService() {
-        return new Result(ResultEnum.SUCCESS,serviceMapper.getServiceList());
+    public Result servicePage(PageServiceDTO pageServiceDTO,HttpServletRequest httpServletRequest) {
+        Long id =JwtToken.getId(httpServletRequest.getHeader("token"));
+        QueryWrapper<Service> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("status",1);
+        return new Result(ResultEnum.SUCCESS,serviceMapper.selectList(queryWrapper));
     }
 
     /**

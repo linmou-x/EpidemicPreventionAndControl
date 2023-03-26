@@ -2,6 +2,7 @@ package com.controller;
 
 import com.entity.Order;
 import com.entity.OrderDTO;
+import com.entity.PageOrderDTO;
 import com.mapper.OrderMapper;
 import com.services.Impl.OrderService;
 import com.utils.Result;
@@ -30,9 +31,14 @@ public class OrderController {
     @Resource
     OrderMapper orderMapper;
 
-    @GetMapping("/getOrderList")
-    public Result getOrderList(HttpServletRequest httpServletRequest){
-        return orderService.getOrderList(httpServletRequest);
+    @GetMapping("/getGoodOrderList")
+    public Result getGoodOrderList(PageOrderDTO pageOrderDTO,HttpServletRequest httpServletRequest){
+        return orderService.orderPageWitchGood(pageOrderDTO,httpServletRequest);
+    }
+
+    @GetMapping("/getServiceOrderList")
+    public Result getServiceOrderList(PageOrderDTO pageOrderDTO, HttpServletRequest httpServletRequest){
+        return orderService.orderPageWithService(pageOrderDTO,httpServletRequest);
     }
 
     @GetMapping("/batchInsert")

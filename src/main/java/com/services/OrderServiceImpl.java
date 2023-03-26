@@ -6,15 +6,17 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.entity.Good;
 import com.entity.Order;
 import com.entity.OrderDTO;
+import com.entity.PageOrderDTO;
 import com.mapper.OrderMapper;
 import com.services.Impl.GoodService;
 import com.services.Impl.OrderService;
+import com.services.Impl.UserService;
 import com.utils.Result;
 import com.utils.ResultEnum;
 import com.utils.Token;
-import org.apache.poi.util.StringUtil;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -32,6 +34,9 @@ public class OrderServiceImpl implements OrderService {
     @Resource
     GoodService goodService;
 
+    @Resource
+    UserService userService;
+
 
     @Resource
     Token token;
@@ -42,15 +47,27 @@ public class OrderServiceImpl implements OrderService {
      * @param httpServletRequest
      */
     @Override
-    public Result getOrderList(HttpServletRequest httpServletRequest) {
-        String role=token.getRole(httpServletRequest.getHeader("token"));
+    public Result orderPageWithService(PageOrderDTO pageOrderDTO, HttpServletRequest httpServletRequest) {
+        Long id=token.getId(httpServletRequest.getHeader("token"));
         QueryWrapper<Order> queryWrapper=new QueryWrapper<>();
-        if ("user".equals(role)){
-            queryWrapper.eq("id",token.getId(httpServletRequest.getHeader("token")));
-            return new Result(ResultEnum.SUCCESS,orderMapper.selectList(queryWrapper));
-        }else{
-            return new Result(ResultEnum.SUCCESS,orderMapper.selectALLOrder());
-        }
+        queryWrapper.isNotNull("service");
+        List<String> list=userService.getList(id);
+        list.forEach(userId->{
+            queryWrapper.or().eq("record_by",id);
+        });
+        return new Result(ResultEnum.SUCCESS,orderMapper.selectList(queryWrapper));
+    }
+
+    @Override
+    public Result orderPageWitchGood(PageOrderDTO pageOrderDTO, HttpServletRequest httpServletRequest) {
+        Long id=token.getId(httpServletRequest.getHeader("token"));
+        QueryWrapper<Order> queryWrapper=new QueryWrapper<>();
+        queryWrapper.isNotNull("good");
+        List<String> list=userService.getList(id);
+        list.forEach(userId->{
+            queryWrapper.or().eq("record_by",id);
+        });
+        return new Result(ResultEnum.SUCCESS,orderMapper.selectList(queryWrapper));
     }
 
     /**

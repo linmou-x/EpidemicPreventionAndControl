@@ -2,22 +2,25 @@ package com.services;
 
 import ch.qos.logback.classic.Logger;
 import cn.hutool.core.bean.BeanUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.entity.Good;
 import com.entity.GoodDTO;
+import com.entity.PageGoodDTO;
+import com.entity.User;
 import com.mapper.GoodMapper;
 import com.services.Impl.GoodService;
 import com.utils.Result;
 import com.utils.ResultEnum;
 import com.utils.Token;
-import lombok.Synchronized;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.SynchronousQueue;
 
 /**
  * @Author：Charles
@@ -37,10 +40,26 @@ public class GoodServiceImpl implements GoodService {
     Token JwtToken;
 
     @Override
-    public Result getGoodList(){
-        return new Result(ResultEnum.SUCCESS,goodMapper.getGoodList());
+    public Result getGoodList(PageGoodDTO pageGoodDTO,HttpServletRequest httpServletRequest) {
+        String role = JwtToken.getRole(httpServletRequest.getHeader("token"));
+        QueryWrapper<Good> queryWrapper = new QueryWrapper();
+        queryWrapper.eq("status", 1);
+        if ("admin".equals(role) || "volunteer".equals(role)) {
+            queryWrapper.or().eq("status", 0);
+        }
+        Integer currentPage=pageGoodDTO.getCurrentPage();
+        Integer pageSize=pageGoodDTO.getPageSize();
+        String token_role=JwtToken.getRole(httpServletRequest.getHeader("token"));
+        Good good= BeanUtil.copyProperties(pageGoodDTO.getGoodDTO(),Good.class);
+        logger.debug("user_role"+token_role);
+        queryWrapper.eq("del_flag",1);
+        queryWrapper.like(!StringUtils.isNotBlank(good.getName()), "name", good.getName());
+        queryWrapper.eq(!StringUtils.isEmpty(good.getType()),"type",good.getType());
+        queryWrapper.eq(!StringUtils.isEmpty(String.valueOf(good.getId())),"id",good.getId());
+        Page<Good> page=new Page<>(currentPage,pageSize);
+        Page<Good> userPage=goodMapper.selectPage(page,queryWrapper);
+        return new Result(ResultEnum.SUCCESS,"this is Paging query result",userPage);
     }
-
     /**
      * 批量导入
      *

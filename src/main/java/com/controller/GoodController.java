@@ -1,12 +1,11 @@
 package com.controller;
 
 import ch.qos.logback.classic.Logger;
-import com.entity.Good;
 import com.entity.GoodDTO;
+import com.entity.PageGoodDTO;
 import com.mapper.GoodMapper;
 import com.services.Impl.GoodService;
 import com.utils.Result;
-import com.utils.ResultEnum;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
@@ -37,10 +36,10 @@ public class GoodController {
 
     @Resource
     public GoodMapper goodMapper;
-    @GetMapping(value = "/getGoodList")
+    @GetMapping(value = "/goodPage")
     @Operation(summary = "商品查询",description = "商品查询")
-    public Result selectByPage(){
-        return new Result(ResultEnum.SUCCESS,"this is Paging query result",goodService.getGoodList());
+    public Result goodPage(PageGoodDTO pageGoodDTO,HttpServletRequest httpServletRequest){
+        return goodService.getGoodList(pageGoodDTO,httpServletRequest);
     }
 
     @GetMapping("/batchInsert")
@@ -55,9 +54,10 @@ public class GoodController {
         return goodService.batchDelete(goodDTOList,  httpServletRequest);
     }
 
-    @GetMapping("/batchModify")
+    @GetMapping("/batchUpdate")
     @Operation(summary = "批量修改",description = "批量修改")
-    public Result batchModify(@RequestBody List<GoodDTO> goodDTOList,HttpServletRequest httpServletRequest){
+    public Result batchUpdate(@RequestBody List<GoodDTO> goodDTOList,HttpServletRequest httpServletRequest){
         return goodService.batchUpdate(goodDTOList, httpServletRequest);
     }
+
 }

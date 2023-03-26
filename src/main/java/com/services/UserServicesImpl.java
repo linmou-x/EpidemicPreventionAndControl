@@ -187,4 +187,57 @@ public class UserServicesImpl implements UserService {
         return new Result(ResultEnum.SUCCESS,"this is Paging query result",userPage);
     }
 
+    /**
+     * 设置用户权限
+     *
+     * @param id
+     */
+    @Override
+    public Result setAdmin(Long id) {
+        User user =new User();
+        user.setId(id);
+        user.setUserType("admin");
+        return new Result(ResultEnum.SUCCESS,"权限设置成功");
+    }
+
+    /**
+     * 设置为社区工作者
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public Result setVolunteer(Long id) {
+        User user =new User();
+        user.setId(id);
+        user.setUserType("volunteer");
+        return new Result(ResultEnum.SUCCESS,"权限设置成功");
+    }
+    /**
+     * 设置为用户权限
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public Result setUser(Long id) {
+        User user =new User();
+        user.setId(id);
+        user.setUserType("user");
+        return new Result(ResultEnum.SUCCESS,"权限设置成功");
+    }
+
+    @Override
+    public List getList(Long id) {
+        QueryWrapper<User> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("house_holder",id);
+        List<User> userList=userMapper.selectList(queryWrapper);
+        List<Long> list=new ArrayList<>();
+        userList.forEach(user -> {
+            list.add(user.getId());
+        });
+        return list;
+    }
+
+
 }

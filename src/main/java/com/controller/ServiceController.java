@@ -1,6 +1,7 @@
 package com.controller;
 
 import ch.qos.logback.classic.Logger;
+import com.entity.PageServiceDTO;
 import com.entity.Service;
 import com.entity.ServiceDTO;
 import com.mapper.ServiceMapper;
@@ -29,10 +30,10 @@ public class ServiceController {
     @Resource
     public ServiceMapper serviceMapper;
 
-    @GetMapping(value = "/getServiceList")
+    @GetMapping(value = "/servicePage")
     @Operation(summary = "服务查询",description = "服务查询")
-    public Result selectByPage(){
-        return new Result(ResultEnum.SUCCESS,"this is Paging query result",serviceMapper.getServiceList());
+    public Result servicePage(PageServiceDTO pageServiceDTO,HttpServletRequest httpServletRequest){
+        return new Result(ResultEnum.SUCCESS,"this is Paging query result",serviceService);
     }
 
     @GetMapping("/batchInsert")

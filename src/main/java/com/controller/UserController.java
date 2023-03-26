@@ -87,4 +87,22 @@ public class UserController {
         String token = httpServletRequest.getHeader("token");
         return new Result(ResultEnum.SUCCESS,token);
     }
+
+    @Operation(summary = "setAdmin",description = "设置用户权限为管理员")
+    @GetMapping("/setAdmin")
+    public Result setRole(Long id){
+        return userService.setAdmin(id);
+    }
+
+    @Operation(summary = "setVolunteer",description = "设置用户权限为志愿者/工作者")
+    @GetMapping("/setVolunteer")
+    public Result setVolunteer(Long id){
+        return userService.setVolunteer(id);
+    }
+
+    @Operation(summary = "setUser",description = "设置用户权限为用户")
+    @GetMapping("/setUser")
+    public Result setUser(Long id){
+        return userService.setUser(id);
+    }
 }

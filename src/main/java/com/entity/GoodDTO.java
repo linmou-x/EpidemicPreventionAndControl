@@ -45,9 +45,4 @@ public class GoodDTO implements Serializable {
      * 商品价格
      */
     Integer price;
-    /**
-     * status
-     */
-    @TableField(value = "status")
-    Integer status;
 }

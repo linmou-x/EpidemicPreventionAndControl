@@ -1,5 +1,6 @@
 package com.services.Impl;
 
+import com.entity.PageServiceDTO;
 import com.entity.Service;
 import com.entity.ServiceDTO;
 import com.entity.User;
@@ -20,7 +21,7 @@ public interface ServiceService {
     /**
      * 获取服务列表
      */
-    Result batchGetService();
+    Result servicePage(PageServiceDTO pageServiceDTO,HttpServletRequest httpServletRequest);
     /**
      * 批量导入
      * @param serviceDTOList

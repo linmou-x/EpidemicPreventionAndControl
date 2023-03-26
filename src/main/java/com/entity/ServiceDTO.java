@@ -35,7 +35,4 @@ public class ServiceDTO implements Serializable {
      * 商品价格
      */
     Integer price;
-
-    @TableField(value = "status",fill = FieldFill.INSERT)
-    Integer status;
 }

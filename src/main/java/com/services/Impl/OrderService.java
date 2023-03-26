@@ -1,6 +1,8 @@
 package com.services.Impl;
 
 import com.entity.OrderDTO;
+import com.entity.PageOrderDTO;
+import com.entity.PageServiceDTO;
 import com.utils.Result;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +15,9 @@ public interface OrderService extends Callable<Objects> {
     /**
      * 获取订单列表
      */
-    Result getOrderList(HttpServletRequest httpServletRequest);
+    Result orderPageWithService(PageOrderDTO pageOrderDTO, HttpServletRequest httpServletRequest);
+
+    Result orderPageWitchGood(PageOrderDTO pageOrderDTO, HttpServletRequest httpServletRequest);
     /**
      * 订单增加
      */

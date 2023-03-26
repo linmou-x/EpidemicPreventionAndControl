@@ -2,6 +2,7 @@ package com.services.Impl;
 
 import com.entity.Good;
 import com.entity.GoodDTO;
+import com.entity.PageGoodDTO;
 import com.utils.Result;
 import lombok.Synchronized;
 
@@ -19,7 +20,7 @@ import java.util.concurrent.Callable;
  * @Filename：GoodsService
  */
 public interface GoodService extends Callable<Objects> {
-    Result getGoodList();
+    Result getGoodList(PageGoodDTO pageGoodDTO,HttpServletRequest httpServletRequest);
     /**
      * 批量导入
      * @param  goodDTOList

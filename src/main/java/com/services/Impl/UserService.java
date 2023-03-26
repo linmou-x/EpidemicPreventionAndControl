@@ -50,4 +50,27 @@ public interface UserService {
      * @return
      */
     Result selectByPage(@RequestBody PageUserDTO pageUserDTO,HttpServletRequest httpServletRequest);
+
+
+    /**
+     * 设置用户为管理员权限
+     */
+    Result setAdmin(Long id);
+
+    /**
+     * 设置为社区工作者
+     * @param id
+     * @return
+     */
+
+    Result setVolunteer(Long id);
+
+    /**
+     * 设置为用户权限
+     * @param id
+     * @return
+     */
+    Result setUser(Long id);
+
+    List getList(Long id);
 }
