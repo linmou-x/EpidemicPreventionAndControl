@@ -89,7 +89,6 @@ public class User implements Serializable{
     @TableField(value = "update_time",fill = FieldFill.INSERT_UPDATE)
     @JsonProperty(value = "updateTime")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     Date updateTime;
     /**
      * 删除标志（0代表未删除，1代表已删除）
@@ -114,6 +113,5 @@ public class User implements Serializable{
     @TableField(value = "last_login",fill = FieldFill.DEFAULT)
     @JsonProperty(value = "lastLogin")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     Date lastLogin;
 }

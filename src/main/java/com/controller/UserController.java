@@ -69,7 +69,7 @@ public class UserController {
 
 
     @GetMapping("/batchDelete")
-    @Operation(summary="batchInsert",description = "用户删除")
+    @Operation(summary="batchDelete",description = "用户删除")
     public Result batchDelete(@RequestBody List<UserDTO> userList,HttpServletRequest httpServletRequest){
         return userService.batchDelete(userList, httpServletRequest);
     }
