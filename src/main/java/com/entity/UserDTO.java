@@ -55,9 +55,4 @@ public class UserDTO implements Serializable {
      */
     @JsonProperty(value = "phone")
     String phone;
-    /**
-     * 密码
-     */
-    @JsonProperty(value = "password")
-    String password;
 }

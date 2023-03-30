@@ -24,6 +24,10 @@ public interface UserService {
     Result login(String phone,String password);
 
     /**
+     * 用户信息
+     */
+    Result userinfo(String token);
+    /**
      * 批量导入
      * @param userList
      * @return

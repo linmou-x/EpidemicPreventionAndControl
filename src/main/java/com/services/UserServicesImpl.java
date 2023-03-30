@@ -62,6 +62,19 @@ public class UserServicesImpl implements UserService {
         }
     }
 
+    /**
+     * 用户信息
+     * @param tokenString
+     */
+    @Override
+    public Result userinfo(String tokenString) {
+        User user=new User();
+        user.setUserType(token.getRole(tokenString));
+        user.setName(String.valueOf(token.getId(tokenString)));
+        user.setAvatar("https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
+        return new Result(ResultEnum.SUCCESS,user);
+    }
+
     @Override
     public Result batchImport(List<UserDTO> userDTOList, HttpServletRequest httpServletRequest) {
         final User[] user = {null};
@@ -142,7 +155,7 @@ public class UserServicesImpl implements UserService {
         logger.debug(pageUserDTO.toString());
         Integer currentPage=pageUserDTO.getCurrentPage();
         Integer pageSize=pageUserDTO.getPageSize();
-        String token_role=token.getRole(httpServletRequest.getHeader("token"));
+        String token_role=token.getRole(httpServletRequest.getHeader("X-Token"));
         User user= BeanUtil.copyProperties(pageUserDTO.getUserDTO(),User.class);
         QueryWrapper<User> queryWrapper=new QueryWrapper<>();
         /**

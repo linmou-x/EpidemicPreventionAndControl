@@ -48,7 +48,7 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public Result orderPageWithService(PageOrderDTO pageOrderDTO, HttpServletRequest httpServletRequest) {
-        Long id=token.getId(httpServletRequest.getHeader("token"));
+        Long id=token.getId(httpServletRequest.getHeader("X-Token"));
         QueryWrapper<Order> queryWrapper=new QueryWrapper<>();
         queryWrapper.isNotNull("service");
         List<String> list=userService.getList(id);
@@ -60,7 +60,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Result orderPageWitchGood(PageOrderDTO pageOrderDTO, HttpServletRequest httpServletRequest) {
-        Long id=token.getId(httpServletRequest.getHeader("token"));
+        Long id=token.getId(httpServletRequest.getHeader("X-Token"));
         QueryWrapper<Order> queryWrapper=new QueryWrapper<>();
         queryWrapper.isNotNull("good");
         List<String> list=userService.getList(id);
@@ -105,7 +105,7 @@ public class OrderServiceImpl implements OrderService {
         if(orderDTOList.isEmpty()){
             return new Result(ResultEnum.FAIL,"禁止空数组");
         }
-        Long id=token.getId(httpServletRequest.getHeader("token"));
+        Long id=token.getId(httpServletRequest.getHeader("X-Token"));
         final Order[] order={null};
         final Good[] goods={null};
         orderDTOList.forEach(orderDTO -> {
@@ -131,7 +131,7 @@ public class OrderServiceImpl implements OrderService {
         if(orderDTOList.isEmpty()){
             return new Result(ResultEnum.FAIL,"禁止空数组");
         }
-        Long id=token.getId(httpServletRequest.getHeader("token"));
+        Long id=token.getId(httpServletRequest.getHeader("X-Token"));
         final Order[] order={null};
         final Good[] goods={null};
         orderDTOList.forEach(orderDTO -> {

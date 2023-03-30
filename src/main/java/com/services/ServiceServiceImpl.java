@@ -42,7 +42,7 @@ public class ServiceServiceImpl implements ServiceService {
      */
     @Override
     public Result servicePage(PageServiceDTO pageServiceDTO,HttpServletRequest httpServletRequest) {
-        Long id =JwtToken.getId(httpServletRequest.getHeader("token"));
+        Long id =JwtToken.getId(httpServletRequest.getHeader("X-Token"));
         QueryWrapper<Service> queryWrapper=new QueryWrapper<>();
         queryWrapper.eq("status",1);
         return new Result(ResultEnum.SUCCESS,serviceMapper.selectList(queryWrapper));
@@ -62,7 +62,7 @@ public class ServiceServiceImpl implements ServiceService {
         }
         serviceDTOList.forEach(serviceDTO -> {
             service[0]=BeanUtil.copyProperties(serviceDTO,Service.class);
-            service[0].setUpdateBy(JwtToken.getId(httpServletRequest.getHeader("token")));
+            service[0].setUpdateBy(JwtToken.getId(httpServletRequest.getHeader("X-Token")));
             serviceMapper.insert(service[0]);
         });
         return new Result(ResultEnum.SUCCESS,"导入成功");
@@ -103,7 +103,7 @@ public class ServiceServiceImpl implements ServiceService {
         }
         serviceDTOList.forEach(serviceDTO -> {
             service[0]= BeanUtil.copyProperties(serviceDTO,Service.class);
-            service[0].setUpdateBy(JwtToken.getId(httpServletRequest.getHeader("token")));
+            service[0].setUpdateBy(JwtToken.getId(httpServletRequest.getHeader("X-Token")));
             serviceMapper.updateById(service[0]);
         });
         return new Result(ResultEnum.SUCCESS,"批量更新成功");

@@ -1,11 +1,10 @@
 package com.controller;
 
 import ch.qos.logback.classic.Logger;
-import com.alibaba.fastjson2.JSON;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
 import com.entity.PageUserDTO;
-import com.entity.User;
 import com.entity.UserDTO;
 import com.mapper.UserMapper;
 import com.services.Impl.UserService;
@@ -16,14 +15,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Charles
@@ -55,10 +52,23 @@ public class UserController {
         return userService.login(phone,password);
     }
 
+
+    @GetMapping("/userinfo")
+    @Operation(summary = "userinfo",description = "获取用户信息")
+    public Result userInfo(String token){
+        return userService.userinfo(token);
+    }
+
     @GetMapping(value = "/userPage")
     @Operation(summary = "userPage",description = "分页查询")
-    public Result selectByPage(@RequestBody PageUserDTO pageUserDTO,HttpServletRequest httpServletRequest){
-        return userService.selectByPage(pageUserDTO, httpServletRequest);
+    public Result selectByPage(String  jsonObject,HttpServletRequest httpServletRequest){
+        if (!jsonObject.isEmpty())
+        {
+            PageUserDTO pageUserDTO=JSON.parseObject(jsonObject, PageUserDTO.class);
+            return userService.selectByPage(pageUserDTO, httpServletRequest);
+        }else {
+            return new Result(ResultEnum.FAIL,"Str为空");
+        }
     }
 
     @GetMapping("/batchInsert")
@@ -81,10 +91,13 @@ public class UserController {
     }
 
     @GetMapping("/message")
-    @UserLoginToken
+//    @UserLoginToken
     @Operation(summary = "测试,从HttpServletRequest中获取token，使用token工具解析到User信息",description = "测试")
-    public Result message(HttpServletRequest httpServletRequest){
-        String token = httpServletRequest.getHeader("token");
+    public Result message(HttpServletRequest httpServletRequest,String str){
+        String token = httpServletRequest.getHeader("X-Token");
+        logger.debug("AA"+String.valueOf(str));
+        logger.debug(JSON.parseObject(str, PageUserDTO.class).toString());
+        logger.debug(JSON.parseObject("{\"id\":\"\",\"name\":\"\",\"age\":\"\",\"gender\":\"\",\"address\":\"\",\"houseHolder\":\"\",\"phone\":\"\"}",UserDTO.class).toString());
         return new Result(ResultEnum.SUCCESS,token);
     }
 

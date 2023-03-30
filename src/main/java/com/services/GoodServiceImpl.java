@@ -41,7 +41,7 @@ public class GoodServiceImpl implements GoodService {
 
     @Override
     public Result getGoodList(PageGoodDTO pageGoodDTO,HttpServletRequest httpServletRequest) {
-        String role = JwtToken.getRole(httpServletRequest.getHeader("token"));
+        String role = JwtToken.getRole(httpServletRequest.getHeader("X-Token"));
         QueryWrapper<Good> queryWrapper = new QueryWrapper();
         queryWrapper.eq("status", 1);
         if ("admin".equals(role) || "volunteer".equals(role)) {
@@ -49,7 +49,7 @@ public class GoodServiceImpl implements GoodService {
         }
         Integer currentPage=pageGoodDTO.getCurrentPage();
         Integer pageSize=pageGoodDTO.getPageSize();
-        String token_role=JwtToken.getRole(httpServletRequest.getHeader("token"));
+        String token_role=JwtToken.getRole(httpServletRequest.getHeader("X-Token"));
         Good good= BeanUtil.copyProperties(pageGoodDTO.getGoodDTO(),Good.class);
         logger.debug("user_role"+token_role);
         queryWrapper.eq("del_flag",1);
@@ -74,7 +74,7 @@ public class GoodServiceImpl implements GoodService {
         }
         for (GoodDTO goodDTO:goodDTOList){
             goods[0]=BeanUtil.copyProperties(goodDTO,Good.class);
-            goods[0].setUpdateBy(JwtToken.getId(httpServletRequest.getHeader("token")));
+            goods[0].setUpdateBy(JwtToken.getId(httpServletRequest.getHeader("X-Token")));
             goodMapper.insert(goods[0]);
         }
 
@@ -118,6 +118,7 @@ public class GoodServiceImpl implements GoodService {
             goods[0]=BeanUtil.copyProperties(goodDTO,Good.class);
             UpdateWrapper<Good> updateWrapper=new UpdateWrapper<>();
             updateWrapper.eq("id",goods[0].getId());
+            updateWrapper.eq("update_by",JwtToken.getId(httpServletRequest.getHeader("X-Token")));
             goodMapper.update(goods[0],updateWrapper);
             logger.debug("更新后的商品信息为"+getGoodDetail(goods[0].getId()).getData().toString());
         });

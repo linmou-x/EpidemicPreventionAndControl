@@ -23,8 +23,9 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         /**
          * 从httpServletRequest中获取到token，
          */
-        String token = httpServletRequest.getHeader("token");
+        String token = httpServletRequest.getHeader("X-Token");
         logger.debug("获取token:",token);
+        logger.debug(httpServletRequest.toString());
         /**
          * 非访问接口直接跳过
          */
@@ -37,7 +38,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
          */
         HandlerMethod handlerMethod=(HandlerMethod)object;
         Method method=handlerMethod.getMethod();
-        logger.debug("方法名:",String.valueOf(method));
+        logger.debug("方法名:",method.toString());
         /**
          *  检查是否有@passtoken注释，有则跳过认证
          */
