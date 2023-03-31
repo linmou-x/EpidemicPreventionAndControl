@@ -158,6 +158,7 @@ public class UserServicesImpl implements UserService {
         Integer pageSize=pageUserDTO.getPageSize();
         String token_role=token.getRole(httpServletRequest.getHeader("X-Token"));
         User user= BeanUtil.copyProperties(pageUserDTO.getUserDTO(),User.class);
+        logger.debug(user.toString());
         QueryWrapper<User> queryWrapper=new QueryWrapper<>();
         /**
          * del_flag 为禁用标识 1为可用，0为禁用
@@ -165,20 +166,20 @@ public class UserServicesImpl implements UserService {
          * 否则只可以查询当前家庭可用账户
          */
         logger.debug("user_role"+token_role);
-        queryWrapper.eq("del_flag",1);
-        if ("admin".equals(token_role)){
-            queryWrapper.or().eq("del_flag",0);
-        }else if ("user".equals(token_role)){
-            queryWrapper.eq("house_holder",user.getHouseHolder());
-        }
+//        queryWrapper.eq("del_flag",1);
+//        if ("admin".equals(token_role)){
+//            queryWrapper.or().eq("del_flag",0);
+//        }else if ("user".equals(token_role)){
+//            queryWrapper.eq("house_holder",user.getHouseHolder());
+//        }
         /**
          * 用户姓名非空时拼接条件到SQL语句，
          */
-        queryWrapper.like(!StringUtils.isNotBlank(user.getName()), "name", user.getName());
+        queryWrapper.like(!StringUtils.isEmpty(user.getName()), "name", user.getName());
         /**
          * 条件判定非空时添加年龄查询条件
          */
-        queryWrapper.eq(!StringUtils.isEmpty(String.valueOf(user.getAge())), "age", user.getAge());
+        queryWrapper.eq(!"null".equals(String.valueOf(user.getAge())), "age", user.getAge());
         /**
          * 条件判定非空时添加性别查询条件
          */
@@ -187,10 +188,6 @@ public class UserServicesImpl implements UserService {
          * 条件判定非空时添加地址查询条件
          */
         queryWrapper.like(!StringUtils.isEmpty(String.valueOf(user.getAddress())), "address", user.getAddress());
-        /**
-         * 条件判定非空时添加户主查询条件
-         */
-        queryWrapper.eq(!StringUtils.isEmpty(String.valueOf(user.getHouseHolder())), "house_holder", user.getHouseHolder());
         /**
          * 条件判定非空时添加手机查询条件
          */
