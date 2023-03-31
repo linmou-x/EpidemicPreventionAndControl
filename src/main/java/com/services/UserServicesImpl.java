@@ -93,7 +93,8 @@ public class UserServicesImpl implements UserService {
             logger.debug(String.valueOf(userMapper.selectList(queryWrapper).isEmpty()));
             if (userMapper.selectList(queryWrapper).isEmpty()){
                 user[0].setPassword(user[0].getPhone());
-                user[0].setUpdateBy(token.getId(httpServletRequest.getHeader("token")));
+                user[0].setHouseHolder(token.getId(httpServletRequest.getHeader("X-Token")));
+                user[0].setUpdateBy(token.getId(httpServletRequest.getHeader("X-Token")));
                 userMapper.insert(user[0]);
             }else {
                 userList.add(user[0]);
@@ -127,7 +128,7 @@ public class UserServicesImpl implements UserService {
             user[0] = BeanUtil.copyProperties(userDTO,User.class);
             UpdateWrapper<User> updateWrapper=new UpdateWrapper<>();
             updateWrapper.set("del_flag",0);
-            updateWrapper.set("update_by",token.getId(httpServletRequest.getHeader("token")));
+            updateWrapper.set("update_by",token.getId(httpServletRequest.getHeader("X-Token")));
             updateWrapper.eq("id",user[0].getId());
             userMapper.update(null,updateWrapper);
         });
@@ -139,7 +140,7 @@ public class UserServicesImpl implements UserService {
         final User[] user = {null};
         userDTOList.forEach(userDTO -> {
             user[0] = BeanUtil.copyProperties(userDTO,User.class);
-            user[0].setUpdateBy(token.getId(httpServletRequest.getHeader("token")));
+            user[0].setUpdateBy(token.getId(httpServletRequest.getHeader("X-Token")));
             userMapper.updateById(user[0]);
         });
         return new Result(ResultEnum.SUCCESS,"更新成功");
