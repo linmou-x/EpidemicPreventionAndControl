@@ -47,10 +47,13 @@ public class UserServicesImpl implements UserService {
 
     @Override
     public Result login(String phone, String password) {
+        logger.debug("手机号"+phone+"密码"+password);
+        if(phone == null){
+            return new Result(ResultEnum.FAIL,"手机号不能为空");
+        }
         QueryWrapper<User> queryWrapper=new QueryWrapper<>();
         queryWrapper.eq("phone",phone);
         User user=userMapper.selectOne(queryWrapper);
-        logger.debug(phone,password);
         if(user==null){
             return new Result(ResultEnum.FAIL,"登录失败,用户不存在");
         }else {
