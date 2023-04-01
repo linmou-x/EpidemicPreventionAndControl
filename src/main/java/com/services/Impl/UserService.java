@@ -77,4 +77,6 @@ public interface UserService {
     Result setUser(Long id);
 
     List getList(Long id);
+
+    Long getHouseHolder(Long id);
 }

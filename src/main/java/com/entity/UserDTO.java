@@ -55,4 +55,7 @@ public class UserDTO implements Serializable {
      */
     @JsonProperty(value = "phone")
     String phone;
+    @JsonProperty(value = "userType")
+    @TableField(fill = FieldFill.INSERT)
+    String userType;
 }

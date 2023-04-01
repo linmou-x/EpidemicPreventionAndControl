@@ -160,18 +160,17 @@ public class UserServicesImpl implements UserService {
         User user= BeanUtil.copyProperties(pageUserDTO.getUserDTO(),User.class);
         logger.debug(user.toString());
         QueryWrapper<User> queryWrapper=new QueryWrapper<>();
-        /**
-         * del_flag 为禁用标识 1为可用，0为禁用
-         * 用户类型为管理员实可以查询全部账户
-         * 否则只可以查询当前家庭可用账户
-         */
+        if (token_role.equals("user")){
+            logger.debug("用户为普通社区居民");
+            queryWrapper.eq("house_holder",getHouseHolder(token.getId(httpServletRequest.getHeader("X-Token"))));
+        }
         logger.debug("user_role"+token_role);
-//        queryWrapper.eq("del_flag",1);
-//        if ("admin".equals(token_role)){
-//            queryWrapper.or().eq("del_flag",0);
-//        }else if ("user".equals(token_role)){
-//            queryWrapper.eq("house_holder",user.getHouseHolder());
-//        }
+        queryWrapper.eq("del_flag",1);
+        if ("admin".equals(user.getUserType())) {
+            queryWrapper.eq("user_type", "admin");
+        }else if ("volunteer".equals(user.getUserType())){
+            queryWrapper.eq("user_type", "volunteer");
+        }
         /**
          * 用户姓名非空时拼接条件到SQL语句，
          */
@@ -248,6 +247,13 @@ public class UserServicesImpl implements UserService {
             list.add(user.getId());
         });
         return list;
+    }
+
+    @Override
+    public Long getHouseHolder(Long id) {
+        QueryWrapper<User> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("id",id);
+        return userMapper.selectOne(queryWrapper).getHouseHolder();
     }
 
 
