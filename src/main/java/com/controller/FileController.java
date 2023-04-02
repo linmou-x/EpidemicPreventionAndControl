@@ -3,10 +3,7 @@ package com.controller;
 import com.services.Impl.FileService;
 import com.utils.ImageUtil;
 import com.utils.Result;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -23,6 +20,7 @@ import java.io.IOException;
  */
 @RestController
 @RequestMapping("/file")
+@CrossOrigin(origins = "*")
 public class FileController {
     @Resource
     ImageUtil imageUtil;

@@ -1,17 +1,21 @@
 package com.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.entity.GoodDTO;
 import com.entity.Order;
 import com.entity.OrderDTO;
 import com.entity.PageOrderDTO;
 import com.mapper.OrderMapper;
 import com.services.Impl.OrderService;
 import com.utils.Result;
+import com.utils.ResultEnum;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +26,7 @@ import java.util.Map;
 @RestController
 @ResponseBody
 @Slf4j
+@CrossOrigin(origins = "*")
 @Tag(name = "OrderController",description = "服务管理")
 @RequestMapping("/order")
 public class OrderController {
@@ -42,17 +47,39 @@ public class OrderController {
     }
 
     @GetMapping("/batchInsert")
-    public Result batchInsert(HttpServletRequest httpServletRequest, @RequestBody OrderDTO orderDTO){
-        return orderService.batchInsert(orderDTO, httpServletRequest);
+    public Result batchInsert(HttpServletRequest httpServletRequest, String jsonObject){
+        if (!jsonObject.isEmpty())
+        {
+            OrderDTO orderDTO= JSON.parseObject(jsonObject, OrderDTO.class);
+            return orderService.batchInsert(orderDTO,httpServletRequest);
+        }else {
+            return new Result(ResultEnum.FAIL,"Str为空");
+        }
     }
 
     @GetMapping("/batchUpdate")
-    public Result batchUpdate(HttpServletRequest httpServletRequest,@RequestBody List<OrderDTO> orderDTOList){
-        return orderService.batchUpdate(orderDTOList, httpServletRequest);
+    public Result batchUpdate(HttpServletRequest httpServletRequest,String jsonObject){
+        if (!jsonObject.isEmpty())
+        {
+            OrderDTO orderDTO= JSON.parseObject(jsonObject, OrderDTO.class);
+            List<OrderDTO> list =new ArrayList<>();
+            list.add(orderDTO);
+            return orderService.batchUpdate(list,httpServletRequest);
+        }else {
+            return new Result(ResultEnum.FAIL,"Str为空");
+        }
     }
     @GetMapping("/batchDelete")
-    public Result batchDelete(HttpServletRequest httpServletRequest,@RequestBody List<OrderDTO> orderDTOList){
-        return orderService.batchDelete(orderDTOList, httpServletRequest);
+    public Result batchDelete(HttpServletRequest httpServletRequest,String jsonObject){
+        if (!jsonObject.isEmpty())
+        {
+            OrderDTO orderDTO= JSON.parseObject(jsonObject, OrderDTO.class);
+            List<OrderDTO> list =new ArrayList<>();
+            list.add(orderDTO);
+            return orderService.batchDelete(list,httpServletRequest);
+        }else {
+            return new Result(ResultEnum.FAIL,"Str为空");
+        }
     }
 
 

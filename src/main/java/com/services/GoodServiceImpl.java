@@ -52,10 +52,8 @@ public class GoodServiceImpl implements GoodService {
         String token_role=JwtToken.getRole(httpServletRequest.getHeader("X-Token"));
         Good good= BeanUtil.copyProperties(pageGoodDTO.getGoodDTO(),Good.class);
         logger.debug("user_role"+token_role);
-        queryWrapper.eq("del_flag",1);
         queryWrapper.like(!StringUtils.isNotBlank(good.getName()), "name", good.getName());
         queryWrapper.eq(!StringUtils.isEmpty(good.getType()),"type",good.getType());
-        queryWrapper.eq(!StringUtils.isEmpty(String.valueOf(good.getId())),"id",good.getId());
         Page<Good> page=new Page<>(currentPage,pageSize);
         Page<Good> userPage=goodMapper.selectPage(page,queryWrapper);
         return new Result(ResultEnum.SUCCESS,"this is Paging query result",userPage);
