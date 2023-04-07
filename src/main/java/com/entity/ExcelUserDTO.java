@@ -21,28 +21,15 @@ import java.io.Serializable;
 @Data
 public class ExcelUserDTO implements Serializable {
     private static final long serialVersionUID = -40356785423868312L;
-
+    //ExcelProperty为excel文件内的列名信息
     @ExcelProperty(value = "姓名")
     String name;
-    /**
-     * 年龄
-     */
     @ExcelProperty(value = "年龄")
     Integer age;
-    /**
-     * 性别
-     */
     @ExcelProperty(value = "性别")
     String gender;
-    /**
-     * 家庭住址
-     */
     @ExcelProperty(value = "住址")
     String address;
-
-    /**
-     * 电话
-     */
     @ExcelProperty(value = "手机号")
     String phone;
 }

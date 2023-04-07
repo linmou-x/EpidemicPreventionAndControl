@@ -3,6 +3,7 @@ package com.services.Impl;
 import com.utils.Result;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
@@ -20,4 +21,7 @@ public interface FileService {
      * @return
      */
     public Result uploadExcel(MultipartFile multipartFile) throws IOException;
+
+
+    public String imageUpload(MultipartFile file, HttpServletRequest request);
 }

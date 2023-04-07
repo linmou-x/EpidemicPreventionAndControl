@@ -8,7 +8,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.entity.Good;
 import com.entity.GoodDTO;
 import com.entity.PageGoodDTO;
-import com.entity.User;
 import com.mapper.GoodMapper;
 import com.services.Impl.GoodService;
 import com.utils.Result;
@@ -17,6 +16,7 @@ import com.utils.Token;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -41,19 +41,27 @@ public class GoodServiceImpl implements GoodService {
 
     @Override
     public Result getGoodList(PageGoodDTO pageGoodDTO,HttpServletRequest httpServletRequest) {
-        String role = JwtToken.getRole(httpServletRequest.getHeader("X-Token"));
         QueryWrapper<Good> queryWrapper = new QueryWrapper();
-        queryWrapper.eq("status", 1);
-        if ("admin".equals(role) || "volunteer".equals(role)) {
-            queryWrapper.or().eq("status", 0);
-        }
         Integer currentPage=pageGoodDTO.getCurrentPage();
         Integer pageSize=pageGoodDTO.getPageSize();
-        String token_role=JwtToken.getRole(httpServletRequest.getHeader("X-Token"));
-        Good good= BeanUtil.copyProperties(pageGoodDTO.getGoodDTO(),Good.class);
-        logger.debug("user_role"+token_role);
-        queryWrapper.like(!StringUtils.isNotBlank(good.getName()), "name", good.getName());
-        queryWrapper.eq(!StringUtils.isEmpty(good.getType()),"type",good.getType());
+        logger.debug(pageGoodDTO.getGoodDTO().toString());
+        String role=JwtToken.getRole(httpServletRequest.getHeader("X-Token"));
+        queryWrapper.like(!StringUtils.isEmpty(pageGoodDTO.getGoodDTO().getName()), "name", pageGoodDTO.getGoodDTO().getName());
+        queryWrapper.eq(!StringUtils.isEmpty(pageGoodDTO.getGoodDTO().getType()),"type",pageGoodDTO.getGoodDTO().getType());
+        if (!"null".equals(String.valueOf(pageGoodDTO.getGoodDTO().getStatus()))){
+            logger.debug(String.valueOf(pageGoodDTO.getGoodDTO().getStatus())+"status");
+            if(pageGoodDTO.getGoodDTO().getStatus()==1){
+                logger.debug(String.valueOf(pageGoodDTO.getGoodDTO().getStatus())+"status");
+                queryWrapper.eq("status",1);
+            } else if (pageGoodDTO.getGoodDTO().getStatus()==0) {
+                queryWrapper.eq("status",0);
+            }
+        }else if (role.equals("admin")||role.equals("volunteer")){
+            queryWrapper.eq("status",1);
+            queryWrapper.or().eq("status",0);
+        } else if (role.equals("user")) {
+            queryWrapper.eq("status",1);
+        }
         Page<Good> page=new Page<>(currentPage,pageSize);
         Page<Good> userPage=goodMapper.selectPage(page,queryWrapper);
         return new Result(ResultEnum.SUCCESS,"this is Paging query result",userPage);
@@ -135,26 +143,33 @@ public class GoodServiceImpl implements GoodService {
     }
 
     @Override
-    public boolean updateGoodAmount(Long id, Integer amount) {
+    public boolean updateGoodAmount(Long id, Integer amount,Boolean buy) {
         logger.debug("商品修改线程启动");
         synchronized(this){
             Good good=goodMapper.selectById(id);
             logger.debug(good.toString());
-            if (good.getAmount()<amount){
-                logger.debug("商品数量不足");
-                return false;
-            }else{
-                good.setAmount(good.getAmount()-amount);
+            if (buy){
+                if (good.getAmount()<amount){
+                    logger.debug("商品数量不足");
+                    return false;
+                }else{
+                    good.setAmount(good.getAmount()-amount);
+                    goodMapper.updateById(good);
+                    logger.debug(good.getAmount().toString());
+                    logger.debug("商品购买成功");
+                }
+            }else {
+                good.setAmount(good.getAmount()+amount);
                 goodMapper.updateById(good);
-                logger.debug("商品购买成功");
+                logger.debug("商品补货成功");
             }
+
         }
         return true;
     }
 
     /**
      * Computes a result, or throws an exception if unable to do so.
-     *
      * @return computed result
      * @throws Exception if unable to compute a result
      */

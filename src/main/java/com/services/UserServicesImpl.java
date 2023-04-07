@@ -35,6 +35,7 @@ public class UserServicesImpl implements UserService {
     Token token;
 
     Logger logger = (Logger) LoggerFactory.getLogger(Logger.class);
+
     @Override
     public User getUserByPhone(String phone) {
         return userMapper.getUserByPhone(phone);
@@ -55,10 +56,10 @@ public class UserServicesImpl implements UserService {
         queryWrapper.eq("phone",phone);
         User user=userMapper.selectOne(queryWrapper);
         if(user==null){
-            return new Result(ResultEnum.FAIL,"登录失败,用户不存在");
+            return new Result(ResultEnum.FAIL,"登录失败，用户不存在");
         }else {
             if (!user.getPassword().equals(password)){
-                return new Result(ResultEnum.FAIL,"登录失败,密码错误");
+                return new Result(ResultEnum.FAIL,"登录失败，密码错误");
             }else {
                 return new Result(ResultEnum.SUCCESS, token.getToken(user.getPhone(), user.getPassword(), user.getId(),user.getUserType()));
             }

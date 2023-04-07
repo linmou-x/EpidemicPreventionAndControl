@@ -94,5 +94,4 @@ public class GoodController {
             return new Result(ResultEnum.FAIL,"Str为空");
         }
     }
-
 }

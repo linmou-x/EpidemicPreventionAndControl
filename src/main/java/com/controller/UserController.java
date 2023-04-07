@@ -6,8 +6,10 @@ import com.entity.PageUserDTO;
 import com.entity.UserDTO;
 import com.mapper.UserMapper;
 import com.services.Impl.UserService;
+import com.utils.PassToken;
 import com.utils.Result;
 import com.utils.ResultEnum;
+import com.utils.UserLoginToken;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -40,6 +42,7 @@ public class UserController {
 
 
     @PostMapping("/userLogin")
+    @PassToken
     @Operation(summary = "userLogin",description = "用户登录",
                 parameters = {@Parameter(name = "phone",description = "用户手机号"),
                                 @Parameter(name = "password",description = "用户密码")})
@@ -113,14 +116,10 @@ public class UserController {
     }
 
     @GetMapping("/message")
-//    @UserLoginToken
+    @UserLoginToken
     @Operation(summary = "测试,从HttpServletRequest中获取token，使用token工具解析到User信息",description = "测试")
-    public Result message(HttpServletRequest httpServletRequest,String str){
-        String token = httpServletRequest.getHeader("X-Token");
-        logger.debug("AA"+String.valueOf(str));
-        logger.debug(JSON.parseObject(str, PageUserDTO.class).toString());
-        logger.debug(JSON.parseObject("{\"id\":\"\",\"name\":\"\",\"age\":\"\",\"gender\":\"\",\"address\":\"\",\"houseHolder\":\"\",\"phone\":\"\"}",UserDTO.class).toString());
-        return new Result(ResultEnum.SUCCESS,token);
+    public Result message(){
+        return new Result(ResultEnum.SUCCESS," This is Message return");
     }
 
     @Operation(summary = "setAdmin",description = "设置用户权限为管理员")

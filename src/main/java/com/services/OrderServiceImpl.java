@@ -81,18 +81,15 @@ public class OrderServiceImpl implements OrderService {
             return new Result(ResultEnum.FAIL,"禁止空数组");
         }
         Order order=BeanUtil.copyProperties(orderDTO,Order.class);
+        if (orderDTO.getGood()==null){
+            return new Result(ResultEnum.FAIL,"Service orderBatchInsert");
+        } else if (orderDTO.getService()==null) {
+            goodService.updateGoodAmount(order.getGood(),order.getAmount(),true);
+        }
         /**
          * 调用商品查询，获取商品数量，数量如果大于订购数则完成订单，负责失败
          */
-        if(goodService.updateGoodAmount(order.getGood(),order.getAmount())){
-            order.setRecordBy(1L);
-            order.setUpdateBy(1L);
-            orderMapper.insert(order);
-            logger.debug("添加购买记录");
-        }else{
-            return new Result(ResultEnum.FAIL,"商品购买失败");
-        }
-        return new Result(ResultEnum.SUCCESS,"SUCCESS");
+        return new Result(ResultEnum.FAIL,"orderBatchInsert");
     }
 
     /**
@@ -118,7 +115,7 @@ public class OrderServiceImpl implements OrderService {
             order[0].setUpdateBy(id);
             orderMapper.updateById(order[0]);
         });
-        return new Result(ResultEnum.SUCCESS,"插入成功");
+        return new Result(ResultEnum.SUCCESS,"更新成功");
     }
 
     /**

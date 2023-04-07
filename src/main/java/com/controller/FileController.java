@@ -23,8 +23,6 @@ import java.io.IOException;
 @CrossOrigin(origins = "*")
 public class FileController {
     @Resource
-    ImageUtil imageUtil;
-    @Resource
     private FileService fileService;
 
     @PostMapping("/uploadExcel")
@@ -35,6 +33,6 @@ public class FileController {
 
     @PostMapping("/uploadImage")
     public String uploadImage(@RequestParam(value = "file")MultipartFile image, HttpServletRequest httpServletRequest){
-        return imageUtil.imageUpload(image,httpServletRequest);
+        return fileService.imageUpload(image,httpServletRequest);
     }
 }

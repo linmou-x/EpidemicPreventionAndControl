@@ -14,9 +14,6 @@ import java.lang.reflect.Method;
 public class AuthenticationInterceptor implements HandlerInterceptor {
     Logger logger = (Logger) LoggerFactory.getLogger(Logger.class);
     @Resource
-    UserService userService;
-
-    @Resource
     Token JwtToken;
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object object) throws Exception {
@@ -39,6 +36,8 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         HandlerMethod handlerMethod=(HandlerMethod)object;
         Method method=handlerMethod.getMethod();
         logger.debug("方法名:",method.toString());
+        logger.debug("UserLoginToken: "+method.isAnnotationPresent(UserLoginToken.class));
+        logger.debug("PassToken: "+method.isAnnotationPresent(PassToken.class));
         /**
          *  检查是否有@passtoken注释，有则跳过认证
          */
@@ -52,7 +51,6 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         /**
          * 检查是否有@UserLoginToken 有则对token进行解析
          */
-        logger.debug("method 注解"+String.valueOf(method.isAnnotationPresent(UserLoginToken.class)));
         if (method.isAnnotationPresent(UserLoginToken.class)) {
             logger.debug("进去方法需要注解");
             UserLoginToken userLoginToken = method.getAnnotation(UserLoginToken.class);
@@ -62,13 +60,13 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             if (userLoginToken.required()) {
                 if (token==null) {
                     logger.debug("无Token,跳过验证:");
-                    throw new RuntimeException("无token，请重新登录");
+                    return  false;
                 }
                 /**
                  * 调用token工具类验证token可用
                  */
                 if (!JwtToken.verifyToken(token)){
-                    throw new RuntimeException("Token过期失效");
+                    return  false;
                 }
                 return true;
             }

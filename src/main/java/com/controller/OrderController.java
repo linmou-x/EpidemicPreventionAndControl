@@ -46,8 +46,15 @@ public class OrderController {
         return orderService.orderPageWithService(pageOrderDTO,httpServletRequest);
     }
 
+    /**
+     * 商品或服务订购操作
+     * @param httpServletRequest
+     * @param jsonObject
+     * @return
+     */
     @GetMapping("/batchInsert")
-    public Result batchInsert(HttpServletRequest httpServletRequest, String jsonObject){
+
+    public Result batchInsert(String jsonObject,HttpServletRequest httpServletRequest){
         if (!jsonObject.isEmpty())
         {
             OrderDTO orderDTO= JSON.parseObject(jsonObject, OrderDTO.class);

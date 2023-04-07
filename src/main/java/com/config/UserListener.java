@@ -5,11 +5,10 @@ import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.entity.ExcelUserDTO;
 import com.entity.User;
-import com.mapper.ExcelUserDTOMapper;
 import com.mapper.UserMapper;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author：Charles
@@ -21,6 +20,7 @@ import java.util.List;
  */
 public class UserListener extends AnalysisEventListener<ExcelUserDTO> {
     private UserMapper userMapper;
+    Map<Integer, String> checkNullMap;
     private List<ExcelUserDTO> list=new ArrayList<>();
     public UserListener(UserMapper mapper){
         this.userMapper=mapper;
@@ -35,8 +35,9 @@ public class UserListener extends AnalysisEventListener<ExcelUserDTO> {
         System.out.println(list.toString());
         list.forEach(excelUserDTO -> {
             User user= BeanUtil.copyProperties(excelUserDTO, User.class);
+            user.setHouseHolder(0L);
             userMapper.insert(user);
-            System.out.println(user.toString());
         });
     }
+
 }

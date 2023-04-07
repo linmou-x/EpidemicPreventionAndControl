@@ -45,4 +45,8 @@ public class GoodDTO implements Serializable {
      * 商品价格
      */
     Integer price;
+    /**
+     * 商品状态
+     */
+    Integer status;
 }
