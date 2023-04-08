@@ -36,6 +36,7 @@ public class UserListener extends AnalysisEventListener<ExcelUserDTO> {
         list.forEach(excelUserDTO -> {
             User user= BeanUtil.copyProperties(excelUserDTO, User.class);
             user.setHouseHolder(0L);
+            user.setPassword(user.getPhone());
             userMapper.insert(user);
         });
     }

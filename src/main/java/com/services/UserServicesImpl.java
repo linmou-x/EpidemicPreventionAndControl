@@ -211,7 +211,7 @@ public class UserServicesImpl implements UserService {
         User user =new User();
         user.setId(id);
         user.setUserType("admin");
-        return new Result(ResultEnum.SUCCESS,"权限设置成功");
+        return new Result(ResultEnum.SUCCESS,"admin权限设置成功");
     }
 
     /**
@@ -225,7 +225,7 @@ public class UserServicesImpl implements UserService {
         User user =new User();
         user.setId(id);
         user.setUserType("volunteer");
-        return new Result(ResultEnum.SUCCESS,"权限设置成功");
+        return new Result(ResultEnum.SUCCESS,"volunteer权限设置成功");
     }
     /**
      * 设置为用户权限
@@ -238,7 +238,7 @@ public class UserServicesImpl implements UserService {
         User user =new User();
         user.setId(id);
         user.setUserType("user");
-        return new Result(ResultEnum.SUCCESS,"权限设置成功");
+        return new Result(ResultEnum.SUCCESS,"user权限设置成功");
     }
 
     @Override
