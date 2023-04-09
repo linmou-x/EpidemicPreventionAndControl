@@ -70,6 +70,19 @@ public class UserController {
         }
     }
 
+    @GetMapping(value = "/familyUserPage")
+    @Operation(summary = "familyUserPage",description = "分页查询")
+    public Result selectFamilyByPage(String  jsonObject,HttpServletRequest httpServletRequest){
+        if (!jsonObject.isEmpty())
+        {
+            PageUserDTO pageUserDTO=JSON.parseObject(jsonObject, PageUserDTO.class);
+            return userService.selectByPage(pageUserDTO, httpServletRequest);
+        }else {
+            return new Result(ResultEnum.FAIL,"Str为空");
+        }
+    }
+
+
     @GetMapping("/batchInsert")
     @CrossOrigin(origins = "*")
     @Operation(summary = "batchInsert",description = "批量插入")

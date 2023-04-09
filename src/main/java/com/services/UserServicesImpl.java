@@ -260,5 +260,45 @@ public class UserServicesImpl implements UserService {
         return userMapper.selectOne(queryWrapper).getHouseHolder();
     }
 
+    @Override
+    public Result selectFamilyByPage(PageUserDTO pageUserDTO,HttpServletRequest httpServletRequest) {
+        /**
+         * 查询用户家庭成员
+         */
+        Long  houseHolder=null;
+        User user=userMapper.selectById(token.getId(httpServletRequest.getHeader("X-Token")));
+        if (user.getHouseHolder()==0){
+            houseHolder=user.getId();
+        }else {
+            houseHolder=user.getHouseHolder();
+        }
+        QueryWrapper<User> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("house_holder",houseHolder);
+        /**
+         * 用户姓名非空时拼接条件到SQL语句，
+         */
+        queryWrapper.like(!StringUtils.isEmpty(user.getName()), "name", user.getName());
+        /**
+         * 条件判定非空时添加年龄查询条件
+         */
+        queryWrapper.eq(!"null".equals(String.valueOf(user.getAge())), "age", user.getAge());
+        /**
+         * 条件判定非空时添加性别查询条件
+         */
+        queryWrapper.eq(!StringUtils.isEmpty(String.valueOf(user.getGender())), "gender", user.getGender());
+        /**
+         * 条件判定非空时添加地址查询条件
+         */
+        queryWrapper.like(!StringUtils.isEmpty(String.valueOf(user.getAddress())), "address", user.getAddress());
+        /**
+         * 条件判定非空时添加手机查询条件
+         */
+        queryWrapper.eq(!StringUtils.isEmpty(String.valueOf(user.getPhone())), "phone", user.getPhone());
+        logger.debug(userMapper.selectList(queryWrapper).toString());
+        Page<User> page=new Page<>(pageUserDTO.getCurrentPage(), pageUserDTO.getPageSize());
+        Page<User> userPage=userMapper.selectPage(page,queryWrapper);
+        return new Result(ResultEnum.SUCCESS,"this is Paging query result",userPage);
+    }
+
 
 }

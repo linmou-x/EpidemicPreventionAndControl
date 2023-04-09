@@ -53,7 +53,7 @@ public interface UserService {
      * @param
      * @return
      */
-    Result selectByPage(@RequestBody PageUserDTO pageUserDTO,HttpServletRequest httpServletRequest);
+    Result selectByPage(PageUserDTO pageUserDTO,HttpServletRequest httpServletRequest);
 
 
     /**
@@ -79,4 +79,6 @@ public interface UserService {
     List getList(Long id);
 
     Long getHouseHolder(Long id);
+
+    Result selectFamilyByPage(PageUserDTO pageUserDTO,HttpServletRequest httpServletRequest);
 }
