@@ -2,6 +2,7 @@ package com.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,7 @@ public class Service implements Serializable {
      * 唯一id
      */
     @TableId(value = "id",type = IdType.ASSIGN_ID)
+    @JsonFormat(shape =JsonFormat.Shape.STRING )
     Long id;
 
     /**

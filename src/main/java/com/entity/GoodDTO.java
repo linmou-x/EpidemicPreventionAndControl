@@ -36,6 +36,7 @@ public class GoodDTO implements Serializable {
     /**
      * 商品数量
      */
+    String image;
     Integer amount;
     /**
      * 物品单位

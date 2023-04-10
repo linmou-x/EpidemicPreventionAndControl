@@ -61,6 +61,7 @@ public class GoodController {
             GoodDTO goodDTO= JSON.parseObject(jsonObject, GoodDTO.class);
             List<GoodDTO> list =new ArrayList<>();
             list.add(goodDTO);
+            logger.debug("good batchInsert"+goodDTO.toString());
             return goodService.batchImport(list, httpServletRequest);
         }else {
             return new Result(ResultEnum.FAIL,"Str为空");
@@ -90,6 +91,24 @@ public class GoodController {
             List<GoodDTO> list =new ArrayList<>();
             list.add(goodDTO);
             return goodService.batchUpdate(list, httpServletRequest);
+        }else {
+            return new Result(ResultEnum.FAIL,"Str为空");
+        }
+    }
+
+    @GetMapping("/updateAmount")
+    @Operation(summary = "批量修改",description = "批量修改")
+    public Result updateAmount(String jsonObject,HttpServletRequest httpServletRequest){
+        if (!jsonObject.isEmpty())
+        {
+            GoodDTO goodDTO= JSON.parseObject(jsonObject, GoodDTO.class);
+            List<GoodDTO> list =new ArrayList<>();
+            list.add(goodDTO);
+            if (goodDTO.getStatus()==1){
+                return new Result(ResultEnum.FAIL,goodService.updateGoodAmount(goodDTO.getId(),goodDTO.getAmount(),false));
+            }else{
+                return new Result(ResultEnum.FAIL,goodService.updateGoodAmount(goodDTO.getId(),goodDTO.getAmount(),true));
+            }
         }else {
             return new Result(ResultEnum.FAIL,"Str为空");
         }

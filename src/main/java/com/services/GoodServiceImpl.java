@@ -124,9 +124,15 @@ public class GoodServiceImpl implements GoodService {
             goods[0]=BeanUtil.copyProperties(goodDTO,Good.class);
             UpdateWrapper<Good> updateWrapper=new UpdateWrapper<>();
             updateWrapper.eq("id",goods[0].getId());
-            updateWrapper.eq("update_by",JwtToken.getId(httpServletRequest.getHeader("X-Token")));
-            goodMapper.update(goods[0],updateWrapper);
-            logger.debug("更新后的商品信息为"+getGoodDetail(goods[0].getId()).getData().toString());
+            goods[0].setUpdateBy(JwtToken.getId(httpServletRequest.getHeader("X-Token")));
+            updateWrapper.set("status",goods[0].getStatus());
+            updateWrapper.set("name",goods[0].getName());
+            updateWrapper.set("type",goods[0].getType());
+            updateWrapper.set("description",goods[0].getDescription());
+            updateWrapper.set("units",goods[0].getUnits());
+            updateWrapper.set("price",goods[0].getPrice());
+            updateWrapper.set("update_by",goods[0].getUpdateBy());
+            goodMapper.update(null,updateWrapper);
         });
         return new Result(ResultEnum.SUCCESS,"批量更新成功");
     }
@@ -149,6 +155,7 @@ public class GoodServiceImpl implements GoodService {
             Good good=goodMapper.selectById(id);
             logger.debug(good.toString());
             if (buy){
+                logger.debug("buy");
                 if (good.getAmount()<amount){
                     logger.debug("商品数量不足");
                     return false;
@@ -159,8 +166,10 @@ public class GoodServiceImpl implements GoodService {
                     logger.debug("商品购买成功");
                 }
             }else {
+                logger.debug("add amount"+good.getAmount());
                 good.setAmount(good.getAmount()+amount);
                 goodMapper.updateById(good);
+                logger.debug("add amount SUCCESS"+good.getAmount());
                 logger.debug("商品补货成功");
             }
 

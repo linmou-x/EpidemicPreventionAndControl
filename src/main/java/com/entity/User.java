@@ -1,21 +1,16 @@
 package com.entity;
 
-import cn.hutool.core.date.DateField;
-import cn.hutool.core.date.DateTime;
-import cn.hutool.jwt.JWTPayload;
-import cn.hutool.jwt.JWTUtil;
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 用户类
@@ -32,6 +27,7 @@ public class User implements Serializable{
      */
     @TableId(value ="id",type = IdType.ASSIGN_ID )
     @JsonProperty(value = "id")
+    @JsonFormat(shape =JsonFormat.Shape.STRING )
     Long id;
     /**
      * 姓名
