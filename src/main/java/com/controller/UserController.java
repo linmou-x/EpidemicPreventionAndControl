@@ -153,4 +153,10 @@ public class UserController {
         return userService.setUser(id);
     }
 
+    @Operation(summary = "updatePassword",description = "设置用户权限为用户")
+    @GetMapping("/updatePassword")
+    public Result updatePassword(Long id,String oldPwd,String newPwd,HttpServletRequest httpServletRequest){
+        return userService.updatePassword(id,oldPwd,newPwd,httpServletRequest);
+    }
+
 }

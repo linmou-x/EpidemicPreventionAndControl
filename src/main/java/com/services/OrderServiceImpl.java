@@ -81,14 +81,17 @@ public class OrderServiceImpl implements OrderService {
             return new Result(ResultEnum.FAIL,"禁止空数组");
         }
         Order order=BeanUtil.copyProperties(orderDTO,Order.class);
+        order.setUpdateBy(token.getId(httpServletRequest.getHeader("X-Token")));
         if (orderDTO.getGood()==null){
             return new Result(ResultEnum.FAIL,"Service orderBatchInsert");
         } else if (orderDTO.getService()==null) {
-            goodService.updateGoodAmount(order.getGood(),order.getAmount(),true);
+            goodService.updateGoodAmount(order.getGood(), order.getAmount(), true);
         }
         /**
          * 调用商品查询，获取商品数量，数量如果大于订购数则完成订单，负责失败
          */
+        order.setRecordBy(token.getId(httpServletRequest.getHeader("X-Token")));
+        orderMapper.insert(order);
         return new Result(ResultEnum.FAIL,"orderBatchInsert");
     }
 
@@ -142,6 +145,17 @@ public class OrderServiceImpl implements OrderService {
             orderMapper.updateById(order[0]);
         });
         return new Result(ResultEnum.SUCCESS,"删除成功");
+    }
+
+    @Override
+    public Result getFamilyOrder(List<Long> list) {
+        QueryWrapper<Order> queryWrapper=new QueryWrapper<>();
+        list.forEach(id ->{
+            queryWrapper.or().eq("record_by",id);
+        });
+        List<Order> orderList=orderMapper.selectList(queryWrapper);
+        logger.debug(orderList.toString());
+        return new Result(ResultEnum.SUCCESS,"aaaaaaaa",orderList);
     }
 
     /**

@@ -30,4 +30,6 @@ public interface OrderService extends Callable<Objects> {
      * 订单取消
      */
     Result batchDelete(List<OrderDTO>orderDTOList,HttpServletRequest httpServletRequest );
+
+    Result getFamilyOrder(List<Long> list);
 }

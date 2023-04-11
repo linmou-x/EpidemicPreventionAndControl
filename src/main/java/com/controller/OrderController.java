@@ -1,14 +1,15 @@
 package com.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.entity.GoodDTO;
-import com.entity.Order;
-import com.entity.OrderDTO;
-import com.entity.PageOrderDTO;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.entity.*;
 import com.mapper.OrderMapper;
+import com.mapper.UserMapper;
 import com.services.Impl.OrderService;
 import com.utils.Result;
 import com.utils.ResultEnum;
+import com.utils.Token;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -33,8 +34,13 @@ public class OrderController {
 
     @Resource
     OrderService orderService;
+
+    @Resource
+    UserMapper userMapper;
     @Resource
     OrderMapper orderMapper;
+    @Resource
+    Token token;
 
     @GetMapping("/getGoodOrderList")
     public Result getGoodOrderList(PageOrderDTO pageOrderDTO,HttpServletRequest httpServletRequest){
@@ -93,5 +99,26 @@ public class OrderController {
     @GetMapping("/insert")
     public void orderInsert(@RequestBody Order order){
         orderMapper.insert(order);
+    }
+
+
+    @GetMapping("/familyOrder")
+    public Result familyOrder(HttpServletRequest httpServletRequest){
+        List<Long> familyList=new ArrayList<>();
+        QueryWrapper<User> queryWrapper=new QueryWrapper<>();
+        /**
+         * 获取户主ID
+         */
+        User user =userMapper.selectById(token.getId(httpServletRequest.getHeader("X-Token")));
+        if (user.getHouseHolder()==0){
+            queryWrapper.eq("house_holder",user.getId());
+        }else{
+            queryWrapper.eq("house_holder",user.getHouseHolder());
+        }
+        List<User> list=userMapper.selectList(queryWrapper);
+        list.forEach(user1 -> {
+            familyList.add(user1.getId());
+        });
+        return orderService.getFamilyOrder(familyList);
     }
 }

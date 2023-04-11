@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.awt.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -52,9 +53,13 @@ public class User implements Serializable{
     /**
      * 户主
      */
-    @TableField(value = "house_holder",fill = FieldFill.INSERT)
+    @TableField(value = "house_holder")
     @JsonProperty(value = "houseHolder")
     Long houseHolder;
+
+    @TableField(value = "house_holder_name")
+    @JsonProperty(value = "houseHolderName")
+    String houseHolderName;
     /**
      * 电话
      */
@@ -79,6 +84,10 @@ public class User implements Serializable{
     @TableField(value = "update_by",fill = FieldFill.INSERT)
     @JsonProperty(value = "updateBy")
     Long updateBy;
+
+    @TableField(value = "update_name",fill=  FieldFill.INSERT)
+    @JsonProperty(value = "updateName")
+    String updateName;
     /**
      * 更新时间
      */

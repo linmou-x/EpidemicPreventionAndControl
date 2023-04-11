@@ -61,7 +61,7 @@ public class UserServicesImpl implements UserService {
             if (!user.getPassword().equals(password)){
                 return new Result(ResultEnum.FAIL,"登录失败，密码错误");
             }else {
-                return new Result(ResultEnum.SUCCESS, token.getToken(user.getPhone(), user.getPassword(), user.getId(),user.getUserType()));
+                return new Result(ResultEnum.SUCCESS, token.getToken(user.getPhone(), user.getPassword(), user.getId(),user.getUserType(),user.getName()));
             }
         }
     }
@@ -74,7 +74,7 @@ public class UserServicesImpl implements UserService {
     public Result userinfo(String tokenString) {
         User user=new User();
         user.setUserType(token.getRole(tokenString));
-        user.setName(String.valueOf(token.getId(tokenString)));
+        user.setName(token.getName(tokenString));
         user.setAvatar("https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
         return new Result(ResultEnum.SUCCESS,user);
     }
@@ -98,7 +98,9 @@ public class UserServicesImpl implements UserService {
             if (userMapper.selectList(queryWrapper).isEmpty()){
                 user[0].setPassword(user[0].getPhone());
                 user[0].setHouseHolder(token.getId(httpServletRequest.getHeader("X-Token")));
+                user[0].setHouseHolderName(token.getName(httpServletRequest.getHeader("X-Token")));
                 user[0].setUpdateBy(token.getId(httpServletRequest.getHeader("X-Token")));
+                user[0].setUpdateName(token.getName(httpServletRequest.getHeader("X-Token")));
                 userMapper.insert(user[0]);
             }else {
                 userList.add(user[0]);
@@ -133,6 +135,7 @@ public class UserServicesImpl implements UserService {
             UpdateWrapper<User> updateWrapper=new UpdateWrapper<>();
             updateWrapper.set("del_flag",0);
             updateWrapper.set("update_by",token.getId(httpServletRequest.getHeader("X-Token")));
+            updateWrapper.set("update_name",token.getName(httpServletRequest.getHeader("X-Token")));
             updateWrapper.eq("id",user[0].getId());
             userMapper.update(null,updateWrapper);
         });
@@ -145,6 +148,7 @@ public class UserServicesImpl implements UserService {
         userDTOList.forEach(userDTO -> {
             user[0] = BeanUtil.copyProperties(userDTO,User.class);
             user[0].setUpdateBy(token.getId(httpServletRequest.getHeader("X-Token")));
+            user[0].setUpdateName(token.getName(httpServletRequest.getHeader("X-Token")));
             userMapper.updateById(user[0]);
         });
         return new Result(ResultEnum.SUCCESS,"更新成功");
@@ -211,6 +215,7 @@ public class UserServicesImpl implements UserService {
         User user =new User();
         user.setId(id);
         user.setUserType("admin");
+        userMapper.updateById(user);
         return new Result(ResultEnum.SUCCESS,"admin权限设置成功");
     }
 
@@ -225,6 +230,7 @@ public class UserServicesImpl implements UserService {
         User user =new User();
         user.setId(id);
         user.setUserType("volunteer");
+        userMapper.updateById(user);
         return new Result(ResultEnum.SUCCESS,"volunteer权限设置成功");
     }
     /**
@@ -238,6 +244,7 @@ public class UserServicesImpl implements UserService {
         User user =new User();
         user.setId(id);
         user.setUserType("user");
+        userMapper.updateById(user);
         return new Result(ResultEnum.SUCCESS,"user权限设置成功");
     }
 
@@ -298,6 +305,22 @@ public class UserServicesImpl implements UserService {
         Page<User> page=new Page<>(pageUserDTO.getCurrentPage(), pageUserDTO.getPageSize());
         Page<User> userPage=userMapper.selectPage(page,queryWrapper);
         return new Result(ResultEnum.SUCCESS,"this is Paging query result",userPage);
+    }
+
+    @Override
+    public Result updatePassword(Long id, String oldPwd, String newPwd, HttpServletRequest httpServletRequest) {
+        User user=userMapper.selectById(id);
+        UpdateWrapper<User> updateWrapper=new UpdateWrapper();
+        if (!user.getPassword().equals(oldPwd)){
+            return new Result(ResultEnum.FAIL,"用户原密码错误");
+        }else {
+            updateWrapper.set("password",newPwd);
+            updateWrapper.set("update_by",token.getId(httpServletRequest.getHeader("X-Token")));
+            updateWrapper.set("update_name",token.getName(httpServletRequest.getHeader("X-Token")));
+            updateWrapper.eq("id",user.getId());
+            userMapper.update(user,updateWrapper);
+        }
+        return new Result(ResultEnum.SUCCESS,"用户密码更新成功");
     }
 
 

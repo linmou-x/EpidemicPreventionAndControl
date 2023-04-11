@@ -81,4 +81,7 @@ public interface UserService {
     Long getHouseHolder(Long id);
 
     Result selectFamilyByPage(PageUserDTO pageUserDTO,HttpServletRequest httpServletRequest);
+
+
+    Result updatePassword(Long id,String oldPwd,String newPwd,HttpServletRequest httpServletRequest);
 }

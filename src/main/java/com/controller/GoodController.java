@@ -4,7 +4,6 @@ import ch.qos.logback.classic.Logger;
 import com.alibaba.fastjson.JSON;
 import com.entity.GoodDTO;
 import com.entity.PageGoodDTO;
-import com.entity.UserDTO;
 import com.mapper.GoodMapper;
 import com.services.Impl.GoodService;
 import com.utils.Result;
