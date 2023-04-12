@@ -112,4 +112,16 @@ public class GoodController {
             return new Result(ResultEnum.FAIL,"Str为空");
         }
     }
+
+
+    @GetMapping("/GoodNeedList")
+    public  Result GoodNeedList(HttpServletRequest httpServletRequest,String jsonObject){
+        if (!jsonObject.isEmpty())
+        {
+            PageGoodDTO pageGoodDTO= JSON.parseObject(jsonObject, PageGoodDTO.class);
+            return goodService.GoodNeedList(httpServletRequest,pageGoodDTO);
+        }else {
+            return new Result(ResultEnum.FAIL,"Str为空");
+        }
+    }
 }

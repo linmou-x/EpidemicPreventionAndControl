@@ -8,7 +8,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.entity.Good;
 import com.entity.GoodDTO;
 import com.entity.PageGoodDTO;
+import com.entity.User;
 import com.mapper.GoodMapper;
+import com.mapper.UserMapper;
 import com.services.Impl.GoodService;
 import com.utils.Result;
 import com.utils.ResultEnum;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,6 +37,9 @@ import java.util.Objects;
 public class GoodServiceImpl implements GoodService {
     @Resource
     private GoodMapper goodMapper;
+
+    @Resource
+    UserMapper userMapper;
 
     Logger logger = (Logger) LoggerFactory.getLogger(Logger.class);
     @Resource
@@ -63,8 +69,8 @@ public class GoodServiceImpl implements GoodService {
             queryWrapper.eq("status",1);
         }
         Page<Good> page=new Page<>(currentPage,pageSize);
-        Page<Good> userPage=goodMapper.selectPage(page,queryWrapper);
-        return new Result(ResultEnum.SUCCESS,"this is Paging query result",userPage);
+        Page<Good> goodPage=goodMapper.selectPage(page,queryWrapper);
+        return new Result(ResultEnum.SUCCESS,"this is Paging query result",goodPage);
     }
     /**
      * 批量导入
@@ -132,6 +138,7 @@ public class GoodServiceImpl implements GoodService {
             updateWrapper.set("units",goods[0].getUnits());
             updateWrapper.set("price",goods[0].getPrice());
             updateWrapper.set("update_by",goods[0].getUpdateBy());
+            updateWrapper.set("update_name",JwtToken.getName(httpServletRequest.getHeader("X-Token")));
             goodMapper.update(null,updateWrapper);
         });
         return new Result(ResultEnum.SUCCESS,"批量更新成功");
@@ -172,9 +179,20 @@ public class GoodServiceImpl implements GoodService {
                 logger.debug("add amount SUCCESS"+good.getAmount());
                 logger.debug("商品补货成功");
             }
-
         }
         return true;
+    }
+
+    @Override
+    public Result GoodNeedList(HttpServletRequest httpServletRequest, PageGoodDTO pageGoodDTO) {
+        Long id= JwtToken.getId(httpServletRequest.getHeader("X-Token"));
+        QueryWrapper<Good> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq("status",2);
+        queryWrapper.like(!StringUtils.isEmpty(pageGoodDTO.getGoodDTO().getName()), "name", pageGoodDTO.getGoodDTO().getName());
+        queryWrapper.eq(!StringUtils.isEmpty(pageGoodDTO.getGoodDTO().getType()),"type",pageGoodDTO.getGoodDTO().getType());
+        Page<Good> page=new Page<>(pageGoodDTO.getCurrentPage(), pageGoodDTO.getPageSize());
+        Page<Good> goodPage=goodMapper.selectPage(page,queryWrapper);
+        return new Result(ResultEnum.SUCCESS,goodPage);
     }
 
     /**

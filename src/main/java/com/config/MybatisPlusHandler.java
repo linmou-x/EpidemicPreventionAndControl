@@ -24,7 +24,6 @@ public class MybatisPlusHandler  implements MetaObjectHandler {
         this.setFieldValByName("updateTime",new Date(), metaObject);
         this.setFieldValByName("userType","user", metaObject);
         this.setFieldValByName("delFlag",1, metaObject);
-        this.setFieldValByName("status",1, metaObject);
     }
 
     @Override

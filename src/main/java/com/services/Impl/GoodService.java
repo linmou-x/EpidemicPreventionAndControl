@@ -50,4 +50,7 @@ public interface GoodService extends Callable<Objects> {
     Result getGoodDetail(Long id);
 
     boolean updateGoodAmount(Long id, Integer amount,Boolean buy);
+
+
+    Result GoodNeedList(HttpServletRequest httpServletRequest, PageGoodDTO pageGoodDTO);
 }

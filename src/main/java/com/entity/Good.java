@@ -2,6 +2,7 @@ package com.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -75,9 +76,12 @@ public class Good implements Serializable{
      */
     @TableField(value = "update_by")
     Long updateBy;
+    @TableField(value = "update_name",fill=  FieldFill.INSERT)
+    @JsonProperty(value = "updateName")
+    String updateName;
     /**
      * status
      */
-    @TableField(value = "status",fill = FieldFill.INSERT)
+    @TableField(value = "status")
     Integer status;
 }

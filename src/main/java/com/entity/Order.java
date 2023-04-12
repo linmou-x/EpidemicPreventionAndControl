@@ -71,6 +71,9 @@ public class Order implements Serializable {
      */
     @TableField(value = "update_by")
     Long updateBy;
+
+    @TableField(value = "update_name")
+    String updateName;
     /**
      * status
      */

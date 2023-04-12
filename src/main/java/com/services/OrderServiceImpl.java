@@ -155,7 +155,7 @@ public class OrderServiceImpl implements OrderService {
         });
         List<Order> orderList=orderMapper.selectList(queryWrapper);
         logger.debug(orderList.toString());
-        return new Result(ResultEnum.SUCCESS,"aaaaaaaa",orderList);
+        return new Result(ResultEnum.SUCCESS,orderList);
     }
 
     /**
