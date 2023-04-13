@@ -3,6 +3,7 @@ package com.services;
 import ch.qos.logback.classic.Logger;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.entity.Good;
 import com.entity.Order;
 import com.entity.OrderDTO;
@@ -14,6 +15,7 @@ import com.services.Impl.UserService;
 import com.utils.Result;
 import com.utils.ResultEnum;
 import com.utils.Token;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
@@ -107,15 +109,10 @@ public class OrderServiceImpl implements OrderService {
         }
         Long id=token.getId(httpServletRequest.getHeader("X-Token"));
         final Order[] order={null};
-        final Good[] goods={null};
         orderDTOList.forEach(orderDTO -> {
             order[0]= BeanUtil.copyProperties(orderDTO,Order.class);
-            if (!order[0].getGood().equals(null)||order[0].getStatus().equals(-1)){
-                goods[0].setId(order[0].getGood());
-                goods[0]= (Good) goodService.getGoodDetail(order[0].getGood()).getData();
-                goods[0].setAmount((goods[0].getAmount()+order[0].getAmount()));
-            }
             order[0].setUpdateBy(id);
+            order[0].setUpdateName(token.getName(httpServletRequest.getHeader("X-Token")));
             orderMapper.updateById(order[0]);
         });
         return new Result(ResultEnum.SUCCESS,"更新成功");
@@ -133,29 +130,42 @@ public class OrderServiceImpl implements OrderService {
         }
         Long id=token.getId(httpServletRequest.getHeader("X-Token"));
         final Order[] order={null};
-        final Good[] goods={null};
         orderDTOList.forEach(orderDTO -> {
             order[0]= BeanUtil.copyProperties(orderDTO,Order.class);
-            if (!order[0].getGood().equals(null)||order[0].getStatus().equals(-1)){
-                goods[0].setId(order[0].getGood());
-                goods[0]= (Good) goodService.getGoodDetail(order[0].getGood()).getData();
-                goods[0].setAmount((goods[0].getAmount()+order[0].getAmount()));
-            }
             order[0].setUpdateBy(id);
+            order[0].setUpdateName(token.getName(httpServletRequest.getHeader("X-Token")));
             orderMapper.updateById(order[0]);
         });
         return new Result(ResultEnum.SUCCESS,"删除成功");
     }
 
     @Override
-    public Result getFamilyOrder(List<Long> list) {
+    public Result getFamilyOrder(List<Long> list,PageOrderDTO pageOrderDTO) {
         QueryWrapper<Order> queryWrapper=new QueryWrapper<>();
-        list.forEach(id ->{
-            queryWrapper.or().eq("record_by",id);
+        queryWrapper.eq(!"null".equals(String.valueOf(pageOrderDTO.getOrderDTO().getStatus())),"status",pageOrderDTO.getOrderDTO().getStatus());
+        if (pageOrderDTO.getOrderDTO().getName()!="null"){
+            queryWrapper.like("name",pageOrderDTO.getOrderDTO().getName());
+        }
+        queryWrapper.and(orderQueryWrapper -> {
+            list.forEach(id ->{
+                orderQueryWrapper.or().eq("record_by",id);
+            });
         });
-        List<Order> orderList=orderMapper.selectList(queryWrapper);
-        logger.debug(orderList.toString());
-        return new Result(ResultEnum.SUCCESS,orderList);
+        Page<Order> page=new Page<>(pageOrderDTO.getCurrentPage(), pageOrderDTO.getPageSize());
+        Page<Order> orderPage=orderMapper.selectPage(page,queryWrapper);
+        return new Result(ResultEnum.SUCCESS,orderPage);
+    }
+
+    @Override
+    public Result getOrderList(PageOrderDTO pageOrderDTO) {
+        Page<Order> page=new Page<>(pageOrderDTO.getCurrentPage(), pageOrderDTO.getPageSize());
+        QueryWrapper<Order> queryWrapper=new QueryWrapper<>();
+        queryWrapper.eq(!"null".equals(String.valueOf(pageOrderDTO.getOrderDTO().getStatus())),"status",pageOrderDTO.getOrderDTO().getStatus());
+        if (pageOrderDTO.getOrderDTO().getName()!="null"){
+            queryWrapper.like("name",pageOrderDTO.getOrderDTO().getName());
+        }
+        Page<Order> orderPage=orderMapper.selectPage(page,queryWrapper);
+        return new Result(ResultEnum.SUCCESS,orderPage);
     }
 
     /**

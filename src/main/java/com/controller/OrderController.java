@@ -1,5 +1,7 @@
 package com.controller;
 
+import ch.qos.logback.classic.Logger;
+import cn.hutool.core.bean.BeanUtil;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.entity.*;
@@ -12,6 +14,7 @@ import com.utils.Token;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -31,6 +34,7 @@ import java.util.Map;
 @Tag(name = "OrderController",description = "服务管理")
 @RequestMapping("/order")
 public class OrderController {
+    Logger logger = (Logger) LoggerFactory.getLogger(Logger.class);
 
     @Resource
     OrderService orderService;
@@ -59,7 +63,6 @@ public class OrderController {
      * @return
      */
     @GetMapping("/batchInsert")
-
     public Result batchInsert(String jsonObject,HttpServletRequest httpServletRequest){
         if (!jsonObject.isEmpty())
         {
@@ -103,22 +106,44 @@ public class OrderController {
 
 
     @GetMapping("/familyOrder")
-    public Result familyOrder(HttpServletRequest httpServletRequest){
-        List<Long> familyList=new ArrayList<>();
-        QueryWrapper<User> queryWrapper=new QueryWrapper<>();
+    public Result familyOrder(String jsonObject,HttpServletRequest httpServletRequest) {
+        PageOrderDTO pageOrderDTO;
+        if (!jsonObject.isEmpty()) {
+            pageOrderDTO = JSON.parseObject(jsonObject, PageOrderDTO.class);
+        } else {
+            return new Result(ResultEnum.FAIL);
+        }
+        /**
+         * 获取家庭商品订单
+         */
+        List<Long> familyList = new ArrayList<>();
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         /**
          * 获取户主ID
          */
-        User user =userMapper.selectById(token.getId(httpServletRequest.getHeader("X-Token")));
-        if (user.getHouseHolder()==0){
-            queryWrapper.eq("house_holder",user.getId());
-        }else{
-            queryWrapper.eq("house_holder",user.getHouseHolder());
+        User user = userMapper.selectById(token.getId(httpServletRequest.getHeader("X-Token")));
+        if (user.getHouseHolder() == 0) {
+            queryWrapper.eq("house_holder", user.getId());
+
+        } else {
+            queryWrapper.eq("house_holder", user.getHouseHolder());
         }
-        List<User> list=userMapper.selectList(queryWrapper);
+        List<User> list = userMapper.selectList(queryWrapper);
         list.forEach(user1 -> {
             familyList.add(user1.getId());
         });
-        return orderService.getFamilyOrder(familyList);
+        familyList.add(user.getId());
+        return orderService.getFamilyOrder(familyList, pageOrderDTO);
+    }
+
+    @GetMapping("/orderList")
+    public Result orderList(String jsonObject,HttpServletRequest httpServletRequest) {
+        PageOrderDTO pageOrderDTO;
+        if (!jsonObject.isEmpty()) {
+            pageOrderDTO = JSON.parseObject(jsonObject, PageOrderDTO.class);
+        } else {
+            return new Result(ResultEnum.FAIL);
+        }
+        return orderService.getOrderList(pageOrderDTO);
     }
 }

@@ -28,6 +28,7 @@ public class Order implements Serializable {
     /**
      * 物品名称
      */
+    String name;
     @TableField("good")
     Long  good;
     /**
@@ -47,6 +48,7 @@ public class Order implements Serializable {
      * 价格
      */
     Integer price;
+    String image;
     /**
      * 下单人
      */

@@ -23,6 +23,7 @@ public class OrderDTO implements Serializable {
      */
     @TableId(value ="id",type = IdType.ASSIGN_ID )
     Long id;
+    String name;
     /**
      * 物品
      */
@@ -48,5 +49,6 @@ public class OrderDTO implements Serializable {
     /**
      * 服务ID
      */
+    Integer status;
 }
 

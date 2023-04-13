@@ -31,5 +31,7 @@ public interface OrderService extends Callable<Objects> {
      */
     Result batchDelete(List<OrderDTO>orderDTOList,HttpServletRequest httpServletRequest );
 
-    Result getFamilyOrder(List<Long> list);
+    Result getFamilyOrder(List<Long> list,PageOrderDTO pageOrderDTO);
+
+    Result getOrderList(PageOrderDTO pageOrderDTO);
 }
