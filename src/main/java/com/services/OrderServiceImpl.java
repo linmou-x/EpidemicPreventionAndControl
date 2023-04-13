@@ -83,16 +83,18 @@ public class OrderServiceImpl implements OrderService {
             return new Result(ResultEnum.FAIL,"禁止空数组");
         }
         Order order=BeanUtil.copyProperties(orderDTO,Order.class);
-        order.setUpdateBy(token.getId(httpServletRequest.getHeader("X-Token")));
-        if (orderDTO.getGood()==null){
+        if (orderDTO.getGood()==0){
             return new Result(ResultEnum.FAIL,"Service orderBatchInsert");
-        } else if (orderDTO.getService()==null) {
+        } else if (orderDTO.getService()==0) {
             goodService.updateGoodAmount(order.getGood(), order.getAmount(), true);
         }
         /**
          * 调用商品查询，获取商品数量，数量如果大于订购数则完成订单，负责失败
          */
+        order.setUpdateBy(token.getId(httpServletRequest.getHeader("X-Token")));
+        order.setUpdateName(token.getName(httpServletRequest.getHeader("X-Token")));
         order.setRecordBy(token.getId(httpServletRequest.getHeader("X-Token")));
+        logger.debug("AAAA"+order.getImage());
         orderMapper.insert(order);
         return new Result(ResultEnum.FAIL,"orderBatchInsert");
     }

@@ -6,7 +6,7 @@ import com.utils.Result;
 import javax.servlet.http.HttpServletRequest;
 
 public interface GoodTypeService {
-    Result getGoodTypeList();
+    Result getGoodTypeList(HttpServletRequest httpServletRequest);
 
     Result insertGoodType(GoodType goodType,HttpServletRequest httpServletRequest);
 

@@ -46,15 +46,6 @@ public class OrderController {
     @Resource
     Token token;
 
-    @GetMapping("/getGoodOrderList")
-    public Result getGoodOrderList(PageOrderDTO pageOrderDTO,HttpServletRequest httpServletRequest){
-        return orderService.orderPageWitchGood(pageOrderDTO,httpServletRequest);
-    }
-
-    @GetMapping("/getServiceOrderList")
-    public Result getServiceOrderList(PageOrderDTO pageOrderDTO, HttpServletRequest httpServletRequest){
-        return orderService.orderPageWithService(pageOrderDTO,httpServletRequest);
-    }
 
     /**
      * 商品或服务订购操作

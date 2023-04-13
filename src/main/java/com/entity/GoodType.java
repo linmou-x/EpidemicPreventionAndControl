@@ -22,6 +22,7 @@ public class GoodType implements Serializable {
      * 唯一id
      */
     @TableId(value ="id",type = IdType.ASSIGN_ID )
+    @JsonFormat(shape =JsonFormat.Shape.STRING )
     Long id;
 
     /**

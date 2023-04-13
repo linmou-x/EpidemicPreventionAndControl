@@ -2,11 +2,13 @@ package com.controller;
 
 import ch.qos.logback.classic.Logger;
 import cn.hutool.core.bean.BeanUtil;
+import com.alibaba.fastjson.JSON;
 import com.entity.GoodType;
 import com.services.Impl.GoodTypeService;
 import com.utils.Result;
 import com.utils.ResultEnum;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/type")
+@CrossOrigin(origins = "*")
 public class GoodTypeController {
 
     Logger logger = (Logger) LoggerFactory.getLogger(Logger.class);
@@ -22,13 +25,13 @@ public class GoodTypeController {
     GoodTypeService goodTypeService;
     @GetMapping("/getList")
     public Result getList(HttpServletRequest httpServletRequest){
-        return goodTypeService.getGoodTypeList();
+        return goodTypeService.getGoodTypeList(httpServletRequest);
     }
 
     @GetMapping("/delete")
     public Result delete(String jsonObject,HttpServletRequest httpServletRequest){
         if (!jsonObject.isEmpty()){
-            GoodType goodType= BeanUtil.copyProperties(jsonObject,GoodType.class);
+            GoodType goodType= JSON.parseObject(jsonObject,GoodType.class);
             return goodTypeService.deleteGoodType(goodType,httpServletRequest);
         }else {
             return  new Result(ResultEnum.FAIL,"JSON is empty");
@@ -39,8 +42,8 @@ public class GoodTypeController {
     public Result insert(String jsonObject,HttpServletRequest httpServletRequest){
         if (!jsonObject.isEmpty()){
             logger.debug(jsonObject);
-            GoodType goodType= BeanUtil.copyProperties(jsonObject,GoodType.class);
-            logger.debug(goodType.toString());
+            GoodType goodType= JSON.parseObject(jsonObject,GoodType.class);
+            logger.debug(goodType.toString()+"AAA");
             return goodTypeService.insertGoodType(goodType,httpServletRequest);
         }else {
             return  new Result(ResultEnum.FAIL,"JSON is empty");
@@ -50,7 +53,8 @@ public class GoodTypeController {
     @GetMapping("/update")
     public Result update(String jsonObject,HttpServletRequest httpServletRequest){
         if (!jsonObject.isEmpty()){
-            GoodType goodType= BeanUtil.copyProperties(jsonObject,GoodType.class);
+            GoodType goodType= JSON.parseObject(jsonObject, GoodType.class);
+            logger.debug(goodType.toString()+"AAA");
             return goodTypeService.updateGoodType(goodType,httpServletRequest);
         }else {
             return  new Result(ResultEnum.FAIL,"JSON is empty");
