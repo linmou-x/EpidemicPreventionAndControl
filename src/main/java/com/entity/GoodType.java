@@ -27,7 +27,7 @@ public class GoodType implements Serializable {
     /**
      * 物品名称
      */
-    String typeName;
+    String name;
     /**
      * create time
      */
