@@ -8,6 +8,7 @@ import com.utils.ResultEnum;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 @Service
 public class GoodTypeServiceImpl implements GoodTypeService {
@@ -21,18 +22,19 @@ public class GoodTypeServiceImpl implements GoodTypeService {
     }
 
     @Override
-    public Result insertGoodType(GoodType goodType) {
+    public Result insertGoodType(GoodType goodType, HttpServletRequest httpServletRequest) {
         return new Result(ResultEnum.SUCCESS,goodTypeMapper.insert(goodType));
     }
 
     @Override
-    public Result updateGoodType(GoodType goodType) {
+    public Result updateGoodType(GoodType goodType,HttpServletRequest httpServletRequest) {
         return new Result(ResultEnum.SUCCESS,goodTypeMapper.updateById(goodType));
     }
 
     @Override
-    public Result deleteGoodType(GoodType goodType) {
+    public Result deleteGoodType(GoodType goodType,HttpServletRequest httpServletRequest) {
         goodType.setStatus(0);
         return new Result(ResultEnum.SUCCESS,goodTypeMapper.updateById(goodType));
     }
+
 }
