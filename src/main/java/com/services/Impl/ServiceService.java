@@ -21,7 +21,7 @@ public interface ServiceService {
     /**
      * 获取服务列表
      */
-    Result servicePage(PageServiceDTO pageServiceDTO,HttpServletRequest httpServletRequest);
+    Result serviceList(ServiceDTO serviceDTO,HttpServletRequest httpServletRequest);
     /**
      * 批量导入
      * @param serviceDTOList

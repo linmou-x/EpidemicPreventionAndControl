@@ -37,7 +37,13 @@ public class ServiceController {
     @GetMapping(value = "/servicePage")
     @Operation(summary = "服务查询",description = "服务查询")
     public Result servicePage(String jsonObject,HttpServletRequest httpServletRequest){
-        return new Result(ResultEnum.SUCCESS,"this is Paging query result",serviceService);
+        if (!jsonObject.isEmpty())
+        {
+            ServiceDTO serviceDTO= JSON.parseObject(jsonObject, ServiceDTO.class);
+            return serviceService.serviceList(serviceDTO,httpServletRequest);
+        }else {
+            return new Result(ResultEnum.FAIL,"Str为空");
+        }
     }
 
     @GetMapping("/batchInsert")
@@ -68,9 +74,9 @@ public class ServiceController {
         }
     }
 
-    @GetMapping("/batchModify")
+    @GetMapping("/batchUpdate")
     @Operation(summary = "批量修改",description = "批量修改")
-    public Result batchModify(String jsonObject, HttpServletRequest httpServletRequest){
+    public Result batchUpdate(String jsonObject, HttpServletRequest httpServletRequest){
         if (!jsonObject.isEmpty())
         {
             ServiceDTO serviceDTO= JSON.parseObject(jsonObject, ServiceDTO.class);

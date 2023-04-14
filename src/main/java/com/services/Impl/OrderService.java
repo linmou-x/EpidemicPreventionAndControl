@@ -15,7 +15,7 @@ public interface OrderService extends Callable<Objects> {
     /**
      * 获取订单列表
      */
-    Result orderPageWithService(PageOrderDTO pageOrderDTO, HttpServletRequest httpServletRequest);
+    Result orderPageWithService(HttpServletRequest httpServletRequest);
 
     Result orderPageWitchGood(PageOrderDTO pageOrderDTO, HttpServletRequest httpServletRequest);
     /**

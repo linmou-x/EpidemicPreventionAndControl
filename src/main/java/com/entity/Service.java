@@ -36,6 +36,7 @@ public class Service implements Serializable {
      * 名称
      */
     String name;
+    String image;
     /**
      * 描述
      */
@@ -63,6 +64,8 @@ public class Service implements Serializable {
      */
     @TableField(value = "update_by")
     Long updateBy;
+    @TableField(value = "update_name")
+    String updateName;
 
     @TableField(value = "status",fill = FieldFill.INSERT)
     Integer status;

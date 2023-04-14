@@ -41,10 +41,14 @@ public class ServiceServiceImpl implements ServiceService {
      * 获取服务列表
      */
     @Override
-    public Result servicePage(PageServiceDTO pageServiceDTO,HttpServletRequest httpServletRequest) {
-        Long id =JwtToken.getId(httpServletRequest.getHeader("X-Token"));
+    public Result serviceList(ServiceDTO serviceDTO,HttpServletRequest httpServletRequest) {
         QueryWrapper<Service> queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("status",1);
+        if (serviceDTO.getStatus()==1){
+            queryWrapper.eq("status",1);
+        }else {
+            queryWrapper.eq("status",1);
+            queryWrapper.or().eq("status",0);
+        }
         return new Result(ResultEnum.SUCCESS,serviceMapper.selectList(queryWrapper));
     }
 

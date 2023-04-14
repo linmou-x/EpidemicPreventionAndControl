@@ -27,6 +27,7 @@ public class ServiceDTO implements Serializable {
      * 名称
      */
     String name;
+    String image;
     /**
      * 描述
      */
@@ -35,4 +36,6 @@ public class ServiceDTO implements Serializable {
      * 商品价格
      */
     Integer price;
+
+    Integer status;
 }
