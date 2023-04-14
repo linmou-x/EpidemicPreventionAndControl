@@ -67,6 +67,7 @@ public class ServiceServiceImpl implements ServiceService {
         serviceDTOList.forEach(serviceDTO -> {
             service[0]=BeanUtil.copyProperties(serviceDTO,Service.class);
             service[0].setUpdateBy(JwtToken.getId(httpServletRequest.getHeader("X-Token")));
+            service[0].setUpdateName(JwtToken.getName(httpServletRequest.getHeader("X-Token")));
             serviceMapper.insert(service[0]);
         });
         return new Result(ResultEnum.SUCCESS,"导入成功");
@@ -108,6 +109,7 @@ public class ServiceServiceImpl implements ServiceService {
         serviceDTOList.forEach(serviceDTO -> {
             service[0]= BeanUtil.copyProperties(serviceDTO,Service.class);
             service[0].setUpdateBy(JwtToken.getId(httpServletRequest.getHeader("X-Token")));
+            service[0].setUpdateName(JwtToken.getName(httpServletRequest.getHeader("X-Token")));
             serviceMapper.updateById(service[0]);
         });
         return new Result(ResultEnum.SUCCESS,"批量更新成功");

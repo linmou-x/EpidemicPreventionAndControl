@@ -1,17 +1,18 @@
 package com.controller;
 
 import ch.qos.logback.classic.Logger;
-import cn.hutool.core.bean.BeanUtil;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.entity.*;
+import com.entity.Order;
+import com.entity.OrderDTO;
+import com.entity.PageOrderDTO;
+import com.entity.User;
 import com.mapper.OrderMapper;
 import com.mapper.UserMapper;
 import com.services.Impl.OrderService;
 import com.utils.Result;
 import com.utils.ResultEnum;
 import com.utils.Token;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.LoggerFactory;
@@ -21,7 +22,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author charles
@@ -99,6 +99,7 @@ public class OrderController {
     @GetMapping("/familyOrder")
     public Result familyOrder(String jsonObject,HttpServletRequest httpServletRequest) {
         PageOrderDTO pageOrderDTO;
+        logger.debug(jsonObject);
         if (!jsonObject.isEmpty()) {
             pageOrderDTO = JSON.parseObject(jsonObject, PageOrderDTO.class);
         } else {

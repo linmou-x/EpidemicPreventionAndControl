@@ -51,7 +51,7 @@ public class Service implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField(value = "create_time",fill = FieldFill.INSERT)
-    Data createTime;
+    Date createTime;
     /**
      * update time
      */

@@ -163,6 +163,12 @@ public class OrderServiceImpl implements OrderService {
         if (pageOrderDTO.getOrderDTO().getName()!="null"){
             queryWrapper.like("name",pageOrderDTO.getOrderDTO().getName());
         }
+        logger.debug(pageOrderDTO.getOrderDTO().toString());
+        if (pageOrderDTO.getOrderDTO().getGood()==0){
+            queryWrapper.eq("good",0);
+        } else if (pageOrderDTO.getOrderDTO().getService()==0) {
+            queryWrapper.eq("service",0);
+        }
         queryWrapper.and(orderQueryWrapper -> {
             list.forEach(id ->{
                 orderQueryWrapper.or().eq("record_by",id);
@@ -180,6 +186,11 @@ public class OrderServiceImpl implements OrderService {
         queryWrapper.eq(!"null".equals(String.valueOf(pageOrderDTO.getOrderDTO().getStatus())),"status",pageOrderDTO.getOrderDTO().getStatus());
         if (pageOrderDTO.getOrderDTO().getName()!="null"){
             queryWrapper.like("name",pageOrderDTO.getOrderDTO().getName());
+        }
+        if (pageOrderDTO.getOrderDTO().getGood()==0){
+            queryWrapper.eq("good",0);
+        } else if (pageOrderDTO.getOrderDTO().getService()==0) {
+            queryWrapper.eq("service",0);
         }
         Page<Order> orderPage=orderMapper.selectPage(page,queryWrapper);
         return new Result(ResultEnum.SUCCESS,orderPage);
