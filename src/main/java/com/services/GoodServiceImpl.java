@@ -55,9 +55,7 @@ public class GoodServiceImpl implements GoodService {
         queryWrapper.like(!StringUtils.isEmpty(pageGoodDTO.getGoodDTO().getName()), "name", pageGoodDTO.getGoodDTO().getName());
         queryWrapper.eq(!StringUtils.isEmpty(pageGoodDTO.getGoodDTO().getType()),"type",pageGoodDTO.getGoodDTO().getType());
         if (!"null".equals(String.valueOf(pageGoodDTO.getGoodDTO().getStatus()))){
-            logger.debug(String.valueOf(pageGoodDTO.getGoodDTO().getStatus())+"status");
             if(pageGoodDTO.getGoodDTO().getStatus()==1){
-                logger.debug(String.valueOf(pageGoodDTO.getGoodDTO().getStatus())+"status");
                 queryWrapper.eq("status",1);
             } else if (pageGoodDTO.getGoodDTO().getStatus()==0) {
                 queryWrapper.eq("status",0);
@@ -89,7 +87,6 @@ public class GoodServiceImpl implements GoodService {
             goods[0].setUpdateBy(JwtToken.getId(httpServletRequest.getHeader("X-Token")));
             goodMapper.insert(goods[0]);
         }
-
         return new Result(ResultEnum.SUCCESS,"批量导入成功");
     }
 
@@ -108,7 +105,7 @@ public class GoodServiceImpl implements GoodService {
         goodDTOList.forEach(goodDTO -> {
             goods[0]=BeanUtil.copyProperties(goodDTO,Good.class);
             UpdateWrapper<Good> updateWrapper=new UpdateWrapper<>();
-            updateWrapper.set("status",0);
+            updateWrapper.set("status",-1);
             updateWrapper.eq("id",goods[0].getId());
             goodMapper.update(null,updateWrapper);
         });
@@ -160,24 +157,18 @@ public class GoodServiceImpl implements GoodService {
         logger.debug("商品修改线程启动");
         synchronized(this){
             Good good=goodMapper.selectById(id);
-            logger.debug(good.toString());
             if (buy){
-                logger.debug("buy");
                 if (good.getAmount()<amount){
                     logger.debug("商品数量不足");
                     return false;
                 }else{
                     good.setAmount(good.getAmount()-amount);
                     goodMapper.updateById(good);
-                    logger.debug(good.getAmount().toString());
                     logger.debug("商品购买成功");
                 }
             }else {
-                logger.debug("add amount"+good.getAmount());
                 good.setAmount(good.getAmount()+amount);
                 goodMapper.updateById(good);
-                logger.debug("add amount SUCCESS"+good.getAmount());
-                logger.debug("商品补货成功");
             }
         }
         return true;

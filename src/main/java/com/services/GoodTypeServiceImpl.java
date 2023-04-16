@@ -22,10 +22,10 @@ public class GoodTypeServiceImpl implements GoodTypeService {
     Token token;
 
     @Override
-    public Result getGoodTypeList(HttpServletRequest httpServletRequest) {
+    public Result getGoodTypeList(Integer status,HttpServletRequest httpServletRequest) {
         QueryWrapper<GoodType> queryWrapper=new QueryWrapper<>();
         queryWrapper.eq("status",1);
-        if (!"user".equals(token.getRole(httpServletRequest.getHeader("X-Token")))){
+        if (status!=1){
             queryWrapper.or().eq("status",0);
         };
         return new Result(ResultEnum.SUCCESS,goodTypeMapper.selectList(queryWrapper));

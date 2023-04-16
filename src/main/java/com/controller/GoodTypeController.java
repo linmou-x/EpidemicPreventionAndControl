@@ -1,7 +1,6 @@
 package com.controller;
 
 import ch.qos.logback.classic.Logger;
-import cn.hutool.core.bean.BeanUtil;
 import com.alibaba.fastjson.JSON;
 import com.entity.GoodType;
 import com.services.Impl.GoodTypeService;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,8 +24,8 @@ public class GoodTypeController {
     @Resource
     GoodTypeService goodTypeService;
     @GetMapping("/getList")
-    public Result getList(HttpServletRequest httpServletRequest){
-        return goodTypeService.getGoodTypeList(httpServletRequest);
+    public Result getList(Integer status,HttpServletRequest httpServletRequest){
+        return goodTypeService.getGoodTypeList(status,httpServletRequest);
     }
 
     @GetMapping("/delete")

@@ -99,7 +99,15 @@ public class OrderServiceImpl implements OrderService {
         logger.debug(orderDTO.toString());
         Order order=BeanUtil.copyProperties(orderDTO,Order.class);
         if (orderDTO.getService()==0) {
-            goodService.updateGoodAmount(order.getGood(), order.getAmount(), true);
+            if (goodService.updateGoodAmount(order.getGood(), order.getAmount(), true)){
+                order.setUpdateBy(token.getId(httpServletRequest.getHeader("X-Token")));
+                order.setUpdateName(token.getName(httpServletRequest.getHeader("X-Token")));
+                order.setRecordBy(token.getId(httpServletRequest.getHeader("X-Token")));
+                orderMapper.insert(order);
+                return new Result(ResultEnum.SUCCESS,"商品订购成功");
+            }else{
+                return new Result(ResultEnum.FAIL,"商品订购失败");
+            }
         }
         if (orderDTO.getGood()==0){
             logger.debug("服务订购");
@@ -151,6 +159,11 @@ public class OrderServiceImpl implements OrderService {
             order[0]= BeanUtil.copyProperties(orderDTO,Order.class);
             order[0].setUpdateBy(id);
             order[0].setUpdateName(token.getName(httpServletRequest.getHeader("X-Token")));
+            logger.debug("订单取消");
+            if (order[0].getService()==0){
+                logger.debug("修改库存");
+                goodService.updateGoodAmount(order[0].getGood(),order[0].getAmount(),false);
+            }
             orderMapper.updateById(order[0]);
         });
         return new Result(ResultEnum.SUCCESS,"删除成功");

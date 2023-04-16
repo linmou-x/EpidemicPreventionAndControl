@@ -3,6 +3,7 @@ package com.services;
 import ch.qos.logback.classic.Logger;
 import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.Update;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.entity.PageUserDTO;
@@ -61,6 +62,9 @@ public class UserServicesImpl implements UserService {
             if (!user.getPassword().equals(password)){
                 return new Result(ResultEnum.FAIL,"登录失败，密码错误");
             }else {
+                UpdateWrapper<User> updateWrapper=new UpdateWrapper<>();
+                updateWrapper.eq("id",user.getId());
+                userMapper.update(user,updateWrapper);
                 return new Result(ResultEnum.SUCCESS, token.getToken(user.getPhone(), user.getPassword(), user.getId(),user.getUserType(),user.getName()));
             }
         }
