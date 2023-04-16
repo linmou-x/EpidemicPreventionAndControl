@@ -49,6 +49,8 @@ public class OrderDTO implements Serializable {
      * 价格
      */
     Integer price;
+
+    String phone;
     /**
      * 服务ID
      */

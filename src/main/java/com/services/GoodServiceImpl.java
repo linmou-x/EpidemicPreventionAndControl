@@ -167,6 +167,7 @@ public class GoodServiceImpl implements GoodService {
                     logger.debug("商品购买成功");
                 }
             }else {
+                logger.debug(good.toString());
                 good.setAmount(good.getAmount()+amount);
                 goodMapper.updateById(good);
             }

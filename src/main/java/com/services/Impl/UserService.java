@@ -84,4 +84,5 @@ public interface UserService {
 
 
     Result updatePassword(Long id,String oldPwd,String newPwd,HttpServletRequest httpServletRequest);
+    Result resetPWD(Long id,HttpServletRequest httpServletRequest);
 }

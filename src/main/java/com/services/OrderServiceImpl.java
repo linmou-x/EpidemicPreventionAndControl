@@ -103,6 +103,9 @@ public class OrderServiceImpl implements OrderService {
                 order.setUpdateBy(token.getId(httpServletRequest.getHeader("X-Token")));
                 order.setUpdateName(token.getName(httpServletRequest.getHeader("X-Token")));
                 order.setRecordBy(token.getId(httpServletRequest.getHeader("X-Token")));
+                order.setRecordName(token.getName(httpServletRequest.getHeader("X-Token")));
+                order.setPhone(token.getPhone(httpServletRequest.getHeader("X-Token")));
+                order.setAddress(token.getAddress(httpServletRequest.getHeader("X-Token")));
                 orderMapper.insert(order);
                 return new Result(ResultEnum.SUCCESS,"商品订购成功");
             }else{
@@ -118,6 +121,9 @@ public class OrderServiceImpl implements OrderService {
         order.setUpdateBy(token.getId(httpServletRequest.getHeader("X-Token")));
         order.setUpdateName(token.getName(httpServletRequest.getHeader("X-Token")));
         order.setRecordBy(token.getId(httpServletRequest.getHeader("X-Token")));
+        order.setRecordName(token.getName(httpServletRequest.getHeader("X-Token")));
+        order.setPhone(token.getPhone(httpServletRequest.getHeader("X-Token")));
+        order.setAddress(token.getAddress(httpServletRequest.getHeader("X-Token")));
         orderMapper.insert(order);
         return new Result(ResultEnum.SUCCESS,"服务订购成功");
     }
@@ -159,9 +165,9 @@ public class OrderServiceImpl implements OrderService {
             order[0]= BeanUtil.copyProperties(orderDTO,Order.class);
             order[0].setUpdateBy(id);
             order[0].setUpdateName(token.getName(httpServletRequest.getHeader("X-Token")));
-            logger.debug("订单取消");
+            logger.debug("订单取消"+order[0].toString());
             if (order[0].getService()==0){
-                logger.debug("修改库存");
+                logger.debug("修改商品库存");
                 goodService.updateGoodAmount(order[0].getGood(),order[0].getAmount(),false);
             }
             orderMapper.updateById(order[0]);
@@ -197,6 +203,9 @@ public class OrderServiceImpl implements OrderService {
         Page<Order> page=new Page<>(pageOrderDTO.getCurrentPage(), pageOrderDTO.getPageSize());
         QueryWrapper<Order> queryWrapper=new QueryWrapper<>();
         queryWrapper.eq(!"null".equals(String.valueOf(pageOrderDTO.getOrderDTO().getStatus())),"status",pageOrderDTO.getOrderDTO().getStatus());
+        if (!StringUtils.isEmpty(pageOrderDTO.getOrderDTO().getPhone())){
+            queryWrapper.eq("phone",pageOrderDTO.getOrderDTO().getPhone());
+        }
         if (pageOrderDTO.getOrderDTO().getName()!="null"){
             queryWrapper.like("name",pageOrderDTO.getOrderDTO().getName());
         }
@@ -249,8 +258,6 @@ public class OrderServiceImpl implements OrderService {
                     logger.debug(String.valueOf(order));
                     return order.getService().equals(serviceID);
                 });
-        logger.debug(isMatch.toString());
-        logger.debug(serviceID.toString());
         return isMatch;
     }
 }

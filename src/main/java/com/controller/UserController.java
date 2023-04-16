@@ -76,7 +76,7 @@ public class UserController {
         if (!jsonObject.isEmpty())
         {
             PageUserDTO pageUserDTO=JSON.parseObject(jsonObject, PageUserDTO.class);
-            return userService.selectByPage(pageUserDTO, httpServletRequest);
+            return userService.selectFamilyByPage(pageUserDTO, httpServletRequest);
         }else {
             return new Result(ResultEnum.FAIL,"Str为空");
         }
@@ -153,10 +153,17 @@ public class UserController {
         return userService.setUser(id);
     }
 
-    @Operation(summary = "updatePassword",description = "设置用户权限为用户")
+    @Operation(summary = "updatePassword")
     @GetMapping("/updatePassword")
     public Result updatePassword(Long id,String oldPwd,String newPwd,HttpServletRequest httpServletRequest){
         return userService.updatePassword(id,oldPwd,newPwd,httpServletRequest);
     }
+
+    @Operation(summary = "resetPWD")
+    @GetMapping("/resetPWD")
+    public Result resetPWD(Long id,HttpServletRequest httpServletRequest){
+        return userService.resetPWD(id,httpServletRequest);
+    }
+
 
 }

@@ -65,7 +65,7 @@ public class UserServicesImpl implements UserService {
                 UpdateWrapper<User> updateWrapper=new UpdateWrapper<>();
                 updateWrapper.eq("id",user.getId());
                 userMapper.update(user,updateWrapper);
-                return new Result(ResultEnum.SUCCESS, token.getToken(user.getPhone(), user.getPassword(), user.getId(),user.getUserType(),user.getName()));
+                return new Result(ResultEnum.SUCCESS, token.getToken(user.getPhone(), user.getPassword(), user.getId(),user.getUserType(),user.getName(),user.getAddress()));
             }
         }
     }
@@ -202,6 +202,7 @@ public class UserServicesImpl implements UserService {
         /**
          * 条件判定非空时添加手机查询条件
          */
+        queryWrapper.like(!StringUtils.isEmpty(String.valueOf(user.getUserType())), "user_type", user.getUserType());
         queryWrapper.eq(!StringUtils.isEmpty(String.valueOf(user.getPhone())), "phone", user.getPhone());
         logger.debug(userMapper.selectList(queryWrapper).toString());
         Page<User> page=new Page<>(currentPage,pageSize);
@@ -283,8 +284,10 @@ public class UserServicesImpl implements UserService {
         }else {
             houseHolder=user.getHouseHolder();
         }
+        logger.debug("AAA");
         QueryWrapper<User> queryWrapper=new QueryWrapper<>();
         queryWrapper.eq("house_holder",houseHolder);
+        queryWrapper.or().eq("id",user.getId());
         /**
          * 用户姓名非空时拼接条件到SQL语句，
          */
@@ -305,7 +308,7 @@ public class UserServicesImpl implements UserService {
          * 条件判定非空时添加手机查询条件
          */
         queryWrapper.eq(!StringUtils.isEmpty(String.valueOf(user.getPhone())), "phone", user.getPhone());
-        logger.debug(userMapper.selectList(queryWrapper).toString());
+        logger.debug(userMapper.selectList(queryWrapper).toString()+"AAA");
         Page<User> page=new Page<>(pageUserDTO.getCurrentPage(), pageUserDTO.getPageSize());
         Page<User> userPage=userMapper.selectPage(page,queryWrapper);
         return new Result(ResultEnum.SUCCESS,"this is Paging query result",userPage);
@@ -325,6 +328,16 @@ public class UserServicesImpl implements UserService {
             userMapper.update(user,updateWrapper);
         }
         return new Result(ResultEnum.SUCCESS,"用户密码更新成功");
+    }
+
+    @Override
+    public Result resetPWD(Long id, HttpServletRequest httpServletRequest) {
+        User user= userMapper.selectById(id);
+        user.setPassword(user.getPhone());
+        user.setUpdateBy(token.getId(httpServletRequest.getHeader("X-Token")));
+        user.setUpdateName(token.getName(httpServletRequest.getHeader("X-Token")));
+        userMapper.updateById(user);
+        return new Result(ResultEnum.SUCCESS,"已设置为初始密码");
     }
 
 

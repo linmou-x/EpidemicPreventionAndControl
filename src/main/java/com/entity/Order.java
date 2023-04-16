@@ -30,11 +30,13 @@ public class Order implements Serializable {
      */
     String name;
     @TableField("good")
+    @JsonFormat(shape =JsonFormat.Shape.STRING )
     Long  good;
     /**
      * 服务ID
      */
     @TableField("service")
+    @JsonFormat(shape =JsonFormat.Shape.STRING )
     Long service;
     /**
      * 数量
@@ -76,6 +78,13 @@ public class Order implements Serializable {
 
     @TableField(value = "update_name")
     String updateName;
+
+    @TableField(value = "record_name")
+    String recordName;
+
+    String phone;
+
+    String address;
     /**
      * status
      */
