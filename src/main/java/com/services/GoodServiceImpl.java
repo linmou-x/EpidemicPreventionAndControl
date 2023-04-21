@@ -57,18 +57,15 @@ public class GoodServiceImpl implements GoodService {
         if (!"null".equals(String.valueOf(pageGoodDTO.getGoodDTO().getStatus()))){
             if(pageGoodDTO.getGoodDTO().getStatus()==1){
                 queryWrapper.eq("status",1);
-            } else if (pageGoodDTO.getGoodDTO().getStatus()==0) {
-                queryWrapper.eq("status",0);
+            }else if (role.equals("admin")||role.equals("volunteer")){
+                queryWrapper.eq("status",1);
+                queryWrapper.or().eq("status",0);
             }
-        }else if (role.equals("admin")||role.equals("volunteer")){
-            queryWrapper.eq("status",1);
-            queryWrapper.or().eq("status",0);
-        } else if (role.equals("user")) {
-            queryWrapper.eq("status",1);
         }
+        queryWrapper.ne("status",-1);
         Page<Good> page=new Page<>(currentPage,pageSize);
         Page<Good> goodPage=goodMapper.selectPage(page,queryWrapper);
-        return new Result(ResultEnum.SUCCESS,"this is Paging query result",goodPage);
+        return new Result(ResultEnum.SUCCESS,"this is GoodPaging query result",goodPage);
     }
     /**
      * 批量导入

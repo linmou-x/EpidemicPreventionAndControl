@@ -109,23 +109,24 @@ public class OrderServiceImpl implements OrderService {
                 orderMapper.insert(order);
                 return new Result(ResultEnum.SUCCESS,"商品订购成功");
             }else{
-                return new Result(ResultEnum.FAIL,"商品订购失败");
+                return new Result(ResultEnum.FAIL,"商品订购失败,订购数量大于商品剩余数量");
             }
         }
         if (orderDTO.getGood()==0){
-            logger.debug("服务订购");
-            if(serviceBuy(order.getService(), httpServletRequest)){
+            if(!serviceBuy(order.getService(), httpServletRequest)){
                 return new Result(ResultEnum.FAIL,"家庭已订购该服务");
+            }else {
+                order.setUpdateBy(token.getId(httpServletRequest.getHeader("X-Token")));
+                order.setUpdateName(token.getName(httpServletRequest.getHeader("X-Token")));
+                order.setRecordBy(token.getId(httpServletRequest.getHeader("X-Token")));
+                order.setRecordName(token.getName(httpServletRequest.getHeader("X-Token")));
+                order.setPhone(token.getPhone(httpServletRequest.getHeader("X-Token")));
+                order.setAddress(token.getAddress(httpServletRequest.getHeader("X-Token")));
+                orderMapper.insert(order);
+                return new Result(ResultEnum.SUCCESS,"服务订购成功");
             }
         }
-        order.setUpdateBy(token.getId(httpServletRequest.getHeader("X-Token")));
-        order.setUpdateName(token.getName(httpServletRequest.getHeader("X-Token")));
-        order.setRecordBy(token.getId(httpServletRequest.getHeader("X-Token")));
-        order.setRecordName(token.getName(httpServletRequest.getHeader("X-Token")));
-        order.setPhone(token.getPhone(httpServletRequest.getHeader("X-Token")));
-        order.setAddress(token.getAddress(httpServletRequest.getHeader("X-Token")));
-        orderMapper.insert(order);
-        return new Result(ResultEnum.SUCCESS,"服务订购成功");
+        return null;
     }
 
     /**
@@ -234,30 +235,22 @@ public class OrderServiceImpl implements OrderService {
         User user=userMapper.selectById(id);
         QueryWrapper<User> userQueryWrapper=new QueryWrapper<>();
         QueryWrapper<Order> orderQueryWrapper=new QueryWrapper<>();
-        if (user.getHouseHolder()==0){
-            userQueryWrapper.eq("house_holder",user.getId());
-            userQueryWrapper.or().eq("id",user.getId());
-        }else {
-            userQueryWrapper.eq("house_holder",user.getHouseHolder());
-            userQueryWrapper.or().eq("id",user.getHouseHolder());
-        }
+        userQueryWrapper.and(userQueryWrapper1 -> {
+            userQueryWrapper1.eq("house_holder",user.getId());
+            userQueryWrapper1.or().eq("id",user.getId());
+        });
         List<User> userList=userMapper.selectList(userQueryWrapper);
         orderQueryWrapper.eq("status",1);
         orderQueryWrapper.eq("good",0);
+        orderQueryWrapper.eq("service",serviceID);
         orderQueryWrapper.and(orderQueryWrapper1 -> {
             userList.forEach(user1 -> {
                 orderQueryWrapper1.or().eq("record_by",user1.getId());
             });
         });
+        logger.debug("AAA");
         List<Order> orderList=orderMapper.selectList(orderQueryWrapper);
-        if (orderList.isEmpty()){
-            return false;
-        }
-        Boolean isMatch=orderList.stream()
-                .allMatch(order -> {
-                    logger.debug(String.valueOf(order));
-                    return order.getService().equals(serviceID);
-                });
-        return isMatch;
+        logger.debug(orderList.toString()+" "+orderList.isEmpty());
+       return orderList.isEmpty();
     }
 }

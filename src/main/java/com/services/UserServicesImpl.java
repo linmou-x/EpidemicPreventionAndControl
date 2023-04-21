@@ -274,9 +274,6 @@ public class UserServicesImpl implements UserService {
 
     @Override
     public Result selectFamilyByPage(PageUserDTO pageUserDTO,HttpServletRequest httpServletRequest) {
-        /**
-         * 查询用户家庭成员
-         */
         Long  houseHolder=null;
         User user=userMapper.selectById(token.getId(httpServletRequest.getHeader("X-Token")));
         if (user.getHouseHolder()==0){
@@ -284,31 +281,34 @@ public class UserServicesImpl implements UserService {
         }else {
             houseHolder=user.getHouseHolder();
         }
-        logger.debug("AAA");
+        logger.debug(pageUserDTO.toString()+!StringUtils.isEmpty(pageUserDTO.getUserDTO().getGender())+"  ");
         QueryWrapper<User> queryWrapper=new QueryWrapper<>();
-        queryWrapper.eq("house_holder",houseHolder);
-        queryWrapper.or().eq("id",user.getId());
         /**
          * 用户姓名非空时拼接条件到SQL语句，
          */
-        queryWrapper.like(!StringUtils.isEmpty(user.getName()), "name", user.getName());
+        queryWrapper.like(!StringUtils.isEmpty(pageUserDTO.getUserDTO().getName()), "name", pageUserDTO.getUserDTO().getName());
         /**
          * 条件判定非空时添加年龄查询条件
          */
-        queryWrapper.eq(!"null".equals(String.valueOf(user.getAge())), "age", user.getAge());
+        queryWrapper.eq(!"null".equals(String.valueOf(pageUserDTO.getUserDTO().getAge())), "age", pageUserDTO.getUserDTO().getAge());
         /**
          * 条件判定非空时添加性别查询条件
          */
-        queryWrapper.eq(!StringUtils.isEmpty(String.valueOf(user.getGender())), "gender", user.getGender());
+        queryWrapper.eq(!StringUtils.isEmpty(String.valueOf(pageUserDTO.getUserDTO().getGender())), "gender", pageUserDTO.getUserDTO().getGender());
         /**
          * 条件判定非空时添加地址查询条件
          */
-        queryWrapper.like(!StringUtils.isEmpty(String.valueOf(user.getAddress())), "address", user.getAddress());
+        queryWrapper.eq(!StringUtils.isEmpty(String.valueOf(pageUserDTO.getUserDTO().getAddress())), "address", pageUserDTO.getUserDTO().getAddress());
         /**
          * 条件判定非空时添加手机查询条件
          */
-        queryWrapper.eq(!StringUtils.isEmpty(String.valueOf(user.getPhone())), "phone", user.getPhone());
-        logger.debug(userMapper.selectList(queryWrapper).toString()+"AAA");
+        queryWrapper.eq(!StringUtils.isEmpty(String.valueOf(pageUserDTO.getUserDTO().getPhone())), "phone",pageUserDTO.getUserDTO().getPhone());
+        queryWrapper.eq("del_flag",1);
+        Long finalHouseHolder = houseHolder;
+        queryWrapper.and(userQueryWrapper -> {
+            userQueryWrapper.eq("house_holder", finalHouseHolder);
+            userQueryWrapper.or().eq("id",user.getId());
+        });
         Page<User> page=new Page<>(pageUserDTO.getCurrentPage(), pageUserDTO.getPageSize());
         Page<User> userPage=userMapper.selectPage(page,queryWrapper);
         return new Result(ResultEnum.SUCCESS,"this is Paging query result",userPage);
