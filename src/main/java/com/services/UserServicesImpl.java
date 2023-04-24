@@ -149,7 +149,7 @@ public class UserServicesImpl implements UserService {
                 }
                 user[0].setPassword(user[0].getPhone());
                 user[0].setHouseHolder(token.getId(httpServletRequest.getHeader("X-Token")));
-                user[0].setHouseHolderName(user[0].getName());
+                user[0].setHouseHolderName(token.getName(httpServletRequest.getHeader("X-Token")));
                 user[0].setUpdateBy(token.getId(httpServletRequest.getHeader("X-Token")));
                 user[0].setUpdateName(token.getName(httpServletRequest.getHeader("X-Token")));
                 userMapper.insert(user[0]);
