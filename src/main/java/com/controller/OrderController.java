@@ -116,15 +116,15 @@ public class OrderController {
         User user = userMapper.selectById(token.getId(httpServletRequest.getHeader("X-Token")));
         if (user.getHouseHolder() == 0) {
             queryWrapper.eq("house_holder", user.getId());
-
+            queryWrapper.or().eq("id", user.getId());
         } else {
             queryWrapper.eq("house_holder", user.getHouseHolder());
+            queryWrapper.or().eq("id", user.getHouseHolder());
         }
         List<User> list = userMapper.selectList(queryWrapper);
         list.forEach(user1 -> {
             familyList.add(user1.getId());
         });
-        familyList.add(user.getId());
         return orderService.getFamilyOrder(familyList, pageOrderDTO);
     }
 
