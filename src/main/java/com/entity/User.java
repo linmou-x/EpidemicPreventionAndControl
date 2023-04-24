@@ -105,7 +105,6 @@ public class User implements Serializable{
      * 用户类型（管理员，普通住户，租户）
      */
     @JsonProperty(value = "userType")
-    @TableField(fill = FieldFill.INSERT)
     String userType;
     /**
      * 头像

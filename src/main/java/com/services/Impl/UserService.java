@@ -34,6 +34,8 @@ public interface UserService {
      */
     Result batchImport(List<UserDTO> userList, HttpServletRequest httpServletRequest);
 
+    Result userBatchImport(List<UserDTO> userList, HttpServletRequest httpServletRequest);
+
     /**
      * 批量删除
      * @param userList

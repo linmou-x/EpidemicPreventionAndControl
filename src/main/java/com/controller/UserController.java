@@ -98,6 +98,21 @@ public class UserController {
         }
     }
 
+    @GetMapping("/userbatchInsert")
+    @CrossOrigin(origins = "*")
+    @Operation(summary = "userbatchInsert",description = "批量插入")
+    public Result userbatchInsert(String  jsonObject,HttpServletRequest httpServletRequest){
+        if (!jsonObject.isEmpty())
+        {
+            UserDTO userDTO=JSON.parseObject(jsonObject, UserDTO.class);
+            List<UserDTO> list =new ArrayList<>();
+            list.add(userDTO);
+            logger.debug("AAA");
+            return userService.userBatchImport(list, httpServletRequest);
+        }else {
+            return new Result(ResultEnum.FAIL,"Str为空");
+        }
+    }
 
     @GetMapping("/batchDelete")
     @CrossOrigin(origins = "*")

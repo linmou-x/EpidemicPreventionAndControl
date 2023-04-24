@@ -98,8 +98,11 @@ public class UserServicesImpl implements UserService {
              */
             QueryWrapper<User> queryWrapper=new QueryWrapper<>();
             queryWrapper.eq("phone",user[0].getPhone());
-            logger.debug(String.valueOf(userMapper.selectList(queryWrapper).isEmpty()));
+            logger.debug(user[0].toString());
             if (userMapper.selectList(queryWrapper).isEmpty()){
+                if (StringUtils.isEmpty(user[0].getUserType())){
+                    user[0].setUserType("user");
+                }
                 user[0].setPassword(user[0].getPhone());
                 user[0].setHouseHolder(0L);
                 user[0].setHouseHolderName(user[0].getName());
@@ -125,6 +128,39 @@ public class UserServicesImpl implements UserService {
     }
 
     @Override
+    public Result userBatchImport(List<UserDTO> userList, HttpServletRequest httpServletRequest) {
+        final User[] user = {null};
+        final UserVO[] userVOS = {null};
+        if (userList.isEmpty()){
+            return new Result(ResultEnum.FAIL,"禁止空数组");
+        }
+        List<User> userList1=new ArrayList<>(userList.size());
+        for (UserDTO userDTO:userList){
+            user[0]=BeanUtil.copyProperties(userDTO,User.class);
+            /**
+             * 查询数据库是否有相同手机号
+             */
+            QueryWrapper<User> queryWrapper=new QueryWrapper<>();
+            queryWrapper.eq("phone",user[0].getPhone());
+
+            if (userMapper.selectList(queryWrapper).isEmpty()){
+                if (StringUtils.isEmpty(user[0].getUserType())){
+                    user[0].setUserType("user");
+                }
+                user[0].setPassword(user[0].getPhone());
+                user[0].setHouseHolder(token.getId(httpServletRequest.getHeader("X-Token")));
+                user[0].setHouseHolderName(user[0].getName());
+                user[0].setUpdateBy(token.getId(httpServletRequest.getHeader("X-Token")));
+                user[0].setUpdateName(token.getName(httpServletRequest.getHeader("X-Token")));
+                userMapper.insert(user[0]);
+            }else {
+                return new Result(ResultEnum.FAIL,"用户新增失败,存在相同手机号");
+            }
+        }
+        return new Result(ResultEnum.SUCCESS,"用户新增成功");
+    }
+
+    @Override
     public Result batchDelete(List<UserDTO> userDTOList,HttpServletRequest httpServletRequest) {
         final User[] user = {null};
         if (userDTOList.isEmpty()){
@@ -132,7 +168,7 @@ public class UserServicesImpl implements UserService {
         }
         userDTOList.forEach(userDTO -> {
             /**
-             * updawrapper 在循环外创建时语句为UPDATE user SET del_flag=？, del_flag=？WHERE (id =?AND id=?)
+             * update wrapper 在循环外创建时语句为UPDATE user SET del_flag=？, del_flag=？WHERE (id =?AND id=?)
              * 只能更新最开始的一条
              */
             user[0] = BeanUtil.copyProperties(userDTO,User.class);
