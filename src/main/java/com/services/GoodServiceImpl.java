@@ -127,6 +127,7 @@ public class GoodServiceImpl implements GoodService {
             goods[0].setUpdateBy(JwtToken.getId(httpServletRequest.getHeader("X-Token")));
             updateWrapper.set("status",goods[0].getStatus());
             updateWrapper.set("name",goods[0].getName());
+            updateWrapper.set("image",goods[0].getImage());
             updateWrapper.set("type",goods[0].getType());
             updateWrapper.set("description",goods[0].getDescription());
             updateWrapper.set("units",goods[0].getUnits());
